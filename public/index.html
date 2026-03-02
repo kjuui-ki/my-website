@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rawad Health | منصة التوظيف الصحي</title>
+  <meta name="description" content="Rawad Health - منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚕</div>
+          Rawad Health
+        </a>
+        <div class="nav-links">
+          <a href="index.html" class="active">الرئيسية</a>
+          <a href="jobs.html">الوظائف</a>
+          <a href="contact.html">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">🏥 المنصة الصحية الأولى في المملكة</div>
+          <h1>وظيفتك الصحية <span>تبدأ من هنا</span></h1>
+          <p>منصة Rawad Health تربط الكفاءات الصحية بأفضل المنشآت الطبية في المملكة العربية السعودية. اكتشف فرصاً مميزة تناسب تخصصك وطموحك المهني.</p>
+          <div class="hero-buttons">
+            <a href="jobs.html" class="btn btn-white">تصفح الوظائف المتاحة</a>
+            <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;">تواصل معنا</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number" data-count="500" data-suffix="+">0</div>
+              <div class="stat-label">وظيفة متاحة</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-count="150" data-suffix="+">0</div>
+              <div class="stat-label">منشأة صحية</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-count="3000" data-suffix="+">0</div>
+              <div class="stat-label">تم توظيفهم</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-icon">🩺</div>
+            <h3>ابحث عن وظيفتك المثالية</h3>
+            <p>أكثر من 20 تخصصاً صحياً متاحاً في جميع مدن المملكة</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge">مميزاتنا</span>
+        <h2>لماذا تختار Rawad Health؟</h2>
+        <p>نقدم لك تجربة توظيف صحي متكاملة ومميزة</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon blue">🎯</div>
+          <h3>وظائف متخصصة</h3>
+          <p>نوفر وظائف في جميع التخصصات الصحية من الطب والتمريض إلى الصيدلة والعلاج الطبيعي والمختبرات.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon green">🏥</div>
+          <h3>منشآت موثوقة</h3>
+          <p>نتعاون مع أفضل المستشفيات والمراكز الطبية والعيادات المرخصة في جميع أنحاء المملكة.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon purple">⚡</div>
+          <h3>تقديم سريع</h3>
+          <p>قدّم على الوظائف بسهولة وسرعة من خلال نموذج تقديم بسيط ومباشر بدون تعقيد.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon orange">🔔</div>
+          <h3>تنبيهات فورية</h3>
+          <p>احصل على إشعارات فورية بأحدث الوظائف التي تناسب تخصصك ومدينتك.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Jobs Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge">فرص مميزة</span>
+        <h2>أحدث الوظائف المتاحة</h2>
+        <p>اكتشف أحدث الفرص الوظيفية في القطاع الصحي</p>
+      </div>
+      <div class="jobs-grid" id="featured-jobs-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+      <div class="text-center mt-4 fade-in">
+        <a href="jobs.html" class="btn btn-outline">عرض جميع الوظائف →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us Section -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="why-us-content">
+        <div class="why-us-text slide-right">
+          <span class="badge" style="margin-bottom: 15px; display: inline-block;">من نحن</span>
+          <h2>شريكك الموثوق في التوظيف الصحي</h2>
+          <p>Rawad Health هي منصة سعودية متخصصة في التوظيف الصحي، تهدف إلى سد الفجوة بين الكوادر الصحية المؤهلة والمنشآت الطبية المتميزة في المملكة.</p>
+          <div class="why-us-list">
+            <div class="why-us-item">
+              <div class="why-us-item-icon">✅</div>
+              <div>
+                <h4>فرص حقيقية وموثوقة</h4>
+                <p>جميع الوظائف المعروضة من منشآت صحية مرخصة ومعتمدة.</p>
+              </div>
+            </div>
+            <div class="why-us-item">
+              <div class="why-us-item-icon">🎓</div>
+              <div>
+                <h4>دعم مهني متكامل</h4>
+                <p>نساعدك في تطوير سيرتك الذاتية والتحضير للمقابلات.</p>
+              </div>
+            </div>
+            <div class="why-us-item">
+              <div class="why-us-item-icon">🌍</div>
+              <div>
+                <h4>تغطية شاملة</h4>
+                <p>نغطي جميع مناطق ومدن المملكة العربية السعودية.</p>
+              </div>
+            </div>
+            <div class="why-us-item">
+              <div class="why-us-item-icon">🤝</div>
+              <div>
+                <h4>شراكات استراتيجية</h4>
+                <p>شراكات مع أكثر من 150 منشأة صحية في المملكة.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="why-us-visual slide-left">
+          <div class="why-us-card-group">
+            <div class="why-card">
+              <div class="number">500+</div>
+              <div class="label">وظيفة متاحة</div>
+            </div>
+            <div class="why-card">
+              <div class="number">150+</div>
+              <div class="label">منشأة صحية</div>
+            </div>
+            <div class="why-card">
+              <div class="number">20+</div>
+              <div class="label">تخصص صحي</div>
+            </div>
+            <div class="why-card">
+              <div class="number">3000+</div>
+              <div class="label">تم توظيفهم</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content fade-in">
+        <h2>جاهز للخطوة القادمة في مسيرتك المهنية؟</h2>
+        <p>انضم إلى آلاف المهنيين الصحيين الذين وجدوا وظائفهم المثالية عبر Rawad Health</p>
+        <div class="cta-buttons">
+          <a href="jobs.html" class="btn btn-white">تصفح الوظائف</a>
+          <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;">تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">⚕</div>
+            Rawad Health
+          </a>
+          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="تويتر">𝕏</a>
+            <a href="#" aria-label="لينكدإن">in</a>
+            <a href="#" aria-label="انستجرام">📷</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="jobs.html">الوظائف</a></li>
+            <li><a href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>التخصصات</h4>
+          <ul>
+            <li><a href="jobs.html">طب عام</a></li>
+            <li><a href="jobs.html">تمريض</a></li>
+            <li><a href="jobs.html">صيدلة</a></li>
+            <li><a href="jobs.html">طب أسنان</a></li>
+            <li><a href="jobs.html">علاج طبيعي</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 info@rawadhealth.sa</li>
+            <li>📞 920000123</li>
+            <li>📍 الرياض، المملكة العربية السعودية</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="العودة للأعلى">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

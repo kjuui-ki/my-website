@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التقديم على وظيفة | Rawad Health</title>
+  <meta name="description" content="قدّم على الوظائف الصحية المتاحة عبر Rawad Health - نموذج تقديم سهل وسريع.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚕</div>
+          Rawad Health
+        </a>
+        <div class="nav-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="jobs.html">الوظائف</a>
+          <a href="contact.html">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>التقديم على وظيفة</h1>
+      <p id="apply-job-title">أكمل بياناتك للتقديم على الوظيفة</p>
+      <div class="breadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <span>›</span>
+        <a href="jobs.html">الوظائف</a>
+        <span>›</span>
+        <span>التقديم</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apply Form Section -->
+  <section class="apply-section">
+    <div class="container">
+      <div class="apply-container">
+        <div class="apply-card fade-in">
+          <h2>📝 نموذج التقديم</h2>
+          <p>يرجى ملء جميع الحقول المطلوبة بدقة لضمان معالجة طلبك بشكل صحيح.</p>
+
+          <!-- Alerts -->
+          <div class="alert alert-error" id="error-alert"></div>
+
+          <form id="apply-form">
+            <div class="form-grid">
+              <!-- Full Name -->
+              <div class="form-group">
+                <label>الاسم الكامل <span class="required">*</span></label>
+                <input type="text" name="fullname" placeholder="أدخل اسمك الرباعي" required>
+              </div>
+
+              <!-- Specialty -->
+              <div class="form-group">
+                <label>التخصص <span class="required">*</span></label>
+                <select name="specialty" required>
+                  <option value="">اختر التخصص</option>
+                  <option value="طب-عام">طب عام</option>
+                  <option value="طب-اسنان">طب أسنان</option>
+                  <option value="تمريض">تمريض</option>
+                  <option value="صيدلة">صيدلة</option>
+                  <option value="علاج-طبيعي">علاج طبيعي</option>
+                  <option value="اشعة">أشعة</option>
+                  <option value="مختبرات">مختبرات</option>
+                  <option value="تغذية">تغذية إكلينيكية</option>
+                  <option value="بصريات">بصريات</option>
+                  <option value="اخرى">أخرى</option>
+                </select>
+              </div>
+
+              <!-- Professional Classification Number -->
+              <div class="form-group">
+                <label>رقم التصنيف المهني <span class="required">*</span></label>
+                <input type="text" name="classification" placeholder="رقم التصنيف من هيئة التخصصات" required>
+              </div>
+
+              <!-- City -->
+              <div class="form-group">
+                <label>المدينة <span class="required">*</span></label>
+                <select name="city" required>
+                  <option value="">اختر المدينة</option>
+                  <option value="الرياض">الرياض</option>
+                  <option value="جدة">جدة</option>
+                  <option value="الدمام">الدمام</option>
+                  <option value="المدينة">المدينة المنورة</option>
+                  <option value="مكة">مكة المكرمة</option>
+                  <option value="الطائف">الطائف</option>
+                  <option value="تبوك">تبوك</option>
+                  <option value="أبها">أبها</option>
+                  <option value="حائل">حائل</option>
+                  <option value="اخرى">أخرى</option>
+                </select>
+              </div>
+
+              <!-- Phone -->
+              <div class="form-group">
+                <label>رقم الجوال <span class="required">*</span></label>
+                <input type="tel" name="phone" placeholder="05XXXXXXXX" required pattern="^05[0-9]{8}$">
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label>البريد الإلكتروني <span class="required">*</span></label>
+                <input type="email" name="email" placeholder="example@email.com" required>
+              </div>
+
+              <!-- Years of Experience -->
+              <div class="form-group">
+                <label>سنوات الخبرة</label>
+                <select name="experience">
+                  <option value="">اختر</option>
+                  <option value="0-1">أقل من سنة</option>
+                  <option value="1-3">1 - 3 سنوات</option>
+                  <option value="3-5">3 - 5 سنوات</option>
+                  <option value="5-10">5 - 10 سنوات</option>
+                  <option value="10+">أكثر من 10 سنوات</option>
+                </select>
+              </div>
+
+              <!-- Qualification -->
+              <div class="form-group">
+                <label>المؤهل العلمي</label>
+                <select name="qualification">
+                  <option value="">اختر</option>
+                  <option value="diploma">دبلوم</option>
+                  <option value="bachelor">بكالوريوس</option>
+                  <option value="master">ماجستير</option>
+                  <option value="phd">دكتوراه</option>
+                  <option value="board">بورد / زمالة</option>
+                </select>
+              </div>
+
+              <!-- CV Upload -->
+              <div class="form-group full-width">
+                <label>السيرة الذاتية <span class="required">*</span></label>
+                <div class="file-upload">
+                  <div class="file-upload-icon">📄</div>
+                  <p>اسحب الملف هنا أو <span>اضغط للاختيار</span></p>
+                  <p style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">PDF, DOC, DOCX - حد أقصى 5 ميجابايت</p>
+                  <input type="file" id="cv-file" name="cv" accept=".pdf,.doc,.docx" required>
+                </div>
+                <p id="file-name" style="margin-top: 8px; font-size: 0.9rem;"></p>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group full-width">
+                <label>رسالة مختصرة</label>
+                <textarea name="message" placeholder="اكتب رسالة مختصرة عن نفسك وسبب اهتمامك بالوظيفة (اختياري)..." rows="4"></textarea>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-submit">
+              <button type="submit" class="btn btn-secondary">📨 إرسال الطلب</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal">
+      <div class="modal-icon">✅</div>
+      <h3>تم إرسال طلبك بنجاح!</h3>
+      <p>شكراً لتقديمك عبر Rawad Health. سيتم مراجعة طلبك والتواصل معك في أقرب وقت ممكن.</p>
+      <a href="jobs.html" class="btn btn-primary">تصفح وظائف أخرى</a>
+      <br><br>
+      <button class="btn btn-outline modal-close-btn" onclick="closeModal('success-modal')">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">⚕</div>
+            Rawad Health
+          </a>
+          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="تويتر">𝕏</a>
+            <a href="#" aria-label="لينكدإن">in</a>
+            <a href="#" aria-label="انستجرام">📷</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="jobs.html">الوظائف</a></li>
+            <li><a href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>التخصصات</h4>
+          <ul>
+            <li><a href="jobs.html">طب عام</a></li>
+            <li><a href="jobs.html">تمريض</a></li>
+            <li><a href="jobs.html">صيدلة</a></li>
+            <li><a href="jobs.html">طب أسنان</a></li>
+            <li><a href="jobs.html">علاج طبيعي</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 info@rawadhealth.sa</li>
+            <li>📞 920000123</li>
+            <li>📍 الرياض، المملكة العربية السعودية</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="العودة للأعلى">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

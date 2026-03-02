@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل الوظيفة | Rawad Health</title>
+  <meta name="description" content="تفاصيل الوظيفة الصحية - المهام، المتطلبات، المزايا وكيفية التقديم.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚕</div>
+          Rawad Health
+        </a>
+        <div class="nav-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="jobs.html" class="active">الوظائف</a>
+          <a href="contact.html">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <h1 id="job-title">تفاصيل الوظيفة</h1>
+      <p id="job-company">اسم المنشأة</p>
+      <div class="breadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <span>›</span>
+        <a href="jobs.html">الوظائف</a>
+        <span>›</span>
+        <span>تفاصيل الوظيفة</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Job Details -->
+  <section class="job-details-section">
+    <div class="container">
+      <div class="job-details-layout">
+        <!-- Main Content -->
+        <div class="job-details-main">
+          <!-- Description -->
+          <div class="detail-card fade-in">
+            <h2>📋 وصف الوظيفة</h2>
+            <p id="job-description">جاري التحميل...</p>
+          </div>
+
+          <!-- Tasks -->
+          <div class="detail-card fade-in">
+            <h2>📌 المهام والمسؤوليات</h2>
+            <ul id="job-tasks-list">
+              <!-- Populated by JS -->
+            </ul>
+          </div>
+
+          <!-- Requirements -->
+          <div class="detail-card fade-in">
+            <h2>📝 المتطلبات والمؤهلات</h2>
+            <ul id="job-requirements-list">
+              <!-- Populated by JS -->
+            </ul>
+          </div>
+
+          <!-- Benefits -->
+          <div class="detail-card fade-in">
+            <h2>🎁 المزايا والحوافز</h2>
+            <ul id="job-benefits-list">
+              <!-- Populated by JS -->
+            </ul>
+          </div>
+
+          <!-- Apply Button -->
+          <div class="text-center fade-in">
+            <a href="apply.html" id="apply-btn" class="btn btn-secondary" style="padding: 16px 60px; font-size: 1.1rem;">قدّم الآن على هذه الوظيفة</a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="job-details-sidebar">
+          <!-- Job Info Card -->
+          <div class="sidebar-card fade-in">
+            <h3>معلومات الوظيفة</h3>
+            <div class="sidebar-info">
+              <div class="sidebar-info-item">
+                <span class="label">💰 الراتب</span>
+                <span class="value" id="job-salary-value">-</span>
+              </div>
+              <div class="sidebar-info-item">
+                <span class="label">📍 المدينة</span>
+                <span class="value" id="job-city-value">-</span>
+              </div>
+              <div class="sidebar-info-item">
+                <span class="label">⏰ نوع الدوام</span>
+                <span class="value" id="job-type-value">-</span>
+              </div>
+              <div class="sidebar-info-item">
+                <span class="label">🩺 التخصص</span>
+                <span class="value" id="job-specialty-value">-</span>
+              </div>
+              <div class="sidebar-info-item">
+                <span class="label">🏥 نوع المنشأة</span>
+                <span class="value" id="job-facility-value">-</span>
+              </div>
+              <div class="sidebar-info-item">
+                <span class="label">📅 تاريخ النشر</span>
+                <span class="value" id="job-date-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Apply Card -->
+          <div class="sidebar-card sidebar-apply-card fade-in">
+            <h3>هل أنت مهتم؟</h3>
+            <p>لا تفوّت هذه الفرصة وقدّم طلبك الآن</p>
+            <a href="apply.html" id="apply-sidebar-btn" class="btn btn-white" style="width: 100%;">قدّم الآن</a>
+          </div>
+
+          <!-- Share Card -->
+          <div class="sidebar-card fade-in">
+            <h3>شارك الوظيفة</h3>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+              <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">𝕏 تويتر</a>
+              <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">in لينكدإن</a>
+              <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">📋 نسخ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">⚕</div>
+            Rawad Health
+          </a>
+          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="تويتر">𝕏</a>
+            <a href="#" aria-label="لينكدإن">in</a>
+            <a href="#" aria-label="انستجرام">📷</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="jobs.html">الوظائف</a></li>
+            <li><a href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>التخصصات</h4>
+          <ul>
+            <li><a href="jobs.html">طب عام</a></li>
+            <li><a href="jobs.html">تمريض</a></li>
+            <li><a href="jobs.html">صيدلة</a></li>
+            <li><a href="jobs.html">طب أسنان</a></li>
+            <li><a href="jobs.html">علاج طبيعي</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 info@rawadhealth.sa</li>
+            <li>📞 920000123</li>
+            <li>📍 الرياض، المملكة العربية السعودية</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="العودة للأعلى">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

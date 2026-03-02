@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الوظائف المتاحة | Rawad Health</title>
+  <meta name="description" content="تصفح أحدث الوظائف الصحية المتاحة في المملكة العربية السعودية - أطباء، تمريض، صيدلة، علاج طبيعي والمزيد.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚕</div>
+          Rawad Health
+        </a>
+        <div class="nav-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="jobs.html" class="active">الوظائف</a>
+          <a href="contact.html">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>الوظائف المتاحة</h1>
+      <p>اكتشف فرصاً وظيفية مميزة في القطاع الصحي بالمملكة</p>
+      <div class="breadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <span>›</span>
+        <span>الوظائف</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <div class="container">
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label>بحث</label>
+          <input type="text" id="search-input" placeholder="ابحث عن وظيفة...">
+        </div>
+        <div class="filter-group">
+          <label>التخصص</label>
+          <select id="filter-specialty">
+            <option value="">جميع التخصصات</option>
+            <option value="طب-عام">طب عام</option>
+            <option value="طب-اسنان">طب أسنان</option>
+            <option value="تمريض">تمريض</option>
+            <option value="صيدلة">صيدلة</option>
+            <option value="علاج-طبيعي">علاج طبيعي</option>
+            <option value="اشعة">أشعة</option>
+            <option value="مختبرات">مختبرات</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>المدينة</label>
+          <select id="filter-city">
+            <option value="">جميع المدن</option>
+            <option value="الرياض">الرياض</option>
+            <option value="جدة">جدة</option>
+            <option value="الدمام">الدمام</option>
+            <option value="المدينة">المدينة المنورة</option>
+            <option value="مكة">مكة المكرمة</option>
+            <option value="الطائف">الطائف</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>نوع المنشأة</label>
+          <select id="filter-facility">
+            <option value="">جميع المنشآت</option>
+            <option value="مستشفى">مستشفى</option>
+            <option value="مركز-طبي">مركز طبي</option>
+            <option value="عيادات">عيادات</option>
+            <option value="مركز-تأهيل">مركز تأهيل</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>نوع الدوام</label>
+          <select id="filter-type">
+            <option value="">جميع الأنواع</option>
+            <option value="دوام-كامل">دوام كامل</option>
+            <option value="دوام-جزئي">دوام جزئي</option>
+            <option value="عقد">عقد مؤقت</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <button id="filter-btn" class="btn btn-primary filter-btn">🔍 بحث</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jobs Results -->
+  <section class="jobs-results">
+    <div class="container">
+      <div class="jobs-results-header">
+        <h3>نتائج البحث: <span id="jobs-count">0</span> وظيفة</h3>
+      </div>
+      <div class="jobs-list" id="jobs-list">
+        <!-- Populated by JavaScript -->
+      </div>
+      <div class="pagination">
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <span>...</span>
+        <a href="#">10</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>لم تجد الوظيفة المناسبة؟</h2>
+        <p>تواصل معنا وسنساعدك في إيجاد الفرصة المثالية التي تناسب تخصصك</p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn btn-white">تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">⚕</div>
+            Rawad Health
+          </a>
+          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="تويتر">𝕏</a>
+            <a href="#" aria-label="لينكدإن">in</a>
+            <a href="#" aria-label="انستجرام">📷</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="jobs.html">الوظائف</a></li>
+            <li><a href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>التخصصات</h4>
+          <ul>
+            <li><a href="jobs.html">طب عام</a></li>
+            <li><a href="jobs.html">تمريض</a></li>
+            <li><a href="jobs.html">صيدلة</a></li>
+            <li><a href="jobs.html">طب أسنان</a></li>
+            <li><a href="jobs.html">علاج طبيعي</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 info@rawadhealth.sa</li>
+            <li>📞 920000123</li>
+            <li>📍 الرياض، المملكة العربية السعودية</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="العودة للأعلى">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

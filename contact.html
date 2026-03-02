@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تواصل معنا | Rawad Health</title>
+  <meta name="description" content="تواصل مع فريق Rawad Health - نسعد بخدمتكم والإجابة على استفساراتكم.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚕</div>
+          Rawad Health
+        </a>
+        <div class="nav-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="jobs.html">الوظائف</a>
+          <a href="contact.html" class="active">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>تواصل معنا</h1>
+      <p>نسعد بتواصلكم ونرحب باستفساراتكم ومقترحاتكم</p>
+      <div class="breadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <span>›</span>
+        <span>تواصل معنا</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="contact-form-card fade-in">
+          <h2>📩 أرسل لنا رسالة</h2>
+          <p>سنقوم بالرد عليك في أقرب وقت ممكن خلال ساعات العمل الرسمية.</p>
+
+          <!-- Alerts -->
+          <div class="alert alert-error" id="error-alert"></div>
+
+          <form id="contact-form">
+            <div class="form-group">
+              <label>الاسم الكامل <span class="required">*</span></label>
+              <input type="text" name="name" placeholder="أدخل اسمك" required>
+            </div>
+
+            <div class="form-group">
+              <label>البريد الإلكتروني <span class="required">*</span></label>
+              <input type="email" name="email" placeholder="example@email.com" required>
+            </div>
+
+            <div class="form-group">
+              <label>رقم الجوال</label>
+              <input type="tel" name="phone" placeholder="05XXXXXXXX">
+            </div>
+
+            <div class="form-group">
+              <label>الموضوع <span class="required">*</span></label>
+              <select name="subject" required>
+                <option value="">اختر الموضوع</option>
+                <option value="استفسار-عام">استفسار عام</option>
+                <option value="مشكلة-تقنية">مشكلة تقنية</option>
+                <option value="شراكة">طلب شراكة</option>
+                <option value="اقتراح">اقتراح أو ملاحظة</option>
+                <option value="شكوى">شكوى</option>
+                <option value="اخرى">أخرى</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>الرسالة <span class="required">*</span></label>
+              <textarea name="message" placeholder="اكتب رسالتك هنا..." rows="5" required></textarea>
+            </div>
+
+            <div class="form-submit" style="text-align: right;">
+              <button type="submit" class="btn btn-primary">📨 إرسال الرسالة</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info-side">
+          <div class="contact-info-card fade-in">
+            <div class="contact-info-icon">📧</div>
+            <div>
+              <h4>البريد الإلكتروني</h4>
+              <p>info@rawadhealth.sa</p>
+              <p>support@rawadhealth.sa</p>
+            </div>
+          </div>
+
+          <div class="contact-info-card fade-in">
+            <div class="contact-info-icon">📞</div>
+            <div>
+              <h4>الهاتف</h4>
+              <p>920000123</p>
+              <p>الأحد - الخميس: 8 ص - 5 م</p>
+            </div>
+          </div>
+
+          <div class="contact-info-card fade-in">
+            <div class="contact-info-icon">📍</div>
+            <div>
+              <h4>العنوان</h4>
+              <p>الرياض، المملكة العربية السعودية</p>
+              <p>طريق الملك فهد، برج المملكة، الطابق 15</p>
+            </div>
+          </div>
+
+          <div class="contact-info-card fade-in">
+            <div class="contact-info-icon">⏰</div>
+            <div>
+              <h4>ساعات العمل</h4>
+              <p>الأحد - الخميس: 8:00 ص - 5:00 م</p>
+              <p>الجمعة والسبت: مغلق</p>
+            </div>
+          </div>
+
+          <!-- Map Placeholder -->
+          <div class="contact-map-card fade-in">
+            <h4>📍 موقعنا على الخريطة</h4>
+            <p>الرياض - طريق الملك فهد</p>
+            <a href="https://maps.google.com" target="_blank" class="btn btn-white" style="padding: 10px 25px; font-size: 0.9rem;">فتح في خرائط جوجل</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge">أسئلة شائعة</span>
+        <h2>الأسئلة الأكثر شيوعاً</h2>
+        <p>إجابات على الأسئلة المتكررة حول منصتنا</p>
+      </div>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div class="detail-card fade-in" style="margin-bottom: 15px;">
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ كيف يمكنني التقديم على وظيفة؟</h2>
+          <p>يمكنك تصفح الوظائف المتاحة من صفحة الوظائف، ثم الضغط على "عرض التفاصيل" واختيار "قدّم الآن" لملء نموذج التقديم.</p>
+        </div>
+        <div class="detail-card fade-in" style="margin-bottom: 15px;">
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ هل التسجيل مجاني؟</h2>
+          <p>نعم، التسجيل والتقديم على الوظائف مجاني بالكامل للباحثين عن عمل.</p>
+        </div>
+        <div class="detail-card fade-in" style="margin-bottom: 15px;">
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ كم يستغرق الرد على طلبي؟</h2>
+          <p>عادةً ما يتم مراجعة الطلبات خلال 3-5 أيام عمل. سيتم التواصل معك عبر البريد الإلكتروني أو الهاتف.</p>
+        </div>
+        <div class="detail-card fade-in" style="margin-bottom: 15px;">
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ هل يجب أن أمتلك تصنيف مهني؟</h2>
+          <p>نعم، معظم الوظائف الصحية تتطلب تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal">
+      <div class="modal-icon">✅</div>
+      <h3>تم إرسال رسالتك بنجاح!</h3>
+      <p>شكراً لتواصلك معنا. سيقوم فريقنا بالرد عليك في أقرب وقت ممكن.</p>
+      <a href="index.html" class="btn btn-primary">العودة للرئيسية</a>
+      <br><br>
+      <button class="btn btn-outline modal-close-btn" onclick="closeModal('success-modal')">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">⚕</div>
+            Rawad Health
+          </a>
+          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="تويتر">𝕏</a>
+            <a href="#" aria-label="لينكدإن">in</a>
+            <a href="#" aria-label="انستجرام">📷</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="jobs.html">الوظائف</a></li>
+            <li><a href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>التخصصات</h4>
+          <ul>
+            <li><a href="jobs.html">طب عام</a></li>
+            <li><a href="jobs.html">تمريض</a></li>
+            <li><a href="jobs.html">صيدلة</a></li>
+            <li><a href="jobs.html">طب أسنان</a></li>
+            <li><a href="jobs.html">علاج طبيعي</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <ul>
+            <li>📧 info@rawadhealth.sa</li>
+            <li>📞 920000123</li>
+            <li>📍 الرياض، المملكة العربية السعودية</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="العودة للأعلى">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
