@@ -342,7 +342,7 @@ function renderFeaturedJobs() {
 }
 
 function animateCounters() {
-  const counters = document.querySelectorAll('.stat-number[data-count]');
+  const counters = document.querySelectorAll('.stat-number[data-count], .stat-card-number[data-count]');
   counters.forEach(counter => {
     const target = parseInt(counter.dataset.count);
     const suffix = counter.dataset.suffix || '';

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 178 50" width="178" height="50" role="img" aria-label="Rawad Health">
+  <defs>
+    <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53E3E"/>
+      <stop offset="100%" stop-color="#B91C1C"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Icon: red rounded square -->
+  <rect x="1" y="1" width="48" height="48" rx="13" fill="url(#rg)" filter="url(#shadow)"/>
+
+  <!-- White medical cross -->
+  <rect x="21.5" y="10" width="7" height="30" rx="3.5" fill="white"/>
+  <rect x="10"   y="21.5" width="30" height="7" rx="3.5" fill="white"/>
+
+  <!-- Small white dots (heartbeat accent) -->
+  <circle cx="11" cy="11" r="2.5" fill="white" opacity="0.45"/>
+  <circle cx="39" cy="39" r="2.5" fill="white" opacity="0.45"/>
+
+  <!-- "Rawad" white -->
+  <text
+    x="61" y="24"
+    font-family="Tajawal,'Segoe UI',Arial,sans-serif"
+    font-size="19"
+    font-weight="900"
+    fill="#FFFFFF"
+  >Rawad</text>
+
+  <!-- "HEALTH" light gray -->
+  <text
+    x="62" y="42"
+    font-family="Tajawal,'Segoe UI',Arial,sans-serif"
+    font-size="12"
+    font-weight="700"
+    fill="#9CA3AF"
+    letter-spacing="3"
+  >HEALTH</text>
+</svg>
