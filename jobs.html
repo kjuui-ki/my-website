@@ -19,12 +19,18 @@
           <img src="logo.svg" alt="Rawad Health" height="44">
         </a>
         <div class="nav-links">
-          <a href="index.html">الرئيسية</a>
-          <a href="jobs.html" class="active">الوظائف</a>
-          <a href="contact.html">تواصل معنا</a>
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" class="active" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
         </div>
         <div class="nav-cta">
-          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="browseJobs">تصفح الوظائف</a>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
         </div>
         <button class="hamburger" aria-label="القائمة">
           <span></span>
@@ -38,12 +44,12 @@
   <!-- Page Hero -->
   <section class="page-hero">
     <div class="container">
-      <h1>الوظائف المتاحة</h1>
-      <p>اكتشف فرصاً وظيفية مميزة في القطاع الصحي بالمملكة</p>
+      <h1 data-i18n="jobsPageTitle">الوظائف المتاحة</h1>
+      <p data-i18n="jobsPageDesc">اكتشف فرصاً وظيفية مميزة في القطاع الصحي بالمملكة</p>
       <div class="breadcrumb">
-        <a href="index.html">الرئيسية</a>
+        <a href="index.html" data-i18n="breadcrumbHome">الرئيسية</a>
         <span>›</span>
-        <span>الوظائف</span>
+        <span data-i18n="breadcrumbJobs">الوظائف</span>
       </div>
     </div>
   </section>
@@ -53,55 +59,55 @@
     <div class="container">
       <div class="filters-grid">
         <div class="filter-group">
-          <label>بحث</label>
-          <input type="text" id="search-input" placeholder="ابحث عن وظيفة...">
+          <label data-i18n="filterSearch">بحث</label>
+          <input type="text" id="search-input" placeholder="ابحث عن وظيفة..." data-i18n-placeholder="filterSearchPlaceholder">
         </div>
         <div class="filter-group">
-          <label>التخصص</label>
+          <label data-i18n="filterSpecialty">التخصص</label>
           <select id="filter-specialty">
-            <option value="">جميع التخصصات</option>
-            <option value="طب-عام">طب عام</option>
-            <option value="طب-اسنان">طب أسنان</option>
-            <option value="تمريض">تمريض</option>
-            <option value="صيدلة">صيدلة</option>
-            <option value="علاج-طبيعي">علاج طبيعي</option>
-            <option value="اشعة">أشعة</option>
-            <option value="مختبرات">مختبرات</option>
+            <option value="" data-i18n="filterAllSpecialties">جميع التخصصات</option>
+            <option value="طب-عام" data-i18n="specGeneral">طب عام</option>
+            <option value="طب-اسنان" data-i18n="specDentistry">طب أسنان</option>
+            <option value="تمريض" data-i18n="specNursing">تمريض</option>
+            <option value="صيدلة" data-i18n="specPharmacy">صيدلة</option>
+            <option value="علاج-طبيعي" data-i18n="specPhysio">علاج طبيعي</option>
+            <option value="اشعة" data-i18n="specRadiology">أشعة</option>
+            <option value="مختبرات" data-i18n="specLab">مختبرات</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>المدينة</label>
+          <label data-i18n="filterCity">المدينة</label>
           <select id="filter-city">
-            <option value="">جميع المدن</option>
-            <option value="الرياض">الرياض</option>
-            <option value="جدة">جدة</option>
-            <option value="الدمام">الدمام</option>
-            <option value="المدينة">المدينة المنورة</option>
-            <option value="مكة">مكة المكرمة</option>
-            <option value="الطائف">الطائف</option>
+            <option value="" data-i18n="filterAllCities">جميع المدن</option>
+            <option value="الرياض" data-i18n="cityRiyadh">الرياض</option>
+            <option value="جدة" data-i18n="cityJeddah">جدة</option>
+            <option value="الدمام" data-i18n="cityDammam">الدمام</option>
+            <option value="المدينة" data-i18n="cityMadinah">المدينة المنورة</option>
+            <option value="مكة" data-i18n="cityMakkah">مكة المكرمة</option>
+            <option value="الطائف" data-i18n="cityTaif">الطائف</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>نوع المنشأة</label>
+          <label data-i18n="filterFacility">نوع المنشأة</label>
           <select id="filter-facility">
-            <option value="">جميع المنشآت</option>
-            <option value="مستشفى">مستشفى</option>
-            <option value="مركز-طبي">مركز طبي</option>
-            <option value="عيادات">عيادات</option>
-            <option value="مركز-تأهيل">مركز تأهيل</option>
+            <option value="" data-i18n="filterAllFacilities">جميع المنشآت</option>
+            <option value="مستشفى" data-i18n="facilityHospital">مستشفى</option>
+            <option value="مركز-طبي" data-i18n="facilityCenter">مركز طبي</option>
+            <option value="عيادات" data-i18n="facilityClinics">عيادات</option>
+            <option value="مركز-تأهيل" data-i18n="facilityRehab">مركز تأهيل</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>نوع الدوام</label>
+          <label data-i18n="filterWorkType">نوع الدوام</label>
           <select id="filter-type">
-            <option value="">جميع الأنواع</option>
-            <option value="دوام-كامل">دوام كامل</option>
-            <option value="دوام-جزئي">دوام جزئي</option>
-            <option value="عقد">عقد مؤقت</option>
+            <option value="" data-i18n="filterAllTypes">جميع الأنواع</option>
+            <option value="دوام-كامل" data-i18n="typeFullTime">دوام كامل</option>
+            <option value="دوام-جزئي" data-i18n="typePartTime">دوام جزئي</option>
+            <option value="عقد" data-i18n="typeContract">عقد مؤقت</option>
           </select>
         </div>
         <div class="filter-group">
-          <button id="filter-btn" class="btn btn-primary filter-btn">🔍 بحث</button>
+          <button id="filter-btn" class="btn btn-primary filter-btn" data-i18n="filterBtn">🔍 بحث</button>
         </div>
       </div>
     </div>
@@ -111,7 +117,7 @@
   <section class="jobs-results">
     <div class="container">
       <div class="jobs-results-header">
-        <h3>نتائج البحث: <span id="jobs-count">0</span> وظيفة</h3>
+        <h3><span data-i18n="searchResults">نتائج البحث:</span> <span id="jobs-count">0</span> <span data-i18n="jobUnit">وظيفة</span></h3>
       </div>
       <div class="jobs-list" id="jobs-list">
         <!-- Populated by JavaScript -->
@@ -130,10 +136,10 @@
   <section class="cta-section">
     <div class="container">
       <div class="cta-content">
-        <h2>لم تجد الوظيفة المناسبة؟</h2>
-        <p>تواصل معنا وسنساعدك في إيجاد الفرصة المثالية التي تناسب تخصصك</p>
+        <h2 data-i18n="noJobCta">لم تجد الوظيفة المناسبة؟</h2>
+        <p data-i18n="noJobCtaDesc">تواصل معنا وسنساعدك في إيجاد الفرصة المثالية التي تناسب تخصصك</p>
         <div class="cta-buttons">
-          <a href="contact.html" class="btn btn-white">تواصل معنا</a>
+          <a href="contact.html" class="btn btn-white" data-i18n="ctaContact">تواصل معنا</a>
         </div>
       </div>
     </div>
@@ -147,7 +153,7 @@
           <a href="index.html" class="logo">
             <img src="logo-white.svg" alt="Rawad Health" height="44">
           </a>
-          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <p data-i18n="footerAbout">منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
           <div class="footer-social">
             <a href="#" aria-label="تويتر">𝕏</a>
             <a href="#" aria-label="لينكدإن">in</a>
@@ -155,34 +161,34 @@
           </div>
         </div>
         <div class="footer-col">
-          <h4>روابط سريعة</h4>
+          <h4 data-i18n="quickLinks">روابط سريعة</h4>
           <ul>
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="jobs.html">الوظائف</a></li>
-            <li><a href="contact.html">تواصل معنا</a></li>
+            <li><a href="index.html" data-i18n="navHome">الرئيسية</a></li>
+            <li><a href="jobs.html" data-i18n="navJobs">الوظائف</a></li>
+            <li><a href="contact.html" data-i18n="navContact">تواصل معنا</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>التخصصات</h4>
+          <h4 data-i18n="specialties">التخصصات</h4>
           <ul>
-            <li><a href="jobs.html">طب عام</a></li>
-            <li><a href="jobs.html">تمريض</a></li>
-            <li><a href="jobs.html">صيدلة</a></li>
-            <li><a href="jobs.html">طب أسنان</a></li>
-            <li><a href="jobs.html">علاج طبيعي</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecGeneral">طب عام</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecNursing">تمريض</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPharmacy">صيدلة</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecDentistry">طب أسنان</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPhysio">علاج طبيعي</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>تواصل معنا</h4>
+          <h4 data-i18n="contactUs">تواصل معنا</h4>
           <ul>
             <li>📧 info@rawadhealth.sa</li>
             <li>📞 920000123</li>
-            <li>📍 الرياض، المملكة العربية السعودية</li>
+            <li>📍 <span data-i18n="footerAddress">الرياض، المملكة العربية السعودية</span></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+        <p data-i18n="copyright">© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
       </div>
     </div>
   </footer>

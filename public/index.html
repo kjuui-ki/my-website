@@ -16,16 +16,21 @@
     <div class="container">
       <nav class="navbar">
         <a href="index.html" class="logo">
-          <div class="logo-icon">⚕</div>
-          Rawad Health
+          <img src="logo.svg" alt="Rawad Health" height="44">
         </a>
         <div class="nav-links">
-          <a href="index.html" class="active">الرئيسية</a>
-          <a href="jobs.html">الوظائف</a>
-          <a href="contact.html">تواصل معنا</a>
+          <a href="index.html" class="active" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
         </div>
         <div class="nav-cta">
-          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="browseJobs">تصفح الوظائف</a>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
         </div>
         <button class="hamburger" aria-label="القائمة">
           <span></span>
@@ -41,25 +46,25 @@
     <div class="container">
       <div class="hero-content">
         <div class="hero-text">
-          <div class="hero-badge">🏥 المنصة الصحية الأولى في المملكة</div>
-          <h1>وظيفتك الصحية <span>تبدأ من هنا</span></h1>
-          <p>منصة Rawad Health تربط الكفاءات الصحية بأفضل المنشآت الطبية في المملكة العربية السعودية. اكتشف فرصاً مميزة تناسب تخصصك وطموحك المهني.</p>
+          <div class="hero-badge" data-i18n="heroBadge">🏥 المنصة الصحية الأولى في المملكة</div>
+          <h1 data-i18n="heroTitle">وظيفتك الصحية <span>تبدأ من هنا</span></h1>
+          <p data-i18n="heroDesc">منصة Rawad Health تربط الكفاءات الصحية بأفضل المنشآت الطبية في المملكة العربية السعودية. اكتشف فرصاً مميزة تناسب تخصصك وطموحك المهني.</p>
           <div class="hero-buttons">
-            <a href="jobs.html" class="btn btn-white">تصفح الوظائف المتاحة</a>
-            <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;">تواصل معنا</a>
+            <a href="jobs.html" class="btn btn-white" data-i18n="heroBtnJobs">تصفح الوظائف المتاحة</a>
+            <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;" data-i18n="heroBtnContact">تواصل معنا</a>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
               <div class="stat-number" data-count="500" data-suffix="+">0</div>
-              <div class="stat-label">وظيفة متاحة</div>
+              <div class="stat-label" data-i18n="statJobs">وظيفة متاحة</div>
             </div>
             <div class="stat-item">
               <div class="stat-number" data-count="150" data-suffix="+">0</div>
-              <div class="stat-label">منشأة صحية</div>
+              <div class="stat-label" data-i18n="statFacilities">منشأة صحية</div>
             </div>
             <div class="stat-item">
               <div class="stat-number" data-count="3000" data-suffix="+">0</div>
-              <div class="stat-label">تم توظيفهم</div>
+              <div class="stat-label" data-i18n="statHired">تم توظيفهم</div>
             </div>
           </div>
         </div>
@@ -78,31 +83,129 @@
   <section class="section section-light">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">مميزاتنا</span>
-        <h2>لماذا تختار Rawad Health؟</h2>
-        <p>نقدم لك تجربة توظيف صحي متكاملة ومميزة</p>
+        <span class="badge" data-i18n="featuresBadge">مميزاتنا</span>
+        <h2 data-i18n="featuresTitle">لماذا تختار Rawad Health؟</h2>
+        <p data-i18n="featuresDesc">نقدم لك تجربة توظيف صحي متكاملة ومميزة</p>
       </div>
       <div class="features-grid">
         <div class="feature-card fade-in">
           <div class="feature-icon blue">🎯</div>
-          <h3>وظائف متخصصة</h3>
-          <p>نوفر وظائف في جميع التخصصات الصحية من الطب والتمريض إلى الصيدلة والعلاج الطبيعي والمختبرات.</p>
+          <h3 data-i18n="feat1Title">وظائف متخصصة</h3>
+          <p data-i18n="feat1Desc">نوفر وظائف في جميع التخصصات الصحية من الطب والتمريض إلى الصيدلة والعلاج الطبيعي والمختبرات.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon green">🏥</div>
-          <h3>منشآت موثوقة</h3>
-          <p>نتعاون مع أفضل المستشفيات والمراكز الطبية والعيادات المرخصة في جميع أنحاء المملكة.</p>
+          <h3 data-i18n="feat2Title">منشآت موثوقة</h3>
+          <p data-i18n="feat2Desc">نتعاون مع أفضل المستشفيات والمراكز الطبية والعيادات المرخصة في جميع أنحاء المملكة.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon purple">⚡</div>
-          <h3>تقديم سريع</h3>
-          <p>قدّم على الوظائف بسهولة وسرعة من خلال نموذج تقديم بسيط ومباشر بدون تعقيد.</p>
+          <h3 data-i18n="feat3Title">تقديم سريع</h3>
+          <p data-i18n="feat3Desc">قدّم على الوظائف بسهولة وسرعة من خلال نموذج تقديم بسيط ومباشر بدون تعقيد.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon orange">🔔</div>
-          <h3>تنبيهات فورية</h3>
-          <p>احصل على إشعارات فورية بأحدث الوظائف التي تناسب تخصصك ومدينتك.</p>
+          <h3 data-i18n="feat4Title">تنبيهات فورية</h3>
+          <p data-i18n="feat4Desc">احصل على إشعارات فورية بأحدث الوظائف التي تناسب تخصصك ومدينتك.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="section-header fade-in" style="margin-bottom: 50px;">
+        <span class="badge badge-light">بالأرقام</span>
+        <h2>إنجازاتنا تتحدث عنها</h2>
+        <p>أرقام حقيقية تعكس حجم ثقتنا وتعاملنا في القطاع الصحي</p>
+      </div>
+      <div class="stats-grid">
+
+        <div class="stat-card fade-in">
+          <div class="stat-card-icon" style="background: linear-gradient(135deg,#E53E3E,#9B1C1C);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              <line x1="12" y1="12" x2="12" y2="16"/>
+              <line x1="10" y1="14" x2="14" y2="14"/>
+            </svg>
+          </div>
+          <div class="stat-card-number" data-count="500" data-suffix="+">0</div>
+          <div class="stat-card-label">وظيفة منشورة</div>
+          <div class="stat-card-desc">فرص وظيفية حقيقية في جميع التخصصات الصحية</div>
+        </div>
+
+        <div class="stat-card fade-in">
+          <div class="stat-card-icon" style="background: linear-gradient(135deg,#0077B6,#023E8A);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="stat-card-number" data-count="3000" data-suffix="+">0</div>
+          <div class="stat-card-label">متدرب وموظف</div>
+          <div class="stat-card-desc">كوادر صحية وجدوا فرصهم عبر منصتنا</div>
+        </div>
+
+        <div class="stat-card fade-in">
+          <div class="stat-card-icon" style="background: linear-gradient(135deg,#2D9F4E,#1A5E2E);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <rect x="9" y="12" width="2" height="4" rx="1" fill="white" stroke="none"/>
+              <rect x="13" y="12" width="2" height="4" rx="1" fill="white" stroke="none"/>
+              <rect x="9" y="9" width="6" height="2" rx="1" fill="white" stroke="none"/>
+            </svg>
+          </div>
+          <div class="stat-card-number" data-count="150" data-suffix="+">0</div>
+          <div class="stat-card-label">مؤسسة صحية</div>
+          <div class="stat-card-desc">مستشفيات ومراكز طبية وعيادات متعاقدة</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section services-section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge" data-i18n="servicesBadge">خدماتنا</span>
+        <h2 data-i18n="servicesTitle">ماذا نقدم لك؟</h2>
+        <p data-i18n="servicesDesc">نوفر لك مجموعة متكاملة من الخدمات لدعم مسيرتك المهنية في القطاع الصحي</p>
+      </div>
+      <div class="services-grid">
+
+        <!-- Card 1 -->
+        <div class="service-card fade-in">
+          <div class="service-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&q=80" alt="التوظيف الطبي" class="service-img">
+            <div class="service-img-overlay"></div>
+            <span class="service-badge">⚕ توظيف</span>
+          </div>
+          <div class="service-body">
+            <h3 data-i18n="svc1Title">التوظيف الطبي</h3>
+            <p data-i18n="svc1Desc">نربطك بأفضل الفرص الوظيفية في المستشفيات والمراكز الطبية المرموقة في جميع أنحاء المملكة، في أكثر من 20 تخصصاً صحياً.</p>
+            <a href="jobs.html" class="btn btn-primary" data-i18n="browseJobs">تصفح الوظائف</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card fade-in">
+          <div class="service-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="التدريب والتطوير" class="service-img">
+            <div class="service-img-overlay"></div>
+            <span class="service-badge">🚀 تطوير</span>
+          </div>
+          <div class="service-body">
+            <h3 data-i18n="svc2Title">التدريب والتطوير</h3>
+            <p data-i18n="svc2Desc">نوفر برامج تدريبية متخصصة للكوادر الصحية لتعزيز مهاراتهم، ومواكبة أحدث المستجدات الطبية وتطوير أدائهم المهني.</p>
+            <a href="contact.html" class="btn btn-primary" data-i18n="learnMore">اعرف أكثر</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -112,14 +215,14 @@
     <div class="container">
       <div class="section-header fade-in">
         <span class="badge">فرص مميزة</span>
-        <h2>أحدث الوظائف المتاحة</h2>
-        <p>اكتشف أحدث الفرص الوظيفية في القطاع الصحي</p>
+        <h2 data-i18n="latestJobsTitle">أحدث الوظائف المتاحة</h2>
+        <p data-i18n="latestJobsDesc">اكتشف أحدث الفرص الوظيفية في القطاع الصحي</p>
       </div>
       <div class="jobs-grid" id="featured-jobs-grid">
         <!-- Populated by JavaScript -->
       </div>
       <div class="text-center mt-4 fade-in">
-        <a href="jobs.html" class="btn btn-outline">عرض جميع الوظائف →</a>
+        <a href="jobs.html" class="btn btn-outline" data-i18n="viewAllJobs">عرض جميع الوظائف →</a>
       </div>
     </div>
   </section>
@@ -191,11 +294,11 @@
   <section class="cta-section">
     <div class="container">
       <div class="cta-content fade-in">
-        <h2>جاهز للخطوة القادمة في مسيرتك المهنية؟</h2>
-        <p>انضم إلى آلاف المهنيين الصحيين الذين وجدوا وظائفهم المثالية عبر Rawad Health</p>
+        <h2 data-i18n="ctaTitle">جاهز للخطوة القادمة في مسيرتك المهنية؟</h2>
+        <p data-i18n="ctaDesc">انضم إلى آلاف المهنيين الصحيين الذين وجدوا وظائفهم المثالية عبر Rawad Health</p>
         <div class="cta-buttons">
-          <a href="jobs.html" class="btn btn-white">تصفح الوظائف</a>
-          <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;">تواصل معنا</a>
+          <a href="jobs.html" class="btn btn-white" data-i18n="browseJobs">تصفح الوظائف</a>
+          <a href="contact.html" class="btn btn-outline" style="border-color: #fff; color: #fff;" data-i18n="navContact">تواصل معنا</a>
         </div>
       </div>
     </div>
@@ -207,10 +310,9 @@
       <div class="footer-grid">
         <div class="footer-about">
           <a href="index.html" class="logo">
-            <div class="logo-icon">⚕</div>
-            Rawad Health
+            <img src="logo-white.svg" alt="Rawad Health" height="44">
           </a>
-          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <p data-i18n="footerAbout">منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
           <div class="footer-social">
             <a href="#" aria-label="تويتر">𝕏</a>
             <a href="#" aria-label="لينكدإن">in</a>
@@ -218,34 +320,34 @@
           </div>
         </div>
         <div class="footer-col">
-          <h4>روابط سريعة</h4>
+          <h4 data-i18n="quickLinks">روابط سريعة</h4>
           <ul>
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="jobs.html">الوظائف</a></li>
-            <li><a href="contact.html">تواصل معنا</a></li>
+            <li><a href="index.html" data-i18n="navHome">الرئيسية</a></li>
+            <li><a href="jobs.html" data-i18n="navJobs">الوظائف</a></li>
+            <li><a href="contact.html" data-i18n="navContact">تواصل معنا</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>التخصصات</h4>
+          <h4 data-i18n="specialties">التخصصات</h4>
           <ul>
-            <li><a href="jobs.html">طب عام</a></li>
-            <li><a href="jobs.html">تمريض</a></li>
-            <li><a href="jobs.html">صيدلة</a></li>
-            <li><a href="jobs.html">طب أسنان</a></li>
-            <li><a href="jobs.html">علاج طبيعي</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecGeneral">طب عام</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecNursing">تمريض</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPharmacy">صيدلة</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecDentistry">طب أسنان</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPhysio">علاج طبيعي</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>تواصل معنا</h4>
+          <h4 data-i18n="contactUs">تواصل معنا</h4>
           <ul>
             <li>📧 info@rawadhealth.sa</li>
             <li>📞 920000123</li>
-            <li>📍 الرياض، المملكة العربية السعودية</li>
+            <li>📍 <span data-i18n="footerAddress">الرياض، المملكة العربية السعودية</span></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+        <p data-i18n="copyright">© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
       </div>
     </div>
   </footer>

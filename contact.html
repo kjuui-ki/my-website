@@ -16,15 +16,21 @@
     <div class="container">
       <nav class="navbar">
         <a href="index.html" class="logo">
-          <img src="logo.svg?v=3" alt="Rawad Health" height="44">
+          <img src="logo.svg" alt="Rawad Health" height="44">
         </a>
         <div class="nav-links">
-          <a href="index.html">الرئيسية</a>
-          <a href="jobs.html">الوظائف</a>
-          <a href="contact.html" class="active">تواصل معنا</a>
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" class="active" data-i18n="navContact">تواصل معنا</a>
         </div>
         <div class="nav-cta">
-          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">تصفح الوظائف</a>
+          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="browseJobs">تصفح الوظائف</a>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
         </div>
         <button class="hamburger" aria-label="القائمة">
           <span></span>
@@ -38,12 +44,12 @@
   <!-- Page Hero -->
   <section class="page-hero">
     <div class="container">
-      <h1>تواصل معنا</h1>
-      <p>نسعد بتواصلكم ونرحب باستفساراتكم ومقترحاتكم</p>
+      <h1 data-i18n="contactPageTitle">تواصل معنا</h1>
+      <p data-i18n="contactPageDesc">نسعد بتواصلكم ونرحب باستفساراتكم ومقترحاتكم</p>
       <div class="breadcrumb">
-        <a href="index.html">الرئيسية</a>
+        <a href="index.html" data-i18n="breadcrumbHome">الرئيسية</a>
         <span>›</span>
-        <span>تواصل معنا</span>
+        <span data-i18n="contactUs">تواصل معنا</span>
       </div>
     </div>
   </section>
@@ -54,48 +60,48 @@
       <div class="contact-grid">
         <!-- Contact Form -->
         <div class="contact-form-card fade-in">
-          <h2>📩 أرسل لنا رسالة</h2>
-          <p>سنقوم بالرد عليك في أقرب وقت ممكن خلال ساعات العمل الرسمية.</p>
+          <h2 data-i18n="contactFormTitle">📩 أرسل لنا رسالة</h2>
+          <p data-i18n="contactFormDesc">سنقوم بالرد عليك في أقرب وقت ممكن خلال ساعات العمل الرسمية.</p>
 
           <!-- Alerts -->
           <div class="alert alert-error" id="error-alert"></div>
 
           <form id="contact-form">
             <div class="form-group">
-              <label>الاسم الكامل <span class="required">*</span></label>
-              <input type="text" name="name" placeholder="أدخل اسمك" required>
+              <label data-i18n="labelFullName">الاسم الكامل <span class="required">*</span></label>
+              <input type="text" name="name" placeholder="أدخل اسمك" data-i18n-placeholder="placeholderName" required>
             </div>
 
             <div class="form-group">
-              <label>البريد الإلكتروني <span class="required">*</span></label>
+              <label data-i18n="labelEmail">البريد الإلكتروني <span class="required">*</span></label>
               <input type="email" name="email" placeholder="example@email.com" required>
             </div>
 
             <div class="form-group">
-              <label>رقم الجوال</label>
-              <input type="tel" name="phone" placeholder="05XXXXXXXX">
+              <label data-i18n="labelPhone">رقم الجوال</label>
+              <input type="tel" name="phone" placeholder="05XXXXXXXX" data-i18n-placeholder="placeholderPhone">
             </div>
 
             <div class="form-group">
-              <label>الموضوع <span class="required">*</span></label>
+              <label data-i18n="labelSubject">الموضوع <span class="required">*</span></label>
               <select name="subject" required>
-                <option value="">اختر الموضوع</option>
-                <option value="استفسار-عام">استفسار عام</option>
-                <option value="مشكلة-تقنية">مشكلة تقنية</option>
-                <option value="شراكة">طلب شراكة</option>
-                <option value="اقتراح">اقتراح أو ملاحظة</option>
-                <option value="شكوى">شكوى</option>
-                <option value="اخرى">أخرى</option>
+                <option value="" data-i18n="selectSubject">اختر الموضوع</option>
+                <option value="استفسار-عام" data-i18n="subjectInquiry">استفسار عام</option>
+                <option value="مشكلة-تقنية" data-i18n="subjectTechnical">مشكلة تقنية</option>
+                <option value="شراكة" data-i18n="subjectPartnership">طلب شراكة</option>
+                <option value="اقتراح" data-i18n="subjectSuggestion">اقتراح أو ملاحظة</option>
+                <option value="شكوى" data-i18n="subjectComplaint">شكوى</option>
+                <option value="اخرى" data-i18n="subjectOther">أخرى</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>الرسالة <span class="required">*</span></label>
-              <textarea name="message" placeholder="اكتب رسالتك هنا..." rows="5" required></textarea>
+              <label data-i18n="labelMessage">الرسالة <span class="required">*</span></label>
+              <textarea name="message" placeholder="اكتب رسالتك هنا..." data-i18n-placeholder="placeholderMessage" rows="5" required></textarea>
             </div>
 
             <div class="form-submit" style="text-align: right;">
-              <button type="submit" class="btn btn-primary">📨 إرسال الرسالة</button>
+              <button type="submit" class="btn btn-primary" data-i18n="sendMessage">📨 إرسال الرسالة</button>
             </div>
           </form>
         </div>
@@ -105,7 +111,7 @@
           <div class="contact-info-card fade-in">
             <div class="contact-info-icon">📧</div>
             <div>
-              <h4>البريد الإلكتروني</h4>
+              <h4 data-i18n="infoEmail">البريد الإلكتروني</h4>
               <p>info@rawadhealth.sa</p>
               <p>support@rawadhealth.sa</p>
             </div>
@@ -114,35 +120,35 @@
           <div class="contact-info-card fade-in">
             <div class="contact-info-icon">📞</div>
             <div>
-              <h4>الهاتف</h4>
+              <h4 data-i18n="infoPhone">الهاتف</h4>
               <p>920000123</p>
-              <p>الأحد - الخميس: 8 ص - 5 م</p>
+              <p data-i18n="infoPhoneHours">الأحد - الخميس: 8 ص - 5 م</p>
             </div>
           </div>
 
           <div class="contact-info-card fade-in">
             <div class="contact-info-icon">📍</div>
             <div>
-              <h4>العنوان</h4>
-              <p>الرياض، المملكة العربية السعودية</p>
-              <p>طريق الملك فهد، برج المملكة، الطابق 15</p>
+              <h4 data-i18n="infoAddress">العنوان</h4>
+              <p data-i18n="infoAddressValue">الرياض، المملكة العربية السعودية</p>
+              <p data-i18n="infoAddressDetail">طريق الملك فهد، برج المملكة، الطابق 15</p>
             </div>
           </div>
 
           <div class="contact-info-card fade-in">
             <div class="contact-info-icon">⏰</div>
             <div>
-              <h4>ساعات العمل</h4>
-              <p>الأحد - الخميس: 8:00 ص - 5:00 م</p>
-              <p>الجمعة والسبت: مغلق</p>
+              <h4 data-i18n="infoHours">ساعات العمل</h4>
+              <p data-i18n="infoHoursValue">الأحد - الخميس: 8:00 ص - 5:00 م</p>
+              <p data-i18n="infoHoursClosed">الجمعة والسبت: مغلق</p>
             </div>
           </div>
 
           <!-- Map Placeholder -->
           <div class="contact-map-card fade-in">
-            <h4>📍 موقعنا على الخريطة</h4>
-            <p>الرياض - طريق الملك فهد</p>
-            <a href="https://maps.google.com" target="_blank" class="btn btn-white" style="padding: 10px 25px; font-size: 0.9rem;">فتح في خرائط جوجل</a>
+            <h4 data-i18n="mapTitle">📍 موقعنا على الخريطة</h4>
+            <p data-i18n="mapDesc">الرياض - طريق الملك فهد</p>
+            <a href="https://maps.google.com" target="_blank" class="btn btn-white" style="padding: 10px 25px; font-size: 0.9rem;" data-i18n="mapBtn">فتح في خرائط جوجل</a>
           </div>
         </div>
       </div>
@@ -153,26 +159,26 @@
   <section class="section">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">أسئلة شائعة</span>
-        <h2>الأسئلة الأكثر شيوعاً</h2>
-        <p>إجابات على الأسئلة المتكررة حول منصتنا</p>
+        <span class="badge" data-i18n="faqBadge">أسئلة شائعة</span>
+        <h2 data-i18n="faqTitle">الأسئلة الأكثر شيوعاً</h2>
+        <p data-i18n="faqDesc">إجابات على الأسئلة المتكررة حول منصتنا</p>
       </div>
       <div style="max-width: 800px; margin: 0 auto;">
         <div class="detail-card fade-in" style="margin-bottom: 15px;">
-          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ كيف يمكنني التقديم على وظيفة؟</h2>
-          <p>يمكنك تصفح الوظائف المتاحة من صفحة الوظائف، ثم الضغط على "عرض التفاصيل" واختيار "قدّم الآن" لملء نموذج التقديم.</p>
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;" data-i18n="faq1Q">❓ كيف يمكنني التقديم على وظيفة؟</h2>
+          <p data-i18n="faq1A">يمكنك تصفح الوظائف المتاحة من صفحة الوظائف، ثم الضغط على "عرض التفاصيل" واختيار "قدّم الآن" لملء نموذج التقديم.</p>
         </div>
         <div class="detail-card fade-in" style="margin-bottom: 15px;">
-          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ هل التسجيل مجاني؟</h2>
-          <p>نعم، التسجيل والتقديم على الوظائف مجاني بالكامل للباحثين عن عمل.</p>
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;" data-i18n="faq2Q">❓ هل التسجيل مجاني؟</h2>
+          <p data-i18n="faq2A">نعم، التسجيل والتقديم على الوظائف مجاني بالكامل للباحثين عن عمل.</p>
         </div>
         <div class="detail-card fade-in" style="margin-bottom: 15px;">
-          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ كم يستغرق الرد على طلبي؟</h2>
-          <p>عادةً ما يتم مراجعة الطلبات خلال 3-5 أيام عمل. سيتم التواصل معك عبر البريد الإلكتروني أو الهاتف.</p>
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;" data-i18n="faq3Q">❓ كم يستغرق الرد على طلبي؟</h2>
+          <p data-i18n="faq3A">عادةً ما يتم مراجعة الطلبات خلال 3-5 أيام عمل. سيتم التواصل معك عبر البريد الإلكتروني أو الهاتف.</p>
         </div>
         <div class="detail-card fade-in" style="margin-bottom: 15px;">
-          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">❓ هل يجب أن أمتلك تصنيف مهني؟</h2>
-          <p>نعم، معظم الوظائف الصحية تتطلب تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية.</p>
+          <h2 style="font-size: 1.1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;" data-i18n="faq4Q">❓ هل يجب أن أمتلك تصنيف مهني؟</h2>
+          <p data-i18n="faq4A">نعم، معظم الوظائف الصحية تتطلب تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية.</p>
         </div>
       </div>
     </div>
@@ -182,11 +188,11 @@
   <div class="modal-overlay" id="success-modal">
     <div class="modal">
       <div class="modal-icon">✅</div>
-      <h3>تم إرسال رسالتك بنجاح!</h3>
-      <p>شكراً لتواصلك معنا. سيقوم فريقنا بالرد عليك في أقرب وقت ممكن.</p>
-      <a href="index.html" class="btn btn-primary">العودة للرئيسية</a>
+      <h3 data-i18n="successMsgSent">تم إرسال رسالتك بنجاح!</h3>
+      <p data-i18n="successMsgDesc">شكراً لتواصلك معنا. سيقوم فريقنا بالرد عليك في أقرب وقت ممكن.</p>
+      <a href="index.html" class="btn btn-primary" data-i18n="backToHome">العودة للرئيسية</a>
       <br><br>
-      <button class="btn btn-outline modal-close-btn" onclick="closeModal('success-modal')">إغلاق</button>
+      <button class="btn btn-outline modal-close-btn" onclick="closeModal('success-modal')" data-i18n="closeBtn">إغلاق</button>
     </div>
   </div>
 
@@ -198,7 +204,7 @@
           <a href="index.html" class="logo">
             <img src="logo-white.svg" alt="Rawad Health" height="44">
           </a>
-          <p>منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
+          <p data-i18n="footerAbout">منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.</p>
           <div class="footer-social">
             <a href="#" aria-label="تويتر">𝕏</a>
             <a href="#" aria-label="لينكدإن">in</a>
@@ -206,34 +212,34 @@
           </div>
         </div>
         <div class="footer-col">
-          <h4>روابط سريعة</h4>
+          <h4 data-i18n="quickLinks">روابط سريعة</h4>
           <ul>
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="jobs.html">الوظائف</a></li>
-            <li><a href="contact.html">تواصل معنا</a></li>
+            <li><a href="index.html" data-i18n="navHome">الرئيسية</a></li>
+            <li><a href="jobs.html" data-i18n="navJobs">الوظائف</a></li>
+            <li><a href="contact.html" data-i18n="navContact">تواصل معنا</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>التخصصات</h4>
+          <h4 data-i18n="specialties">التخصصات</h4>
           <ul>
-            <li><a href="jobs.html">طب عام</a></li>
-            <li><a href="jobs.html">تمريض</a></li>
-            <li><a href="jobs.html">صيدلة</a></li>
-            <li><a href="jobs.html">طب أسنان</a></li>
-            <li><a href="jobs.html">علاج طبيعي</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecGeneral">طب عام</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecNursing">تمريض</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPharmacy">صيدلة</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecDentistry">طب أسنان</a></li>
+            <li><a href="jobs.html" data-i18n="footSpecPhysio">علاج طبيعي</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>تواصل معنا</h4>
+          <h4 data-i18n="contactUs">تواصل معنا</h4>
           <ul>
             <li>📧 info@rawadhealth.sa</li>
             <li>📞 920000123</li>
-            <li>📍 الرياض، المملكة العربية السعودية</li>
+            <li>📍 <span data-i18n="footerAddress">الرياض، المملكة العربية السعودية</span></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
+        <p data-i18n="copyright">© 2026 Rawad Health. جميع الحقوق محفوظة.</p>
       </div>
     </div>
   </footer>

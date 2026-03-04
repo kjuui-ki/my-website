@@ -206,6 +206,57 @@ img {
   gap: 12px;
 }
 
+/* === Language Switcher === */
+.lang-switcher {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: #f0f5fa;
+  border: 1.5px solid #d0e0ef;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Segoe UI', 'Tajawal', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0A3D8F;
+  transition: all 0.25s;
+}
+
+.lang-btn:hover {
+  background: #e0edf8;
+  border-color: #0077B6;
+}
+
+.lang-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.lang-label {
+  letter-spacing: 0.5px;
+}
+
+/* English mode: switch direction & font */
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: left;
+  font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html[dir="ltr"] .navbar {
+  flex-direction: row;
+}
+
+html[dir="ltr"] .nav-links a::after {
+  right: auto;
+  left: 0;
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
