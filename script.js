@@ -425,7 +425,33 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initBackToTop();
   initCurrentPage();
+  initAuthNav();
 });
+
+// ===== Auth Nav =====
+function initAuthNav() {
+  const currentUser = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
+  const authButtons = document.getElementById('authButtons');
+  const userMenu    = document.getElementById('userMenu');
+  const userGreeting = document.getElementById('userGreeting');
+
+  if (currentUser) {
+    if (authButtons) authButtons.style.display = 'none';
+    if (userMenu)    userMenu.style.display     = 'flex';
+    if (userGreeting) {
+      const displayName = currentUser.orgName || currentUser.name || 'المستخدم';
+      userGreeting.textContent = 'مرحباً، ' + displayName;
+    }
+  } else {
+    if (authButtons) authButtons.style.display = 'flex';
+    if (userMenu)    userMenu.style.display     = 'none';
+  }
+}
+
+function authLogout() {
+  localStorage.removeItem('rawad_current_user');
+  window.location.href = 'index.html';
+}
 
 // ===== Navbar =====
 function initNavbar() {

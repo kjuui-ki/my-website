@@ -24,7 +24,14 @@
           <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
         </div>
         <div class="nav-cta">
-          <a href="jobs.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="browseJobs">تصفح الوظائف</a>
+          <div class="auth-btns" id="authButtons">
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display:none;">
+            <span class="user-greeting" id="userGreeting"></span>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+          </div>
           <div class="lang-switcher">
             <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
               <span class="lang-icon">🌐</span>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب | Rawad Health</title>
+  <meta name="description" content="أنشئ حسابك في منصة Rawad Health للتوظيف الصحي.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="logo.svg" alt="Rawad Health" height="44">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <div class="auth-btns" id="authButtons">
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display:none; align-items:center; gap:10px;">
+            <span class="user-greeting" id="userGreeting"></span>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Register Form -->
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="logo.svg" alt="Rawad Health">
+      </div>
+      <h1 class="auth-title">إنشاء حساب</h1>
+      <p class="auth-subtitle">انضم إلى منصة Rawad Health</p>
+
+      <!-- Account type selection -->
+      <div class="account-type-group">
+        <div class="type-option selected" id="typeJobSeeker" onclick="selectType('jobseeker')">
+          <span class="type-icon">👨‍⚕️</span>
+          <div class="type-label">باحث عن عمل</div>
+        </div>
+        <div class="type-option" id="typeAdmin" onclick="selectType('admin')">
+          <span class="type-icon">🏥</span>
+          <div class="type-label">مسؤول / مؤسسة صحية</div>
+        </div>
+      </div>
+
+      <div class="alert alert-error"   id="registerError"></div>
+      <div class="alert alert-success" id="registerSuccess"></div>
+
+      <form id="registerForm" novalidate>
+        <!-- Job Seeker fields -->
+        <div id="jobseekerFields">
+          <div class="form-group">
+            <label for="fullName">الاسم الكامل</label>
+            <input type="text" id="fullName" placeholder="محمد عبدالله" autocomplete="name">
+          </div>
+        </div>
+
+        <!-- Admin fields -->
+        <div id="adminFields" style="display:none;">
+          <div class="form-group">
+            <label for="orgName">اسم المؤسسة</label>
+            <input type="text" id="orgName" placeholder="مستشفى / عيادة / مركز صحي" autocomplete="organization">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">البريد الإلكتروني</label>
+          <input type="email" id="regEmail" placeholder="example@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="regPhone">رقم الجوال</label>
+          <input type="tel" id="regPhone" placeholder="05xxxxxxxx" maxlength="10" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label for="regPassword">كلمة المرور</label>
+          <input type="password" id="regPassword" placeholder="8 أحرف على الأقل" autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary form-btn">إنشاء الحساب</button>
+      </form>
+
+      <div class="auth-footer">
+        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Redirect if already logged in
+    (function () {
+      const u = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
+      if (u) window.location.href = u.role === 'admin' ? 'dashboard.html' : 'jobs.html';
+    })();
+
+    let selectedType = 'jobseeker';
+
+    function selectType(type) {
+      selectedType = type;
+      document.getElementById('typeJobSeeker').classList.toggle('selected', type === 'jobseeker');
+      document.getElementById('typeAdmin').classList.toggle('selected', type === 'admin');
+      document.getElementById('jobseekerFields').style.display = type === 'jobseeker' ? 'block' : 'none';
+      document.getElementById('adminFields').style.display     = type === 'admin'     ? 'block' : 'none';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email    = document.getElementById('regEmail').value.trim();
+      const phone    = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const errorBox   = document.getElementById('registerError');
+      const successBox = document.getElementById('registerSuccess');
+
+      const nameVal = selectedType === 'jobseeker'
+        ? document.getElementById('fullName').value.trim()
+        : document.getElementById('orgName').value.trim();
+
+      const errors = [];
+
+      if (!nameVal) {
+        errors.push(selectedType === 'jobseeker' ? 'يرجى إدخال الاسم الكامل' : 'يرجى إدخال اسم المؤسسة');
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.push('يرجى إدخال بريد إلكتروني صحيح');
+      }
+      if (!phone || phone.length < 10 || !/^\d+$/.test(phone)) {
+        errors.push('يرجى إدخال رقم جوال صحيح (10 أرقام)');
+      }
+      if (!password || password.length < 8) {
+        errors.push('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      }
+
+      errorBox.style.display   = 'none';
+      successBox.style.display = 'none';
+
+      if (errors.length) {
+        errorBox.innerHTML     = errors.join('<br>');
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('rawad_users') || '[]');
+      if (users.find(u => u.email === email)) {
+        errorBox.textContent   = 'البريد الإلكتروني مسجل بالفعل';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      const newUser = {
+        id: Date.now(),
+        role: selectedType,
+        email,
+        phone,
+        password,
+        ...(selectedType === 'jobseeker' ? { name: nameVal } : { orgName: nameVal })
+      };
+
+      users.push(newUser);
+      localStorage.setItem('rawad_users',        JSON.stringify(users));
+      localStorage.setItem('rawad_current_user', JSON.stringify(newUser));
+
+      successBox.textContent   = 'تم إنشاء الحساب بنجاح! جاري التحويل...';
+      successBox.style.display = 'block';
+
+      setTimeout(() => {
+        window.location.href = selectedType === 'admin' ? 'dashboard.html' : 'jobs.html';
+      }, 1200);
+    });
+  </script>
+</body>
+</html>

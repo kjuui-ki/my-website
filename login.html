@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | Rawad Health</title>
+  <meta name="description" content="سجّل دخولك إلى منصة Rawad Health للتوظيف الصحي.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="logo.svg" alt="Rawad Health" height="44">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <div class="auth-btns" id="authButtons">
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display:none; align-items:center; gap:10px;">
+            <span class="user-greeting" id="userGreeting"></span>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Login Form -->
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="logo.svg" alt="Rawad Health">
+      </div>
+      <h1 class="auth-title">تسجيل الدخول</h1>
+      <p class="auth-subtitle">أهلاً بك في منصة Rawad Health</p>
+
+      <div class="alert alert-error" id="loginError"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">البريد الإلكتروني</label>
+          <input type="email" id="loginEmail" placeholder="example@email.com" autocomplete="email">
+          <div class="field-error" id="emailError">يرجى إدخال بريد إلكتروني صحيح</div>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">كلمة المرور</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+          <div class="field-error" id="passwordError">يرجى إدخال كلمة المرور</div>
+        </div>
+        <button type="submit" class="btn btn-primary form-btn">دخول</button>
+      </form>
+
+      <div class="auth-footer">
+        ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Redirect if already logged in
+    (function () {
+      const u = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
+      if (u) window.location.href = u.role === 'admin' ? 'dashboard.html' : 'jobs.html';
+    })();
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorBox = document.getElementById('loginError');
+      let valid = true;
+
+      // Validate email
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('loginEmail').classList.add('error');
+        document.getElementById('emailError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('loginEmail').classList.remove('error');
+        document.getElementById('emailError').style.display = 'none';
+      }
+
+      // Validate password
+      if (!password) {
+        document.getElementById('loginPassword').classList.add('error');
+        document.getElementById('passwordError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('loginPassword').classList.remove('error');
+        document.getElementById('passwordError').style.display = 'none';
+      }
+
+      if (!valid) return;
+
+      const users = JSON.parse(localStorage.getItem('rawad_users') || '[]');
+      const user  = users.find(u => u.email === email && u.password === password);
+
+      if (!user) {
+        errorBox.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      errorBox.style.display = 'none';
+      localStorage.setItem('rawad_current_user', JSON.stringify(user));
+
+      window.location.href = user.role === 'admin' ? 'dashboard.html' : 'jobs.html';
+    });
+  </script>
+</body>
+</html>

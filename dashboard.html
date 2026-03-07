@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم | Rawad Health</title>
+  <meta name="description" content="لوحة تحكم المسؤول - منصة Rawad Health للتوظيف الصحي.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="logo.svg" alt="Rawad Health" height="44">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <div class="auth-btns" id="authButtons" style="display:none;">
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display:flex; align-items:center; gap:10px;">
+            <span class="user-greeting" id="userGreeting">مرحباً</span>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label">EN</span>
+            </button>
+          </div>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="dashboard-page">
+
+    <!-- Dashboard Hero Banner -->
+    <div class="dashboard-header-banner">
+      <div class="container">
+        <h1 id="dashboardTitle">لوحة التحكم</h1>
+        <p id="dashboardSubtitle">مرحباً بك في منصة إدارة الوظائف</p>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Stats Cards -->
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="dashboard-card-icon icon-blue">💼</div>
+          <div class="dashboard-card-info">
+            <h3 id="postedJobsCount">0</h3>
+            <p>وظيفة منشورة</p>
+          </div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-icon icon-green">✅</div>
+          <div class="dashboard-card-info">
+            <h3>0</h3>
+            <p>طلب مقبول</p>
+          </div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-icon icon-orange">📋</div>
+          <div class="dashboard-card-info">
+            <h3>0</h3>
+            <p>طلب قيد المراجعة</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Panel -->
+      <div class="dashboard-actions">
+        <h2>الإجراءات السريعة</h2>
+        <div class="action-btns">
+          <a href="post-job.html" class="btn btn-primary btn-lg">
+            <span>＋</span> نشر وظيفة جديدة
+          </a>
+          <a href="jobs.html" class="btn btn-outline btn-lg">
+            <span>🔍</span> تصفح الوظائف
+          </a>
+        </div>
+      </div>
+
+      <!-- Posted Jobs Table -->
+      <div class="dashboard-actions">
+        <h2>الوظائف المنشورة</h2>
+        <div id="postedJobsContainer">
+          <p class="empty-state-msg">لا توجد وظائف منشورة حتى الآن. ابدأ بنشر وظيفتك الأولى!</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" style="margin-top:0;">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2025 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Guard: only admins can access this page
+    (function () {
+      const u = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
+      if (!u) {
+        window.location.href = 'login.html';
+        return;
+      }
+      if (u.role !== 'admin') {
+        window.location.href = 'jobs.html';
+        return;
+      }
+
+      // Set greeting
+      const greeting = document.getElementById('userGreeting');
+      const title    = document.getElementById('dashboardTitle');
+      const subtitle = document.getElementById('dashboardSubtitle');
+
+      if (greeting) greeting.textContent = 'مرحباً، ' + (u.orgName || u.name || 'المسؤول');
+      if (title)    title.textContent    = 'لوحة تحكم ' + (u.orgName || '');
+      if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
+
+      // Load posted jobs count
+      const allJobs   = JSON.parse(localStorage.getItem('rawad_posted_jobs') || '[]');
+      const myJobs    = allJobs.filter(j => j.adminId === u.id);
+      const countEl   = document.getElementById('postedJobsCount');
+      if (countEl) countEl.textContent = myJobs.length;
+
+      // Render jobs table
+      const container = document.getElementById('postedJobsContainer');
+      if (myJobs.length && container) {
+        const table = document.createElement('table');
+        table.className = 'jobs-table';
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>المسمى الوظيفي</th>
+              <th>التخصص</th>
+              <th>المدينة</th>
+              <th>تاريخ النشر</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${myJobs.map(j => `
+              <tr>
+                <td>${j.title}</td>
+                <td>${j.specialty || '-'}</td>
+                <td>${j.city || '-'}</td>
+                <td>${j.date || '-'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        container.innerHTML = '';
+        container.appendChild(table);
+      }
+    })();
+  </script>
+</body>
+</html>
