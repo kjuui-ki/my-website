@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +16,7 @@
     <div class="container">
       <nav class="navbar">
         <a href="index.html" class="logo">
-          <img src="logo.svg" alt="Rawad Health" height="44">
+          <img src="images/logo.png" alt="Rawad Health" height="120" style="object-fit:contain;">
         </a>
         <div class="nav-links">
           <a href="index.html" data-i18n="navHome">الرئيسية</a>
@@ -52,7 +52,7 @@
   <main class="auth-page">
     <div class="auth-card">
       <div class="auth-logo">
-        <img src="logo.svg" alt="Rawad Health">
+        <img src="images/logo.png" alt="Rawad Health" height="120" style="object-fit:contain;">
       </div>
       <h1 class="auth-title">تسجيل الدخول</h1>
       <p class="auth-subtitle">أهلاً بك في منصة Rawad Health</p>
@@ -91,7 +91,13 @@
       if (user) {
         firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
           const userData = doc.exists ? doc.data() : {};
-          window.location.href = userData.role === 'admin' ? 'dashboard.html' : 'jobs.html';
+          if (userData.role === 'superadmin') {
+            window.location.href = 'admin-panel.html';
+          } else if (userData.role === 'admin') {
+            window.location.href = 'dashboard.html';
+          } else {
+            window.location.href = 'jobs.html';
+          }
         });
       }
     });
@@ -139,7 +145,13 @@
         localStorage.setItem('rawad_current_user', JSON.stringify(userData));
 
         errorBox.style.display = 'none';
-        window.location.href = userData.role === 'admin' ? 'dashboard.html' : 'jobs.html';
+        if (userData.role === 'superadmin') {
+          window.location.href = 'admin-panel.html';
+        } else if (userData.role === 'admin') {
+          window.location.href = 'dashboard.html';
+        } else {
+          window.location.href = 'jobs.html';
+        }
       } catch (err) {
         btn.textContent = 'دخول';
         btn.disabled = false;
@@ -158,3 +170,5 @@
   </script>
 </body>
 </html>
+
+

@@ -147,7 +147,7 @@ img {
 }
 
 .logo img {
-  height: 72px;
+  height: 200px;
   width: auto;
 }
 
@@ -2026,7 +2026,7 @@ html[dir="ltr"] .nav-links a::after {
     display: flex;
   }
   .logo img {
-    height: 40px;
+    height: 130px;
   }
 
   /* Hero */
@@ -2696,7 +2696,7 @@ html[dir="ltr"] .nav-links a::after {
 
   /* Logo */
   .logo img {
-    height: 36px !important;
+    height: 90px !important;
   }
 }
 
