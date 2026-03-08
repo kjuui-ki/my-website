@@ -171,10 +171,13 @@
 
       try {
         // Step 1: Create user in Firebase Authentication
+        console.log('[Register] Step 1: Creating user in Firebase Auth...');
         const credential = await firebase.auth().createUserWithEmailAndPassword(email, password);
         const user = credential.user;
+        console.log('[Register] ✅ Auth user created, UID:', user.uid);
 
         // Step 2: Save extra profile data to Firestore
+        console.log('[Register] Step 2: Saving to Firestore...');
         const userData = {
           uid: user.uid,
           role: selectedType,
@@ -187,20 +190,25 @@
         } else {
           userData.orgName = nameVal;
         }
-        await firebase.firestore().collection('users').doc(user.uid).set(userData);
+        try {
+          await firebase.firestore().collection('users').doc(user.uid).set(userData);
+          console.log('[Register] ✅ Firestore profile saved');
+        } catch (fsErr) {
+          console.warn('[Register] ⚠️ Firestore write failed (auth user still created):', fsErr.message);
+        }
 
         // Step 3: Sign out so the user logs in fresh via login.html
         await firebase.auth().signOut();
         localStorage.removeItem('rawad_current_user');
-
         isRegistering = false;
 
-        successBox.textContent   = 'تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
+        console.log('[Register] ✅ Done — redirecting to login.html');
+        successBox.textContent   = '✅ تم إنشاء الحساب بنجاح! (UID: ' + user.uid.slice(0, 8) + '...) جاري التحويل إلى صفحة الدخول...';
         successBox.style.display = 'block';
 
         setTimeout(function () {
           window.location.href = 'login.html';
-        }, 1500);
+        }, 2000);
 
       } catch (err) {
         isRegistering = false;
@@ -208,15 +216,16 @@
         btn.disabled = false;
 
         let msg = 'حدث خطأ (' + err.code + ')';
-        if (err.code === 'auth/email-already-in-use')    msg = 'البريد الإلكتروني مسجل بالفعل';
-        else if (err.code === 'auth/weak-password')       msg = 'كلمة المرور ضعيفة جداً (8 أحرف على الأقل)';
-        else if (err.code === 'auth/invalid-email')       msg = 'صيغة البريد الإلكتروني غير صحيحة';
-        else if (err.code === 'auth/operation-not-allowed') msg = 'تسجيل البريد الإلكتروني غير مفعّل — يرجى تفعيل Email/Password في Firebase Console';
+        if (err.code === 'auth/email-already-in-use')      msg = 'البريد الإلكتروني مسجل بالفعل';
+        else if (err.code === 'auth/weak-password')         msg = 'كلمة المرور ضعيفة جداً (8 أحرف على الأقل)';
+        else if (err.code === 'auth/invalid-email')         msg = 'صيغة البريد الإلكتروني غير صحيحة';
+        else if (err.code === 'auth/operation-not-allowed') msg = '⚠️ Email/Password sign-in غير مفعّل في Firebase Console — فعّله من Authentication → Sign-in method';
         else if (err.code === 'auth/network-request-failed') msg = 'خطأ في الاتصال بالإنترنت، يرجى المحاولة مجدداً';
+        else if (err.code === 'auth/too-many-requests')     msg = 'محاولات كثيرة جداً، يرجى الانتظار قليلاً';
 
         errorBox.textContent   = msg;
         errorBox.style.display = 'block';
-        console.error('Firebase registration error:', err.code, err.message);
+        console.error('[Register] ❌ Firebase error:', err.code, err.message);
       }
     });
   </script>

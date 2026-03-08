@@ -13,4 +13,9 @@ const firebaseConfig = {
   measurementId: "G-VTVQC2GD6C"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+  console.log('[Firebase] ✅ Initialized — project:', firebaseConfig.projectId);
+} else {
+  console.log('[Firebase] ⚠️ Already initialized — project:', firebase.app().options.projectId);
+}
