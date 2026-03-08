@@ -430,27 +430,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== Auth Nav =====
 function initAuthNav() {
-  const currentUser = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
-  const authButtons = document.getElementById('authButtons');
-  const userMenu    = document.getElementById('userMenu');
-  const userGreeting = document.getElementById('userGreeting');
+  firebase.auth().onAuthStateChanged(function (user) {
+    const authButtons  = document.getElementById('authButtons');
+    const userMenu     = document.getElementById('userMenu');
+    const userGreeting = document.getElementById('userGreeting');
 
-  if (currentUser) {
-    if (authButtons) authButtons.style.display = 'none';
-    if (userMenu)    userMenu.style.display     = 'flex';
-    if (userGreeting) {
-      const displayName = currentUser.orgName || currentUser.name || 'المستخدم';
-      userGreeting.textContent = 'مرحباً، ' + displayName;
+    if (user) {
+      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
+        const userData    = doc.exists ? doc.data() : {};
+        const displayName = userData.orgName || userData.name || user.displayName || 'المستخدم';
+        localStorage.setItem('rawad_current_user', JSON.stringify(Object.assign({}, userData, { uid: user.uid })));
+        if (authButtons)  authButtons.style.display  = 'none';
+        if (userMenu)     userMenu.style.display      = 'flex';
+        if (userGreeting) userGreeting.textContent    = 'مرحباً، ' + displayName;
+      });
+    } else {
+      localStorage.removeItem('rawad_current_user');
+      if (authButtons) authButtons.style.display = 'flex';
+      if (userMenu)    userMenu.style.display     = 'none';
     }
-  } else {
-    if (authButtons) authButtons.style.display = 'flex';
-    if (userMenu)    userMenu.style.display     = 'none';
-  }
+  });
 }
 
 function authLogout() {
-  localStorage.removeItem('rawad_current_user');
-  window.location.href = 'index.html';
+  firebase.auth().signOut().then(function () {
+    localStorage.removeItem('rawad_current_user');
+    window.location.href = 'index.html';
+  });
 }
 
 // ===== Navbar =====

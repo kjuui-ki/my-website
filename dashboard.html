@@ -119,64 +119,78 @@
     </div>
   </footer>
 
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
   <script src="script.js"></script>
   <script>
     // Guard: only admins can access this page
-    (function () {
-      const u = JSON.parse(localStorage.getItem('rawad_current_user') || 'null');
-      if (!u) {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
         window.location.href = 'login.html';
         return;
       }
-      if (u.role !== 'admin') {
-        window.location.href = 'jobs.html';
-        return;
-      }
 
-      // Set greeting
-      const greeting = document.getElementById('userGreeting');
-      const title    = document.getElementById('dashboardTitle');
-      const subtitle = document.getElementById('dashboardSubtitle');
+      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
+        const u = doc.exists ? doc.data() : {};
 
-      if (greeting) greeting.textContent = 'مرحباً، ' + (u.orgName || u.name || 'المسؤول');
-      if (title)    title.textContent    = 'لوحة تحكم ' + (u.orgName || '');
-      if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
+        if (u.role !== 'admin') {
+          window.location.href = 'jobs.html';
+          return;
+        }
 
-      // Load posted jobs count
-      const allJobs   = JSON.parse(localStorage.getItem('rawad_posted_jobs') || '[]');
-      const myJobs    = allJobs.filter(j => j.adminId === u.id);
-      const countEl   = document.getElementById('postedJobsCount');
-      if (countEl) countEl.textContent = myJobs.length;
+        // Set greeting
+        const greeting = document.getElementById('userGreeting');
+        const title    = document.getElementById('dashboardTitle');
+        const subtitle = document.getElementById('dashboardSubtitle');
 
-      // Render jobs table
-      const container = document.getElementById('postedJobsContainer');
-      if (myJobs.length && container) {
-        const table = document.createElement('table');
-        table.className = 'jobs-table';
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>المسمى الوظيفي</th>
-              <th>التخصص</th>
-              <th>المدينة</th>
-              <th>تاريخ النشر</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${myJobs.map(j => `
-              <tr>
-                <td>${j.title}</td>
-                <td>${j.specialty || '-'}</td>
-                <td>${j.city || '-'}</td>
-                <td>${j.date || '-'}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        `;
-        container.innerHTML = '';
-        container.appendChild(table);
-      }
-    })();
+        if (greeting) greeting.textContent = 'مرحباً، ' + (u.orgName || u.name || 'المسؤول');
+        if (title)    title.textContent    = 'لوحة تحكم ' + (u.orgName || '');
+        if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
+
+        // Load posted jobs from Firestore
+        firebase.firestore().collection('jobs')
+          .where('adminId', '==', user.uid)
+          .get()
+          .then(function (snapshot) {
+            const myJobs = [];
+            snapshot.forEach(function (d) { myJobs.push(d.data()); });
+
+            const countEl = document.getElementById('postedJobsCount');
+            if (countEl) countEl.textContent = myJobs.length;
+
+            const container = document.getElementById('postedJobsContainer');
+            if (myJobs.length && container) {
+              const table = document.createElement('table');
+              table.className = 'jobs-table';
+              table.innerHTML = `
+                <thead>
+                  <tr>
+                    <th>المسمى الوظيفي</th>
+                    <th>التخصص</th>
+                    <th>المدينة</th>
+                    <th>تاريخ النشر</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${myJobs.map(function (j) { return `
+                    <tr>
+                      <td>${j.title}</td>
+                      <td>${j.specialty || '-'}</td>
+                      <td>${j.city || '-'}</td>
+                      <td>${j.date || '-'}</td>
+                    </tr>
+                  `; }).join('')}
+                </tbody>
+              `;
+              container.innerHTML = '';
+              container.appendChild(table);
+            }
+          });
+      });
+    });
   </script>
 </body>
 </html>
