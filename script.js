@@ -86,89 +86,68 @@ function authLogout() {
 
 // ===== Navbar =====
 function initNavbar() {
-  const hamburger = document.querySelector('.hamburger');
-  const navLinks   = document.querySelector('.nav-links');
-  const header     = document.querySelector('.header');
+  var hamburger = document.querySelector('.hamburger');
+  var navLinks  = document.querySelector('.nav-links');
+  var overlay   = document.getElementById('navOverlay');
+  var header    = document.querySelector('.header');
 
-  // â”€â”€ Inject mobile-only auth section into nav drawer (hidden on desktop via CSS) â”€â”€
-  if (navLinks && !navLinks.querySelector('.mobile-auth')) {
-    const mobileAuth = document.createElement('div');
-    mobileAuth.className = 'mobile-auth';
-    mobileAuth.innerHTML = [
-      '<div class="mobile-auth-divider"></div>',
-      '<div class="mobile-auth-inner" id="mobileAuthButtons">',
-        '<a href="login.html"    class="btn btn-outline  mobile-auth-btn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>',
-        '<a href="register.html" class="btn btn-primary  mobile-auth-btn">Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨</a>',
-      '</div>',
-      '<div class="mobile-user-section" id="mobileUserMenu" style="display:none;">',
-        '<span class="mobile-user-greeting" id="mobileUserGreeting"></span>',
-        '<button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>',
-      '</div>'
-    ].join('');
-    navLinks.appendChild(mobileAuth);
+  function openMenu() {
+    hamburger.classList.add('active');
+    navLinks.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
-  // â”€â”€ Inject always-visible mobile auth buttons next to hamburger â”€â”€
-  const navbar = document.querySelector('.navbar');
-  if (navbar && !navbar.querySelector('.mobile-header-auth')) {
-    const mobileHdrAuth = document.createElement('div');
-    mobileHdrAuth.className = 'mobile-header-auth';
-    mobileHdrAuth.innerHTML = [
-      '<div id="mobileHdrAuthBtns" style="display:flex;gap:6px;">',
-        '<a href="login.html"    class="btn btn-outline  mobile-hdr-btn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>',
-        '<a href="register.html" class="btn btn-primary  mobile-hdr-btn">Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨</a>',
-      '</div>',
-      '<div id="mobileHdrUser" style="display:none;align-items:center;gap:8px;">',
-        '<span id="mobileHdrGreeting" class="mobile-hdr-greeting"></span>',
-        '<button class="btn btn-outline mobile-hdr-btn" onclick="authLogout()">Ø®Ø±ÙˆØ¬</button>',
-      '</div>'
-    ].join('');
-    // Insert before hamburger so it appears to its left
-    if (hamburger) {
-      navbar.insertBefore(mobileHdrAuth, hamburger);
-    } else {
-      navbar.appendChild(mobileHdrAuth);
-    }
+  function closeMenu() {
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
   }
 
   if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navLinks.classList.toggle('active');
-      // Prevent body scroll when menu is open
-      document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-    });
-
-    // Close menu on any link or button click inside it
-    navLinks.addEventListener('click', (e) => {
-      if (e.target.closest('a') || e.target.closest('button')) {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-        document.body.style.overflow = '';
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (navLinks.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
       }
     });
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-        document.body.style.overflow = '';
+    // Close when user taps a link or button inside the drawer
+    navLinks.addEventListener('click', function(e) {
+      if (e.target.closest('a') || e.target.closest('button')) {
+        closeMenu();
+      }
+    });
+
+    // Close when tapping the dark overlay
+    if (overlay) {
+      overlay.addEventListener('click', function() {
+        closeMenu();
+      });
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+        closeMenu();
       }
     });
   }
 
-  // Scroll effect
+  // Sticky header shadow on scroll
   if (header) {
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', function() {
       header.classList.toggle('scrolled', window.scrollY > 50);
     });
   }
 
-  // Set active link
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    const href = link.getAttribute('href');
+  // Highlight current page link
+  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a').forEach(function(link) {
+    var href = link.getAttribute('href');
     if (href === currentPage || (currentPage === '' && href === 'index.html')) {
       link.classList.add('active');
     }

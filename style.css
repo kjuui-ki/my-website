@@ -2880,6 +2880,19 @@ html.has-js .slide-left.visible {
   display: none;
 }
 
+/* ─── Mobile Nav Overlay (tap outside to close) ─── */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 998;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-overlay.active {
+  display: block;
+}
+
 /* ─── Mobile Header Auth (JS-injected — kept hidden, nav-cta handles auth) ─── */
 .mobile-header-auth {
   display: none !important;
@@ -2891,7 +2904,10 @@ html.has-js .slide-left.visible {
 @media (max-width: 768px) {
   /* ─── Mobile nav drawer layout ─── */
   .nav-links {
-    display: none;
+    /* Use visibility instead of display:none so CSS transitions work on iOS Safari */
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
     position: fixed;
     top: 0;
     right: 0;
@@ -2899,21 +2915,24 @@ html.has-js .slide-left.visible {
     bottom: 0;
     background: #fff;
     flex-direction: column;
-    padding: 90px 24px 36px;
+    padding: 80px 24px 36px;
     gap: 0;
     overflow-y: auto;
-    z-index: 998;
-    box-shadow: none;
+    z-index: 999;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
     border-radius: 0;
-    /* smooth slide-in animation */
     transform: translateX(100%);
     opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* visibility delay on close matches the transition duration */
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s;
   }
   .nav-links.active {
-    display: flex;
+    visibility: visible;
+    pointer-events: auto;
     transform: translateX(0);
     opacity: 1;
+    /* visibility becomes visible immediately on open */
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0s;
   }
 
   /* Individual nav page links */
@@ -2937,10 +2956,17 @@ html.has-js .slide-left.visible {
     display: none;
   }
 
-  /* Hamburger elevated above the full-screen nav */
+  /* Hamburger elevated above the full-screen nav — larger touch target for iOS */
   .hamburger {
     position: relative;
-    z-index: 1000;
+    z-index: 1100;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* ─── Mobile auth section ─── */
