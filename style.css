@@ -2064,13 +2064,21 @@ html.has-js .slide-left.visible {
 /* --- 768px: Tablet Portrait / Large Mobile --- */
 @media (max-width: 768px) {
 
-  /* Navbar: show auth buttons on mobile, hide lang-switcher */
+  /* Navbar on mobile */
   .nav-cta {
     display: flex;
     gap: 4px;
     align-items: center;
   }
   .nav-cta .lang-switcher {
+    display: flex;
+  }
+  .nav-cta .lang-btn {
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+  .nav-cta .lang-label {
     display: none;
   }
   .nav-cta .btn {
@@ -2962,10 +2970,10 @@ html.has-js .slide-left.visible {
     bottom: 0;
     background: #fff;
     flex-direction: column;
-    padding: 80px 24px 36px;
+    padding: 130px 24px 36px;
     gap: 0;
     overflow-y: auto;
-    z-index: 999;
+    z-index: 1050;
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
     border-radius: 0;
     transform: translateX(100%);
@@ -3057,6 +3065,30 @@ html.has-js .slide-left.visible {
     font-size: 1rem;
     display: block;
     padding: 6px 0;
+  }
+
+  /* ─── Language toggle inside mobile drawer ─── */
+  .mobile-lang-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 20px;
+    background: #f0f5fa;
+    border: 1.5px solid #d0e0ef;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #023E8A;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .mobile-lang-toggle:hover {
+    background: #e0edf8;
   }
 }
 
