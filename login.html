@@ -94,7 +94,19 @@
           if (userData.role === 'superadmin') {
             window.location.href = 'admin-panel.html';
           } else if (userData.role === 'admin') {
-            window.location.href = 'dashboard.html';
+            if (userData.status === 'pending') {
+              firebase.auth().signOut();
+              const box = document.getElementById('loginError');
+              box.textContent = 'طلب التسجيل كمسؤول قيد المراجعة';
+              box.style.display = 'block';
+            } else if (userData.status === 'rejected') {
+              firebase.auth().signOut();
+              const box = document.getElementById('loginError');
+              box.textContent = 'تم رفض طلب التسجيل كمسؤول';
+              box.style.display = 'block';
+            } else {
+              window.location.href = 'dashboard.html';
+            }
           } else {
             window.location.href = 'jobs.html';
           }
@@ -148,7 +160,23 @@
         if (userData.role === 'superadmin') {
           window.location.href = 'admin-panel.html';
         } else if (userData.role === 'admin') {
-          window.location.href = 'dashboard.html';
+          if (userData.status === 'pending') {
+            await firebase.auth().signOut();
+            localStorage.removeItem('rawad_current_user');
+            btn.textContent = 'دخول';
+            btn.disabled = false;
+            errorBox.textContent = 'طلب التسجيل كمسؤول قيد المراجعة';
+            errorBox.style.display = 'block';
+          } else if (userData.status === 'rejected') {
+            await firebase.auth().signOut();
+            localStorage.removeItem('rawad_current_user');
+            btn.textContent = 'دخول';
+            btn.disabled = false;
+            errorBox.textContent = 'تم رفض طلب التسجيل كمسؤول';
+            errorBox.style.display = 'block';
+          } else {
+            window.location.href = 'dashboard.html';
+          }
         } else {
           window.location.href = 'jobs.html';
         }

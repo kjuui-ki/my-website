@@ -22,6 +22,18 @@
           <a href="index.html" class="active" data-i18n="navHome">الرئيسية</a>
           <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
           <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+          <!-- Mobile-only auth section — hidden on desktop via CSS; shown inside hamburger drawer -->
+          <div class="mobile-auth">
+            <div class="mobile-auth-divider"></div>
+            <div class="mobile-auth-inner" id="mobileAuthButtons">
+              <a href="login.html" class="btn btn-outline mobile-auth-btn">تسجيل الدخول</a>
+              <a href="register.html" class="btn btn-primary mobile-auth-btn">إنشاء حساب</a>
+            </div>
+            <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
+              <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
+              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">تسجيل الخروج</button>
+            </div>
+          </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
@@ -273,62 +285,6 @@
           <h3 data-i18n="feat4Title">تنبيهات فورية</h3>
           <p data-i18n="feat4Desc">احصل على إشعارات فورية بأحدث الوظائف التي تناسب تخصصك ومدينتك.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="stats-section">
-    <div class="container">
-      <div class="section-header fade-in" style="margin-bottom: 50px;">
-        <span class="badge badge-light">بالأرقام</span>
-        <h2>إنجازاتنا تتحدث عنها</h2>
-        <p>أرقام حقيقية تعكس حجم ثقتنا وتعاملنا في القطاع الصحي</p>
-      </div>
-      <div class="stats-grid">
-
-        <div class="stat-card fade-in">
-          <div class="stat-card-icon" style="background: linear-gradient(135deg,#E53E3E,#9B1C1C);">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-              <line x1="12" y1="12" x2="12" y2="16"/>
-              <line x1="10" y1="14" x2="14" y2="14"/>
-            </svg>
-          </div>
-          <div class="stat-card-number" data-count="500" data-suffix="+">0</div>
-          <div class="stat-card-label">وظيفة منشورة</div>
-          <div class="stat-card-desc">فرص وظيفية حقيقية في جميع التخصصات الصحية</div>
-        </div>
-
-        <div class="stat-card fade-in">
-          <div class="stat-card-icon" style="background: linear-gradient(135deg,#0077B6,#023E8A);">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <div class="stat-card-number" data-count="3000" data-suffix="+">0</div>
-          <div class="stat-card-label">متدرب وموظف</div>
-          <div class="stat-card-desc">كوادر صحية وجدوا فرصهم عبر منصتنا</div>
-        </div>
-
-        <div class="stat-card fade-in">
-          <div class="stat-card-icon" style="background: linear-gradient(135deg,#2D9F4E,#1A5E2E);">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <rect x="9" y="12" width="2" height="4" rx="1" fill="white" stroke="none"/>
-              <rect x="13" y="12" width="2" height="4" rx="1" fill="white" stroke="none"/>
-              <rect x="9" y="9" width="6" height="2" rx="1" fill="white" stroke="none"/>
-            </svg>
-          </div>
-          <div class="stat-card-number" data-count="150" data-suffix="+">0</div>
-          <div class="stat-card-label">مؤسسة صحية</div>
-          <div class="stat-card-desc">مستشفيات ومراكز طبية وعيادات متعاقدة</div>
-        </div>
-
       </div>
     </div>
   </section>

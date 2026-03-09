@@ -102,7 +102,7 @@
       <!-- Posted Jobs Table -->
       <div class="dashboard-actions">
         <h2>الوظائف المنشورة</h2>
-        <div id="postedJobsContainer">
+        <div id="postedJobsContainer" class="table-responsive">
           <p class="empty-state-msg">لا توجد وظائف منشورة حتى الآن. ابدأ بنشر وظيفتك الأولى!</p>
         </div>
       </div>
@@ -136,8 +136,8 @@
       firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
         const u = doc.exists ? doc.data() : {};
 
-        if (u.role !== 'admin') {
-          window.location.href = 'jobs.html';
+        if (u.role !== 'admin' || u.status !== 'approved') {
+          window.location.href = 'login.html';
           return;
         }
 

@@ -181,6 +181,7 @@
         const userData = {
           uid: user.uid,
           role: selectedType,
+          status: selectedType === 'admin' ? 'pending' : 'approved',
           email: email,
           phone: phone,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -203,7 +204,9 @@
         isRegistering = false;
 
         console.log('[Register] ✅ Done — redirecting to login.html');
-        successBox.textContent   = '✅ تم إنشاء الحساب بنجاح! (UID: ' + user.uid.slice(0, 8) + '...) جاري التحويل إلى صفحة الدخول...';
+        successBox.textContent   = selectedType === 'admin'
+          ? '✅ تم إنشاء الحساب بنجاح! طلبك قيد المراجعة من قِبل الإدارة. سيتم إشعارك عند الموافقة.'
+          : '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
         successBox.style.display = 'block';
 
         setTimeout(function () {

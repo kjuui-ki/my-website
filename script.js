@@ -431,23 +431,47 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== Auth Nav =====
 function initAuthNav() {
   firebase.auth().onAuthStateChanged(function (user) {
-    const authButtons  = document.getElementById('authButtons');
-    const userMenu     = document.getElementById('userMenu');
-    const userGreeting = document.getElementById('userGreeting');
+    const authButtons    = document.getElementById('authButtons');
+    const userMenu       = document.getElementById('userMenu');
+    const userGreeting   = document.getElementById('userGreeting');
+    // Mobile drawer auth elements
+    const mobileAuthBtns = document.getElementById('mobileAuthButtons');
+    const mobileUserMenu = document.getElementById('mobileUserMenu');
+    const mobileGreeting = document.getElementById('mobileUserGreeting');
+    // Mobile header auth elements (always-visible next to hamburger)
+    const mobileHdrAuthBtns = document.getElementById('mobileHdrAuthBtns');
+    const mobileHdrUser     = document.getElementById('mobileHdrUser');
+    const mobileHdrGreeting = document.getElementById('mobileHdrGreeting');
 
     if (user) {
       firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
         const userData    = doc.exists ? doc.data() : {};
         const displayName = userData.orgName || userData.name || user.displayName || 'المستخدم';
         localStorage.setItem('rawad_current_user', JSON.stringify(Object.assign({}, userData, { uid: user.uid })));
-        if (authButtons)  authButtons.style.display  = 'none';
-        if (userMenu)     userMenu.style.display      = 'flex';
-        if (userGreeting) userGreeting.textContent    = 'مرحباً، ' + displayName;
+        // Desktop
+        if (authButtons)    authButtons.style.display    = 'none';
+        if (userMenu)       userMenu.style.display        = 'flex';
+        if (userGreeting)   userGreeting.textContent      = 'مرحباً، ' + displayName;
+        // Mobile drawer
+        if (mobileAuthBtns) mobileAuthBtns.style.display  = 'none';
+        if (mobileUserMenu) mobileUserMenu.style.display   = 'flex';
+        if (mobileGreeting) mobileGreeting.textContent     = 'مرحباً، ' + displayName;
+        // Mobile header
+        if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'none';
+        if (mobileHdrUser)     mobileHdrUser.style.display     = 'flex';
+        if (mobileHdrGreeting) mobileHdrGreeting.textContent   = displayName;
       });
     } else {
       localStorage.removeItem('rawad_current_user');
-      if (authButtons) authButtons.style.display = 'flex';
-      if (userMenu)    userMenu.style.display     = 'none';
+      // Desktop
+      if (authButtons)    authButtons.style.display    = 'flex';
+      if (userMenu)       userMenu.style.display        = 'none';
+      // Mobile drawer
+      if (mobileAuthBtns) mobileAuthBtns.style.display  = 'flex';
+      if (mobileUserMenu) mobileUserMenu.style.display   = 'none';
+      // Mobile header
+      if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'flex';
+      if (mobileHdrUser)     mobileHdrUser.style.display     = 'none';
     }
   });
 }
@@ -462,21 +486,74 @@ function authLogout() {
 // ===== Navbar =====
 function initNavbar() {
   const hamburger = document.querySelector('.hamburger');
-  const navLinks = document.querySelector('.nav-links');
-  const header = document.querySelector('.header');
+  const navLinks   = document.querySelector('.nav-links');
+  const header     = document.querySelector('.header');
+
+  // ── Inject mobile-only auth section into nav drawer (hidden on desktop via CSS) ──
+  if (navLinks && !navLinks.querySelector('.mobile-auth')) {
+    const mobileAuth = document.createElement('div');
+    mobileAuth.className = 'mobile-auth';
+    mobileAuth.innerHTML = [
+      '<div class="mobile-auth-divider"></div>',
+      '<div class="mobile-auth-inner" id="mobileAuthButtons">',
+        '<a href="login.html"    class="btn btn-outline  mobile-auth-btn">تسجيل الدخول</a>',
+        '<a href="register.html" class="btn btn-primary  mobile-auth-btn">إنشاء حساب</a>',
+      '</div>',
+      '<div class="mobile-user-section" id="mobileUserMenu" style="display:none;">',
+        '<span class="mobile-user-greeting" id="mobileUserGreeting"></span>',
+        '<button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">تسجيل الخروج</button>',
+      '</div>'
+    ].join('');
+    navLinks.appendChild(mobileAuth);
+  }
+
+  // ── Inject always-visible mobile auth buttons next to hamburger ──
+  const navbar = document.querySelector('.navbar');
+  if (navbar && !navbar.querySelector('.mobile-header-auth')) {
+    const mobileHdrAuth = document.createElement('div');
+    mobileHdrAuth.className = 'mobile-header-auth';
+    mobileHdrAuth.innerHTML = [
+      '<div id="mobileHdrAuthBtns" style="display:flex;gap:6px;">',
+        '<a href="login.html"    class="btn btn-outline  mobile-hdr-btn">تسجيل الدخول</a>',
+        '<a href="register.html" class="btn btn-primary  mobile-hdr-btn">إنشاء حساب</a>',
+      '</div>',
+      '<div id="mobileHdrUser" style="display:none;align-items:center;gap:8px;">',
+        '<span id="mobileHdrGreeting" class="mobile-hdr-greeting"></span>',
+        '<button class="btn btn-outline mobile-hdr-btn" onclick="authLogout()">خروج</button>',
+      '</div>'
+    ].join('');
+    // Insert before hamburger so it appears to its left
+    if (hamburger) {
+      navbar.insertBefore(mobileHdrAuth, hamburger);
+    } else {
+      navbar.appendChild(mobileHdrAuth);
+    }
+  }
 
   if (hamburger && navLinks) {
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('active');
       navLinks.classList.toggle('active');
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Close menu on link click
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+    // Close menu on any link or button click inside it
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.closest('a') || e.target.closest('button')) {
         hamburger.classList.remove('active');
         navLinks.classList.remove('active');
-      });
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     });
   }
 
