@@ -18,21 +18,10 @@
         <a href="index.html" class="logo">
           <img src="images/logo.png" alt="Rawad Health" height="120" style="object-fit:contain;">
         </a>
-        <div class="nav-links">
+        <div class="nav-desktop">
           <a href="index.html" data-i18n="navHome">الرئيسية</a>
-          <a href="jobs.html" class="active" data-i18n="navJobs">الوظائف</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
           <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
-          <div class="mobile-auth">
-            <div class="mobile-auth-divider"></div>
-            <div class="mobile-auth-inner" id="mobileAuthButtons">
-              <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
-              <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
-            </div>
-            <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
-              <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
-              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
-            </div>
-          </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
@@ -58,6 +47,24 @@
       </nav>
     </div>
   </header>
+
+  <!-- Mobile nav drawer (outside header to avoid stacking context issues) -->
+  <div class="nav-links">
+    <a href="index.html" data-i18n="navHome">الرئيسية</a>
+    <a href="jobs.html" class="active" data-i18n="navJobs">الوظائف</a>
+    <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+    <div class="mobile-auth">
+      <div class="mobile-auth-divider"></div>
+      <div class="mobile-auth-inner" id="mobileAuthButtons">
+        <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
+        <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
+      </div>
+      <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
+        <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
+        <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Dark overlay behind mobile menu -->
   <div class="nav-overlay" id="navOverlay"></div>

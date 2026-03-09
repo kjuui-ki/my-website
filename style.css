@@ -122,7 +122,7 @@ img {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1100;
   transition: all 0.3s;
 }
 
@@ -163,13 +163,14 @@ img {
   font-size: 1.4rem;
 }
 
-.nav-links {
+/* Desktop navigation links (inside header) */
+.nav-desktop {
   display: flex;
   align-items: center;
   gap: 35px;
 }
 
-.nav-links a {
+.nav-desktop a {
   font-size: 1rem;
   font-weight: 600;
   color: #555;
@@ -177,7 +178,7 @@ img {
   padding: 5px 0;
 }
 
-.nav-links a::after {
+.nav-desktop a::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -189,15 +190,20 @@ img {
   transition: width 0.3s;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
+.nav-desktop a:hover,
+.nav-desktop a.active {
   color: #28C76F;
 }
 
-.nav-links a:hover::after,
-.nav-links a.active::after {
+.nav-desktop a:hover::after,
+.nav-desktop a.active::after {
   width: 100%;
   background: #28C76F;
+}
+
+/* Mobile nav drawer (outside header, hidden by default) */
+.nav-links {
+  display: none;
 }
 
 .nav-cta {
@@ -252,13 +258,14 @@ html[dir="ltr"] .navbar {
   flex-direction: row;
 }
 
+html[dir="ltr"] .nav-desktop a::after,
 html[dir="ltr"] .nav-links a::after {
   right: auto;
   left: 0;
 }
 
 .hamburger {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
@@ -2941,7 +2948,7 @@ html.has-js .slide-left.visible {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 998;
+  z-index: 1140;
   -webkit-tap-highlight-color: transparent;
 }
 .nav-overlay.active {
@@ -2958,11 +2965,11 @@ html.has-js .slide-left.visible {
 
 @media (max-width: 768px) {
   /* ─── Mobile nav drawer layout ─── */
+  .nav-desktop {
+    display: none;
+  }
+
   .nav-links {
-    /* Use visibility instead of display:none so CSS transitions work on iOS Safari */
-    display: flex;
-    visibility: hidden;
-    pointer-events: none;
     position: fixed;
     top: 0;
     right: 0;
@@ -2970,24 +2977,14 @@ html.has-js .slide-left.visible {
     bottom: 0;
     background: #fff;
     flex-direction: column;
-    padding: 130px 24px 36px;
+    padding: 100px 24px 36px;
     gap: 0;
     overflow-y: auto;
-    z-index: 1050;
+    z-index: 9999;
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
-    border-radius: 0;
-    transform: translateX(100%);
-    opacity: 0;
-    /* visibility delay on close matches the transition duration */
-    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s;
   }
   .nav-links.active {
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(0);
-    opacity: 1;
-    /* visibility becomes visible immediately on open */
-    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0s;
+    display: flex;
   }
 
   /* Individual nav page links */
@@ -3014,7 +3011,7 @@ html.has-js .slide-left.visible {
   /* Hamburger elevated above the full-screen nav — larger touch target for iOS */
   .hamburger {
     position: relative;
-    z-index: 1100;
+    z-index: 1200;
     min-width: 44px;
     min-height: 44px;
     display: flex;
