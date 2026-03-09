@@ -258,7 +258,7 @@ html[dir="ltr"] .nav-links a::after {
 }
 
 .hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
