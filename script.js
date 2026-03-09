@@ -845,6 +845,87 @@ const translations = {
     shareTwitter: '𝕏 تويتر',
     shareLinkedin: 'in لينكدإن',
     shareCopy: '📋 نسخ',
+
+    // Hero float cards
+    heroFloatHired: 'موظف تم توظيفه',
+    heroFloatSpec: 'تخصصاً صحياً',
+
+    // Why Us section
+    whyUsBadge: 'من نحن',
+    whyUsTitle: 'شريكك الموثوق في التوظيف الصحي',
+    whyUsDesc: 'Rawad Health هي منصة سعودية متخصصة في التوظيف الصحي، تهدف إلى سد الفجوة بين الكوادر الصحية المؤهلة والمنشآت الطبية المتميزة في المملكة.',
+    whyUs1Title: 'فرص حقيقية وموثوقة',
+    whyUs1Desc: 'جميع الوظائف المعروضة من منشآت صحية مرخصة ومعتمدة.',
+    whyUs2Title: 'دعم مهني متكامل',
+    whyUs2Desc: 'نساعدك في تطوير سيرتك الذاتية والتحضير للمقابلات.',
+    whyUs3Title: 'تغطية شاملة',
+    whyUs3Desc: 'نغطي جميع مناطق ومدن المملكة العربية السعودية.',
+    whyUs4Title: 'شراكات استراتيجية',
+    whyUs4Desc: 'شراكات مع أكثر من 150 منشأة صحية في المملكة.',
+    statSpecialties: 'تخصص صحي',
+    featuredBadge: 'فرص مميزة',
+
+    // Service card badges
+    svc1Badge: '⚕ توظيف',
+    svc2Badge: '🚀 تطوير',
+
+    // New services section
+    newSvcTitle: 'تخصصات التوظيف الصحي',
+    newSvcDesc: 'نوفر حلول توظيف متكاملة لكافة الكوادر الصحية في مختلف التخصصات',
+    newSvc1Title: 'توظيف الأطباء',
+    newSvc1Desc: 'ترشيح أطباء مؤهلين في مختلف التخصصات.',
+    newSvc2Title: 'توظيف التمريض',
+    newSvc2Desc: 'توفير ممرضين قانونيين ومساعدين.',
+    newSvc3Title: 'توظيف الفنيين',
+    newSvc3Desc: 'مختبر – أشعة – صيدلة – علاج طبيعي.',
+    newSvc4Title: 'التوظيف الإداري الصحي',
+    newSvc4Desc: 'سجلات – تأمين – إدارة جودة – موارد بشرية.',
+
+    // Platform goals
+    goalsBadge: 'رؤيتنا',
+    goalsTitle: 'أهداف المنصة',
+    goalsDesc: 'نسعى إلى تحقيق منظومة توظيف صحي شاملة ومتكاملة',
+    goal1: 'نشر الوظائف الصحية',
+    goal2: 'استقبال طلبات الممارسين الصحيين',
+    goal3: 'تمكين المستشفيات والعيادات من طلب موظفين',
+    goal4: 'إدارة عملية التوظيف الصحي بشكل احترافي',
+
+    // Target audience
+    audienceBadge: 'من نخدم',
+    audienceTitle: 'الجمهور المستهدف',
+    audienceDesc: 'نخدم جميع قطاعات المنظومة الصحية في المملكة العربية السعودية',
+    audHospitals: 'المستشفيات',
+    audClinics: 'العيادات',
+    audCenters: 'المراكز الطبية',
+    audLabs: 'المختبرات',
+    audPharmacies: 'الصيدليات',
+    audStaff: 'الكوادر الطبية (أطباء – تمريض – فنيين – إداريين صحيين)',
+    audModalBtn: 'تصفح الوظائف المتاحة',
+
+    // Auth buttons
+    authLogin: 'تسجيل الدخول',
+    authRegister: 'إنشاء حساب',
+    authLogout: 'تسجيل الخروج',
+
+    // Login page
+    loginTitle: 'تسجيل الدخول',
+    loginSubtitle: 'أهلاً بك في منصة Rawad Health',
+    labelPassword: 'كلمة المرور',
+    loginBtn: 'دخول',
+    loginNoAccount: 'ليس لديك حساب؟',
+    loginCreateNew: 'إنشاء حساب جديد',
+
+    // Register page
+    registerTitle: 'إنشاء حساب',
+    registerSubtitle: 'انضم إلى منصة Rawad Health',
+    typeJobSeekerLabel: 'باحث عن عمل',
+    typeAdminLabel: 'مسؤول / مؤسسة صحية',
+    labelFullNameRegister: 'الاسم الكامل',
+    labelOrgName: 'اسم المؤسسة',
+    labelPasswordRegister: 'كلمة المرور',
+    regPhoneLabel: 'رقم الجوال',
+    registerBtn: 'إنشاء الحساب',
+    registerHasAccount: 'لديك حساب بالفعل؟',
   },
   en: {
     // Header / Nav
@@ -1075,6 +1156,87 @@ const translations = {
     shareTwitter: '𝕏 Twitter',
     shareLinkedin: 'in LinkedIn',
     shareCopy: '📋 Copy',
+
+    // Hero float cards
+    heroFloatHired: 'Professionals Hired',
+    heroFloatSpec: 'Health Specialties',
+
+    // Why Us section
+    whyUsBadge: 'About Us',
+    whyUsTitle: 'Your Trusted Healthcare Recruitment Partner',
+    whyUsDesc: 'Rawad Health is a Saudi platform specializing in healthcare recruitment, bridging the gap between qualified medical professionals and distinguished medical facilities in the Kingdom.',
+    whyUs1Title: 'Real & Verified Opportunities',
+    whyUs1Desc: 'All posted jobs are from licensed and accredited healthcare facilities.',
+    whyUs2Title: 'Comprehensive Career Support',
+    whyUs2Desc: 'We help you develop your CV and prepare for interviews.',
+    whyUs3Title: 'Full Coverage',
+    whyUs3Desc: 'We cover all regions and cities of Saudi Arabia.',
+    whyUs4Title: 'Strategic Partnerships',
+    whyUs4Desc: 'Partnerships with over 150 healthcare facilities in the Kingdom.',
+    statSpecialties: 'Health Specialties',
+    featuredBadge: 'Featured Opportunities',
+
+    // Service card badges
+    svc1Badge: '⚕ Recruitment',
+    svc2Badge: '🚀 Development',
+
+    // New services section
+    newSvcTitle: 'Healthcare Recruitment Specialties',
+    newSvcDesc: 'We provide comprehensive recruitment solutions for all healthcare professionals across various specialties',
+    newSvc1Title: 'Physician Recruitment',
+    newSvc1Desc: 'Qualifying doctors in various specialties.',
+    newSvc2Title: 'Nursing Recruitment',
+    newSvc2Desc: 'Providing licensed nurses and assistants.',
+    newSvc3Title: 'Technician Recruitment',
+    newSvc3Desc: 'Lab – Radiology – Pharmacy – Physiotherapy.',
+    newSvc4Title: 'Healthcare Admin Recruitment',
+    newSvc4Desc: 'Records – Insurance – Quality Management – HR.',
+
+    // Platform goals
+    goalsBadge: 'Our Vision',
+    goalsTitle: 'Platform Goals',
+    goalsDesc: 'We strive to achieve a comprehensive and integrated healthcare recruitment system',
+    goal1: 'Publishing healthcare jobs',
+    goal2: 'Receiving applications from healthcare practitioners',
+    goal3: 'Enabling hospitals and clinics to request staff',
+    goal4: 'Managing the healthcare recruitment process professionally',
+
+    // Target audience
+    audienceBadge: 'Who We Serve',
+    audienceTitle: 'Target Audience',
+    audienceDesc: 'We serve all sectors of the healthcare system in Saudi Arabia',
+    audHospitals: 'Hospitals',
+    audClinics: 'Clinics',
+    audCenters: 'Medical Centers',
+    audLabs: 'Laboratories',
+    audPharmacies: 'Pharmacies',
+    audStaff: 'Medical Staff (Doctors – Nursing – Technicians – Health Admin)',
+    audModalBtn: 'Browse Available Jobs',
+
+    // Auth buttons
+    authLogin: 'Login',
+    authRegister: 'Register',
+    authLogout: 'Logout',
+
+    // Login page
+    loginTitle: 'Login',
+    loginSubtitle: 'Welcome to Rawad Health Platform',
+    labelPassword: 'Password',
+    loginBtn: 'Sign In',
+    loginNoAccount: "Don't have an account?",
+    loginCreateNew: 'Create New Account',
+
+    // Register page
+    registerTitle: 'Create Account',
+    registerSubtitle: 'Join Rawad Health Platform',
+    typeJobSeekerLabel: 'Job Seeker',
+    typeAdminLabel: 'Admin / Healthcare Organization',
+    labelFullNameRegister: 'Full Name',
+    labelOrgName: 'Organization Name',
+    labelPasswordRegister: 'Password',
+    regPhoneLabel: 'Phone Number',
+    registerBtn: 'Create Account',
+    registerHasAccount: 'Already have an account?',
   }
 };
 

@@ -22,15 +22,26 @@
           <a href="index.html" data-i18n="navHome">الرئيسية</a>
           <a href="jobs.html" class="active" data-i18n="navJobs">الوظائف</a>
           <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+          <div class="mobile-auth">
+            <div class="mobile-auth-divider"></div>
+            <div class="mobile-auth-inner" id="mobileAuthButtons">
+              <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
+              <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
+            </div>
+            <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
+              <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
+              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
+            </div>
+          </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
-            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
-            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogin">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authRegister">إنشاء حساب</a>
           </div>
           <div class="user-menu" id="userMenu" style="display:none;">
             <span class="user-greeting" id="userGreeting"></span>
-            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogout">تسجيل الخروج</button>
           </div>
           <div class="lang-switcher">
             <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة" onclick="toggleLanguage()">
@@ -218,7 +229,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
 

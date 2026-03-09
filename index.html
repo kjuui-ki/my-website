@@ -26,23 +26,23 @@
           <div class="mobile-auth">
             <div class="mobile-auth-divider"></div>
             <div class="mobile-auth-inner" id="mobileAuthButtons">
-              <a href="login.html" class="btn btn-outline mobile-auth-btn">تسجيل الدخول</a>
-              <a href="register.html" class="btn btn-primary mobile-auth-btn">إنشاء حساب</a>
+              <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
+              <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
             </div>
             <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
               <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
-              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">تسجيل الخروج</button>
+              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
             </div>
           </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
-            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
-            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogin">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authRegister">إنشاء حساب</a>
           </div>
           <div class="user-menu" id="userMenu" style="display:none;">
             <span class="user-greeting" id="userGreeting"></span>
-            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogout">تسجيل الخروج</button>
           </div>
           <div class="lang-switcher">
             <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة" onclick="toggleLanguage()">
@@ -243,14 +243,14 @@
               <div class="hero-float-icon">✅</div>
               <div class="hero-float-text">
                 <strong>3,000+</strong>
-                <span>موظف تم توظيفه</span>
+                <span data-i18n="heroFloatHired">موظف تم توظيفه</span>
               </div>
             </div>
             <div class="hero-float-card hero-float-bottom">
               <div class="hero-float-icon">🩺</div>
               <div class="hero-float-text">
                 <strong>20+</strong>
-                <span>تخصصاً صحياً</span>
+                <span data-i18n="heroFloatSpec">تخصصاً صحياً</span>
               </div>
             </div>
           </div>
@@ -307,7 +307,7 @@
           <div class="service-img-wrapper">
             <img src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&q=80" alt="التوظيف الطبي" class="service-img">
             <div class="service-img-overlay"></div>
-            <span class="service-badge">⚕ توظيف</span>
+            <span class="service-badge" data-i18n="svc1Badge">⚕ توظيف</span>
           </div>
           <div class="service-body">
             <h3 data-i18n="svc1Title">التوظيف الطبي</h3>
@@ -321,7 +321,7 @@
           <div class="service-img-wrapper">
             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="التدريب والتطوير" class="service-img">
             <div class="service-img-overlay"></div>
-            <span class="service-badge">🚀 تطوير</span>
+            <span class="service-badge" data-i18n="svc2Badge">🚀 تطوير</span>
           </div>
           <div class="service-body">
             <h3 data-i18n="svc2Title">التدريب والتطوير</h3>
@@ -338,7 +338,7 @@
   <section class="section">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">فرص مميزة</span>
+        <span class="badge" data-i18n="featuredBadge">فرص مميزة</span>
         <h2 data-i18n="latestJobsTitle">أحدث الوظائف المتاحة</h2>
         <p data-i18n="latestJobsDesc">اكتشف أحدث الفرص الوظيفية في القطاع الصحي</p>
       </div>
@@ -356,36 +356,36 @@
     <div class="container">
       <div class="why-us-content">
         <div class="why-us-text slide-right">
-          <span class="badge" style="margin-bottom: 15px; display: inline-block;">من نحن</span>
-          <h2>شريكك الموثوق في التوظيف الصحي</h2>
-          <p>Rawad Health هي منصة سعودية متخصصة في التوظيف الصحي، تهدف إلى سد الفجوة بين الكوادر الصحية المؤهلة والمنشآت الطبية المتميزة في المملكة.</p>
+          <span class="badge" style="margin-bottom: 15px; display: inline-block;" data-i18n="whyUsBadge">من نحن</span>
+          <h2 data-i18n="whyUsTitle">شريكك الموثوق في التوظيف الصحي</h2>
+          <p data-i18n="whyUsDesc">Rawad Health هي منصة سعودية متخصصة في التوظيف الصحي، تهدف إلى سد الفجوة بين الكوادر الصحية المؤهلة والمنشآت الطبية المتميزة في المملكة.</p>
           <div class="why-us-list">
             <div class="why-us-item">
               <div class="why-us-item-icon">✅</div>
               <div>
-                <h4>فرص حقيقية وموثوقة</h4>
-                <p>جميع الوظائف المعروضة من منشآت صحية مرخصة ومعتمدة.</p>
+                <h4 data-i18n="whyUs1Title">فرص حقيقية وموثوقة</h4>
+                <p data-i18n="whyUs1Desc">جميع الوظائف المعروضة من منشآت صحية مرخصة ومعتمدة.</p>
               </div>
             </div>
             <div class="why-us-item">
               <div class="why-us-item-icon">🎓</div>
               <div>
-                <h4>دعم مهني متكامل</h4>
-                <p>نساعدك في تطوير سيرتك الذاتية والتحضير للمقابلات.</p>
+                <h4 data-i18n="whyUs2Title">دعم مهني متكامل</h4>
+                <p data-i18n="whyUs2Desc">نساعدك في تطوير سيرتك الذاتية والتحضير للمقابلات.</p>
               </div>
             </div>
             <div class="why-us-item">
               <div class="why-us-item-icon">🌍</div>
               <div>
-                <h4>تغطية شاملة</h4>
-                <p>نغطي جميع مناطق ومدن المملكة العربية السعودية.</p>
+                <h4 data-i18n="whyUs3Title">تغطية شاملة</h4>
+                <p data-i18n="whyUs3Desc">نغطي جميع مناطق ومدن المملكة العربية السعودية.</p>
               </div>
             </div>
             <div class="why-us-item">
               <div class="why-us-item-icon">🤝</div>
               <div>
-                <h4>شراكات استراتيجية</h4>
-                <p>شراكات مع أكثر من 150 منشأة صحية في المملكة.</p>
+                <h4 data-i18n="whyUs4Title">شراكات استراتيجية</h4>
+                <p data-i18n="whyUs4Desc">شراكات مع أكثر من 150 منشأة صحية في المملكة.</p>
               </div>
             </div>
           </div>
@@ -394,19 +394,19 @@
           <div class="why-us-card-group">
             <div class="why-card">
               <div class="number">500+</div>
-              <div class="label">وظيفة متاحة</div>
+              <div class="label" data-i18n="statJobs">وظيفة متاحة</div>
             </div>
             <div class="why-card">
               <div class="number">150+</div>
-              <div class="label">منشأة صحية</div>
+              <div class="label" data-i18n="statFacilities">منشأة صحية</div>
             </div>
             <div class="why-card">
               <div class="number">20+</div>
-              <div class="label">تخصص صحي</div>
+              <div class="label" data-i18n="statSpecialties">تخصص صحي</div>
             </div>
             <div class="why-card">
               <div class="number">3000+</div>
-              <div class="label">تم توظيفهم</div>
+              <div class="label" data-i18n="statHired">تم توظيفهم</div>
             </div>
           </div>
         </div>
@@ -418,30 +418,30 @@
   <section class="section section-light new-services-section">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">خدماتنا</span>
-        <h2>تخصصات التوظيف الصحي</h2>
-        <p>نوفر حلول توظيف متكاملة لكافة الكوادر الصحية في مختلف التخصصات</p>
+        <span class="badge" data-i18n="servicesBadge">خدماتنا</span>
+        <h2 data-i18n="newSvcTitle">تخصصات التوظيف الصحي</h2>
+        <p data-i18n="newSvcDesc">نوفر حلول توظيف متكاملة لكافة الكوادر الصحية في مختلف التخصصات</p>
       </div>
       <div class="new-services-grid">
         <div class="new-service-card fade-in">
           <div class="new-service-icon" style="background: linear-gradient(135deg, #0077B6, #023E8A);">🩺</div>
-          <h3>توظيف الأطباء</h3>
-          <p>ترشيح أطباء مؤهلين في مختلف التخصصات.</p>
+          <h3 data-i18n="newSvc1Title">توظيف الأطباء</h3>
+          <p data-i18n="newSvc1Desc">ترشيح أطباء مؤهلين في مختلف التخصصات.</p>
         </div>
         <div class="new-service-card fade-in">
           <div class="new-service-icon" style="background: linear-gradient(135deg, #2D9F4E, #1B7A3A);">💉</div>
-          <h3>توظيف التمريض</h3>
-          <p>توفير ممرضين قانونيين ومساعدين.</p>
+          <h3 data-i18n="newSvc2Title">توظيف التمريض</h3>
+          <p data-i18n="newSvc2Desc">توفير ممرضين قانونيين ومساعدين.</p>
         </div>
         <div class="new-service-card fade-in">
           <div class="new-service-icon" style="background: linear-gradient(135deg, #E67E22, #C0542A);">🔬</div>
-          <h3>توظيف الفنيين</h3>
-          <p>مختبر – أشعة – صيدلة – علاج طبيعي.</p>
+          <h3 data-i18n="newSvc3Title">توظيف الفنيين</h3>
+          <p data-i18n="newSvc3Desc">مختبر – أشعة – صيدلة – علاج طبيعي.</p>
         </div>
         <div class="new-service-card fade-in">
           <div class="new-service-icon" style="background: linear-gradient(135deg, #783CB4, #5A2A8A);">🗂️</div>
-          <h3>التوظيف الإداري الصحي</h3>
-          <p>سجلات – تأمين – إدارة جودة – موارد بشرية.</p>
+          <h3 data-i18n="newSvc4Title">التوظيف الإداري الصحي</h3>
+          <p data-i18n="newSvc4Desc">سجلات – تأمين – إدارة جودة – موارد بشرية.</p>
         </div>
       </div>
     </div>
@@ -451,26 +451,26 @@
   <section class="section platform-goals-section">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">رؤيتنا</span>
-        <h2>أهداف المنصة</h2>
-        <p>نسعى إلى تحقيق منظومة توظيف صحي شاملة ومتكاملة</p>
+        <span class="badge" data-i18n="goalsBadge">رؤيتنا</span>
+        <h2 data-i18n="goalsTitle">أهداف المنصة</h2>
+        <p data-i18n="goalsDesc">نسعى إلى تحقيق منظومة توظيف صحي شاملة ومتكاملة</p>
       </div>
       <div class="goals-grid">
         <div class="goal-item fade-in">
           <div class="goal-icon">📢</div>
-          <p>نشر الوظائف الصحية</p>
+          <p data-i18n="goal1">نشر الوظائف الصحية</p>
         </div>
         <div class="goal-item fade-in">
           <div class="goal-icon">📋</div>
-          <p>استقبال طلبات الممارسين الصحيين</p>
+          <p data-i18n="goal2">استقبال طلبات الممارسين الصحيين</p>
         </div>
         <div class="goal-item fade-in">
           <div class="goal-icon">🏥</div>
-          <p>تمكين المستشفيات والعيادات من طلب موظفين</p>
+          <p data-i18n="goal3">تمكين المستشفيات والعيادات من طلب موظفين</p>
         </div>
         <div class="goal-item fade-in">
           <div class="goal-icon">⚙️</div>
-          <p>إدارة عملية التوظيف الصحي بشكل احترافي</p>
+          <p data-i18n="goal4">إدارة عملية التوظيف الصحي بشكل احترافي</p>
         </div>
       </div>
     </div>
@@ -480,34 +480,34 @@
   <section class="section section-light target-audience-section">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="badge">من نخدم</span>
-        <h2>الجمهور المستهدف</h2>
-        <p>نخدم جميع قطاعات المنظومة الصحية في المملكة العربية السعودية</p>
+        <span class="badge" data-i18n="audienceBadge">من نخدم</span>
+        <h2 data-i18n="audienceTitle">الجمهور المستهدف</h2>
+        <p data-i18n="audienceDesc">نخدم جميع قطاعات المنظومة الصحية في المملكة العربية السعودية</p>
       </div>
       <div class="audience-grid">
         <div class="audience-card fade-in" data-modal="hospitals" role="button" tabindex="0" aria-label="المستشفيات">
           <div class="audience-icon">🏨</div>
-          <span>المستشفيات</span>
+          <span data-i18n="audHospitals">المستشفيات</span>
         </div>
         <div class="audience-card fade-in" data-modal="clinics" role="button" tabindex="0" aria-label="العيادات">
           <div class="audience-icon">🏠</div>
-          <span>العيادات</span>
+          <span data-i18n="audClinics">العيادات</span>
         </div>
         <div class="audience-card fade-in" data-modal="centers" role="button" tabindex="0" aria-label="المراكز الطبية">
           <div class="audience-icon">🏢</div>
-          <span>المراكز الطبية</span>
+          <span data-i18n="audCenters">المراكز الطبية</span>
         </div>
         <div class="audience-card fade-in" data-modal="labs" role="button" tabindex="0" aria-label="المختبرات">
           <div class="audience-icon">🔬</div>
-          <span>المختبرات</span>
+          <span data-i18n="audLabs">المختبرات</span>
         </div>
         <div class="audience-card fade-in" data-modal="pharmacies" role="button" tabindex="0" aria-label="الصيدليات">
           <div class="audience-icon">💊</div>
-          <span>الصيدليات</span>
+          <span data-i18n="audPharmacies">الصيدليات</span>
         </div>
         <div class="audience-card fade-in" data-modal="staff" role="button" tabindex="0" aria-label="الكوادر الطبية">
           <div class="audience-icon">👨‍⚕️</div>
-          <span>الكوادر الطبية (أطباء – تمريض – فنيين – إداريين صحيين)</span>
+          <span data-i18n="audStaff">الكوادر الطبية (أطباء – تمريض – فنيين – إداريين صحيين)</span>
         </div>
       </div>
     </div>
@@ -585,7 +585,7 @@
       <div class="aud-modal-icon" id="aud-modal-icon"></div>
       <h3 class="aud-modal-title" id="aud-modal-title"></h3>
       <p class="aud-modal-desc" id="aud-modal-desc"></p>
-      <a href="jobs.html" class="btn btn-primary aud-modal-btn">تصفح الوظائف المتاحة</a>
+      <a href="jobs.html" class="btn btn-primary aud-modal-btn" data-i18n="audModalBtn">تصفح الوظائف المتاحة</a>
     </div>
   </div>
 
@@ -593,34 +593,28 @@
   (function () {
     var audienceData = {
       hospitals: {
-        icon: '🏨',
-        title: 'المستشفيات',
-        desc: 'نتعاون مع مئات المستشفيات الحكومية والخاصة في جميع مناطق المملكة. نوفر لها كوادر طبية وتمريضية وإدارية مؤهلة، مع إدارة كاملة لعملية التوظيف من الإعلان حتى التعيين.'
+        ar: { icon: '🏨', title: 'المستشفيات', desc: 'نتعاون مع مئات المستشفيات الحكومية والخاصة في جميع مناطق المملكة. نوفر لها كوادر طبية وتمريضية وإدارية مؤهلة، مع إدارة كاملة لعملية التوظيف من الإعلان حتى التعيين.' },
+        en: { icon: '🏨', title: 'Hospitals', desc: 'We partner with hundreds of government and private hospitals across the Kingdom. We provide them with qualified medical, nursing and administrative staff, with full recruitment management from posting to placement.' }
       },
       clinics: {
-        icon: '🏠',
-        title: 'العيادات',
-        desc: 'ندعم عيادات التخصصات المختلفة في توفير أطباء وممرضين وموظفي استقبال متميزين. سواء كانت عيادة فردية أو متعددة التخصصات، نحن شريكك المثالي في التوظيف.'
+        ar: { icon: '🏠', title: 'العيادات', desc: 'ندعم عيادات التخصصات المختلفة في توفير أطباء وممرضين وموظفي استقبال متميزين. سواء كانت عيادة فردية أو متعددة التخصصات، نحن شريكك المثالي في التوظيف.' },
+        en: { icon: '🏠', title: 'Clinics', desc: 'We support specialty clinics in securing qualified doctors, nurses and reception staff. Whether a solo or multi-specialty clinic, we are your ideal recruitment partner.' }
       },
       centers: {
-        icon: '🏢',
-        title: 'المراكز الطبية',
-        desc: 'نساعد المراكز الطبية المتكاملة في بناء فرقها من أطباء وفنيي الأجهزة والكوادر الإدارية، لضمان تشغيل احترافي وخدمة صحية متميزة للمرضى.'
+        ar: { icon: '🏢', title: 'المراكز الطبية', desc: 'نساعد المراكز الطبية المتكاملة في بناء فرقها من أطباء وفنيي الأجهزة والكوادر الإدارية، لضمان تشغيل احترافي وخدمة صحية متميزة للمرضى.' },
+        en: { icon: '🏢', title: 'Medical Centers', desc: 'We help integrated medical centers build their teams of doctors, equipment technicians and administrative staff, ensuring professional operations and outstanding patient care.' }
       },
       labs: {
-        icon: '🔬',
-        title: 'المختبرات',
-        desc: 'نوفر لمختبرات التحاليل والأبحاث فنيين مختبر مؤهلين وحاصلين على الاعتمادات اللازمة، مع خبرات في التحاليل الطبية والجينية والتشخيصية.'
+        ar: { icon: '🔬', title: 'المختبرات', desc: 'نوفر لمختبرات التحاليل والأبحاث فنيين مختبر مؤهلين وحاصلين على الاعتمادات اللازمة، مع خبرات في التحاليل الطبية والجينية والتشخيصية.' },
+        en: { icon: '🔬', title: 'Laboratories', desc: 'We provide diagnostic and research labs with qualified, credentialed lab technicians with expertise in medical, genetic, and diagnostic testing.' }
       },
       pharmacies: {
-        icon: '💊',
-        title: 'الصيدليات',
-        desc: 'نربط صيدليات المستشفيات والمجتمعية بصيادلة مسجلين وتقنيي صيدلة مؤهلين، لضمان تقديم أعلى معايير الرعاية الدوائية للمرضى.'
+        ar: { icon: '💊', title: 'الصيدليات', desc: 'نربط صيدليات المستشفيات والمجتمعية بصيادلة مسجلين وتقنيي صيدلة مؤهلين، لضمان تقديم أعلى معايير الرعاية الدوائية للمرضى.' },
+        en: { icon: '💊', title: 'Pharmacies', desc: 'We connect hospital and community pharmacies with registered pharmacists and qualified pharmacy technicians to ensure the highest standards of pharmaceutical care.' }
       },
       staff: {
-        icon: '👨‍⚕️',
-        title: 'الكوادر الطبية',
-        desc: 'نفتح الأبواب أمام الأطباء والممرضين والفنيين والإداريين الصحيين للوصول إلى أفضل الفرص الوظيفية. قدّم ملفك مرة واحدة وتواصل مع عشرات المنشآت الصحية في آنٍ واحد.'
+        ar: { icon: '👨‍⚕️', title: 'الكوادر الطبية', desc: 'نفتح الأبواب أمام الأطباء والممرضين والفنيين والإداريين الصحيين للوصول إلى أفضل الفرص الوظيفية. قدّم ملفك مرة واحدة وتواصل مع عشرات المنشآت الصحية في آنٍ واحد.' },
+        en: { icon: '👨‍⚕️', title: 'Medical Staff', desc: 'We open doors for doctors, nurses, technicians and healthcare administrators to reach the best job opportunities. Submit your profile once and connect with dozens of healthcare facilities simultaneously.' }
       }
     };
 
@@ -630,8 +624,10 @@
     var desc    = document.getElementById('aud-modal-desc');
 
     function openModal(key) {
-      var d = audienceData[key];
-      if (!d) return;
+      var lang = (typeof currentLang !== 'undefined' ? currentLang : 'ar');
+      var entry = audienceData[key];
+      if (!entry) return;
+      var d = entry[lang] || entry['ar'];
       icon.textContent  = d.icon;
       title.textContent = d.title;
       desc.textContent  = d.desc;
@@ -663,49 +659,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 
-  <!-- ── Hamburger menu — inline so it runs after everything loads ── -->
-  <script>
-    (function () {
-      var hamburger = document.querySelector('.hamburger');
-      var navLinks  = document.querySelector('.nav-links');
-      var overlay   = document.getElementById('navOverlay');
-      if (!hamburger || !navLinks) return;
-
-      function closeMenu() {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-        if (overlay) overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      hamburger.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var isOpen = navLinks.classList.contains('active');
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        if (overlay) overlay.classList.toggle('active');
-        document.body.style.overflow = isOpen ? '' : 'hidden';
-      });
-
-      if (overlay) overlay.addEventListener('click', closeMenu);
-
-      document.addEventListener('click', function (e) {
-        if (navLinks.classList.contains('active') &&
-            !hamburger.contains(e.target) &&
-            !navLinks.contains(e.target)) {
-          closeMenu();
-        }
-      });
-
-      navLinks.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('button')) {
-          closeMenu();
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
 

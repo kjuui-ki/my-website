@@ -22,15 +22,26 @@
           <a href="index.html" data-i18n="navHome">الرئيسية</a>
           <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
           <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+          <div class="mobile-auth">
+            <div class="mobile-auth-divider"></div>
+            <div class="mobile-auth-inner" id="mobileAuthButtons">
+              <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
+              <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
+            </div>
+            <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
+              <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
+              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
+            </div>
+          </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
-            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
-            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogin">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authRegister">إنشاء حساب</a>
           </div>
           <div class="user-menu" id="userMenu" style="display:none; align-items:center; gap:10px;">
             <span class="user-greeting" id="userGreeting"></span>
-            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogout">تسجيل الخروج</button>
           </div>
           <div class="lang-switcher">
             <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة" onclick="toggleLanguage()">
@@ -57,18 +68,18 @@
       <div class="auth-logo">
         <img src="images/logo.png" alt="Rawad Health" height="120" style="object-fit:contain;">
       </div>
-      <h1 class="auth-title">إنشاء حساب</h1>
-      <p class="auth-subtitle">انضم إلى منصة Rawad Health</p>
+      <h1 class="auth-title" data-i18n="registerTitle">إنشاء حساب</h1>
+      <p class="auth-subtitle" data-i18n="registerSubtitle">انضم إلى منصة Rawad Health</p>
 
       <!-- Account type selection -->
       <div class="account-type-group">
         <div class="type-option selected" id="typeJobSeeker" onclick="selectType('jobseeker')">
           <span class="type-icon">👨‍⚕️</span>
-          <div class="type-label">باحث عن عمل</div>
+          <div class="type-label" data-i18n="typeJobSeekerLabel">باحث عن عمل</div>
         </div>
         <div class="type-option" id="typeAdmin" onclick="selectType('admin')">
           <span class="type-icon">🏥</span>
-          <div class="type-label">مسؤول / مؤسسة صحية</div>
+          <div class="type-label" data-i18n="typeAdminLabel">مسؤول / مؤسسة صحية</div>
         </div>
       </div>
 
@@ -79,7 +90,7 @@
         <!-- Job Seeker fields -->
         <div id="jobseekerFields">
           <div class="form-group">
-            <label for="fullName">الاسم الكامل</label>
+            <label for="fullName" data-i18n="labelFullNameRegister">الاسم الكامل</label>
             <input type="text" id="fullName" placeholder="محمد عبدالله" autocomplete="name">
           </div>
         </div>
@@ -87,29 +98,29 @@
         <!-- Admin fields -->
         <div id="adminFields" style="display:none;">
           <div class="form-group">
-            <label for="orgName">اسم المؤسسة</label>
+            <label for="orgName" data-i18n="labelOrgName">اسم المؤسسة</label>
             <input type="text" id="orgName" placeholder="مستشفى / عيادة / مركز صحي" autocomplete="organization">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="regEmail">البريد الإلكتروني</label>
+          <label for="regEmail" data-i18n="labelEmail">البريد الإلكتروني</label>
           <input type="email" id="regEmail" placeholder="example@email.com" autocomplete="email">
         </div>
         <div class="form-group">
-          <label for="regPhone">رقم الجوال</label>
+          <label for="regPhone" data-i18n="regPhoneLabel">رقم الجوال</label>
           <input type="tel" id="regPhone" placeholder="05xxxxxxxx" maxlength="10" autocomplete="tel">
         </div>
         <div class="form-group">
-          <label for="regPassword">كلمة المرور</label>
+          <label for="regPassword" data-i18n="labelPasswordRegister">كلمة المرور</label>
           <input type="password" id="regPassword" placeholder="8 أحرف على الأقل" autocomplete="new-password">
         </div>
 
-        <button type="submit" class="btn btn-primary form-btn">إنشاء الحساب</button>
+        <button type="submit" class="btn btn-primary form-btn" data-i18n="registerBtn">إنشاء الحساب</button>
       </form>
 
       <div class="auth-footer">
-        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+        <span data-i18n="registerHasAccount">لديك حساب بالفعل؟</span> <a href="login.html" data-i18n="authLogin">تسجيل الدخول</a>
       </div>
     </div>
   </main>
@@ -119,7 +130,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
   <script>
     // Flag to block onAuthStateChanged redirect during registration
     let isRegistering = false;

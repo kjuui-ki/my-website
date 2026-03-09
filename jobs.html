@@ -25,23 +25,23 @@
           <div class="mobile-auth">
             <div class="mobile-auth-divider"></div>
             <div class="mobile-auth-inner" id="mobileAuthButtons">
-              <a href="login.html" class="btn btn-outline mobile-auth-btn">تسجيل الدخول</a>
-              <a href="register.html" class="btn btn-primary mobile-auth-btn">إنشاء حساب</a>
+              <a href="login.html" class="btn btn-outline mobile-auth-btn" data-i18n="authLogin">تسجيل الدخول</a>
+              <a href="register.html" class="btn btn-primary mobile-auth-btn" data-i18n="authRegister">إنشاء حساب</a>
             </div>
             <div class="mobile-user-section" id="mobileUserMenu" style="display:none;">
               <span class="mobile-user-greeting" id="mobileUserGreeting"></span>
-              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">تسجيل الخروج</button>
+              <button class="btn btn-outline mobile-auth-btn" onclick="authLogout()" data-i18n="authLogout">تسجيل الخروج</button>
             </div>
           </div>
         </div>
         <div class="nav-cta">
           <div class="auth-btns" id="authButtons">
-            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
-            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogin">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authRegister">إنشاء حساب</a>
           </div>
           <div class="user-menu" id="userMenu" style="display:none;">
             <span class="user-greeting" id="userGreeting"></span>
-            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;" data-i18n="authLogout">تسجيل الخروج</button>
           </div>
           <div class="lang-switcher">
             <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة" onclick="toggleLanguage()">
@@ -216,39 +216,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 
-  <!-- ── Hamburger menu ── -->
-  <script>
-    (function () {
-      var hamburger = document.querySelector('.hamburger');
-      var navLinks  = document.querySelector('.nav-links');
-      var overlay   = document.getElementById('navOverlay');
-      if (!hamburger || !navLinks) return;
-      function closeMenu() {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-        if (overlay) overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-      hamburger.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var isOpen = navLinks.classList.contains('active');
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        if (overlay) overlay.classList.toggle('active');
-        document.body.style.overflow = isOpen ? '' : 'hidden';
-      });
-      if (overlay) overlay.addEventListener('click', closeMenu);
-      document.addEventListener('click', function (e) {
-        if (navLinks.classList.contains('active') &&
-            !hamburger.contains(e.target) && !navLinks.contains(e.target)) closeMenu();
-      });
-      navLinks.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('button')) closeMenu();
-      });
-    })();
-  </script>
 </body>
 </html>
 
