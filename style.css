@@ -2223,7 +2223,7 @@ html.has-js .slide-left.visible {
 
   /* Hero */
   .hero {
-    padding: 110px 0 50px;
+    padding: 125px 0 50px;
   }
   .hero-text h1 {
     font-size: 1.75rem;
@@ -2760,7 +2760,7 @@ html.has-js .slide-left.visible {
   .logo img                   { height: 80px !important; }
 
   /* Hero */
-  .hero                       { padding: 100px 0 48px; }
+  .hero                       { padding: 120px 0 48px; }
   .hero-text h1               { font-size: 1.6rem; }
   .hero-text p                { font-size: 1rem; }
   .hero-badge                 { font-size: 0.8rem; }
