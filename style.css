@@ -1078,6 +1078,24 @@ html[dir="ltr"] .nav-links a::after {
   gap: 20px;
 }
 
+.no-jobs-msg {
+  text-align: center;
+  padding: 80px 20px;
+}
+.no-jobs-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+}
+.no-jobs-msg h3 {
+  color: #023E8A;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+.no-jobs-msg p {
+  color: #777;
+  font-size: 0.95rem;
+}
+
 .job-list-card {
   background: #fff;
   border-radius: 16px;
@@ -1536,35 +1554,37 @@ html[dir="ltr"] .nav-links a::after {
 }
 
 /* === Animations === */
-.fade-in {
+/* Only hide elements when JS is loaded (has-js class added by script.js).
+   Without JS, all elements remain visible as fallback. */
+html.has-js .fade-in {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.fade-in.visible {
+html.has-js .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.slide-right {
+html.has-js .slide-right {
   opacity: 0;
   transform: translateX(50px);
-  transition: all 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.slide-right.visible {
+html.has-js .slide-right.visible {
   opacity: 1;
   transform: translateX(0);
 }
 
-.slide-left {
+html.has-js .slide-left {
   opacity: 0;
   transform: translateX(-50px);
-  transition: all 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.slide-left.visible {
+html.has-js .slide-left.visible {
   opacity: 1;
   transform: translateX(0);
 }

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نشر وظيفة جديدة | Rawad Health</title>
+  <meta name="description" content="أضف وظيفة جديدة إلى منصة Rawad Health.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .post-job-section {
+      padding: 60px 0 80px;
+      background: #f8faff;
+      min-height: calc(100vh - 200px);
+    }
+    .post-job-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(2,62,138,0.08);
+      padding: 40px 48px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .post-job-card h1 {
+      font-size: 1.8rem;
+      color: #023E8A;
+      margin-bottom: 32px;
+      font-weight: 800;
+    }
+    .form-group {
+      margin-bottom: 22px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      color: #023E8A;
+      margin-bottom: 7px;
+      font-size: 0.95rem;
+    }
+    .form-group label .optional {
+      font-weight: 400;
+      color: #888;
+      font-size: 0.82rem;
+      margin-right: 4px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #dde3ef;
+      border-radius: 8px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.95rem;
+      color: #333;
+      background: #f8faff;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0096C7;
+      background: #fff;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-hint {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 5px;
+    }
+    .form-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    #submit-btn {
+      min-width: 180px;
+    }
+    #submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    #form-msg {
+      margin-top: 16px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: none;
+    }
+    #form-msg.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      display: block;
+    }
+    #form-msg.error {
+      background: #fdecea;
+      color: #c62828;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .post-job-card { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Rawad Health" height="120" style="object-fit:contain;">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" data-i18n="navHome">الرئيسية</a>
+          <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+          <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+        </div>
+        <div class="nav-cta">
+          <div class="auth-btns" id="authButtons" style="display:none;">
+            <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
+            <a href="register.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">إنشاء حساب</a>
+          </div>
+          <div class="user-menu" id="userMenu" style="display:none; align-items:center; gap:10px;">
+            <span class="user-greeting" id="userGreeting"></span>
+            <button class="btn btn-outline" onclick="authLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn" id="langToggle" aria-label="تغيير اللغة">
+              <span class="lang-icon">🌐</span>
+              <span class="lang-label" data-i18n="langLabel">EN</span>
+            </button>
+          </div>
+        </div>
+        <button class="hamburger" aria-label="القائمة">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Rawad Health" height="60" style="object-fit:contain;">
+      </a>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="إغلاق">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="index.html" data-i18n="navHome">الرئيسية</a>
+      <a href="jobs.html" data-i18n="navJobs">الوظائف</a>
+      <a href="contact.html" data-i18n="navContact">تواصل معنا</a>
+    </div>
+    <div class="mobile-auth" id="mobileAuth"></div>
+  </div>
+
+  <!-- Page Content -->
+  <main>
+    <section class="post-job-section">
+      <div class="container">
+        <div class="post-job-card">
+          <h1>➕ نشر وظيفة جديدة</h1>
+
+          <form id="post-job-form" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="job-title">المسمى الوظيفي <span style="color:#e53935;">*</span></label>
+                <input type="text" id="job-title" placeholder="مثال: طبيب أسنان متخصص" required>
+              </div>
+              <div class="form-group">
+                <label for="job-company">اسم المنشأة / الشركة <span style="color:#e53935;">*</span></label>
+                <input type="text" id="job-company" placeholder="مثال: مستشفى الأمل" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="job-specialty">التخصص <span style="color:#e53935;">*</span></label>
+                <select id="job-specialty" required>
+                  <option value="">-- اختر التخصص --</option>
+                  <option value="طب عام">طب عام</option>
+                  <option value="طب أسنان">طب أسنان</option>
+                  <option value="صيدلة">صيدلة</option>
+                  <option value="تمريض">تمريض</option>
+                  <option value="علاج طبيعي">علاج طبيعي</option>
+                  <option value="مختبر طبي">مختبر طبي</option>
+                  <option value="أشعة">أشعة</option>
+                  <option value="إدارة صحية">إدارة صحية</option>
+                  <option value="تغذية">تغذية</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="job-city">المدينة <span style="color:#e53935;">*</span></label>
+                <select id="job-city" required>
+                  <option value="">-- اختر المدينة --</option>
+                  <option value="الرياض">الرياض</option>
+                  <option value="جدة">جدة</option>
+                  <option value="مكة المكرمة">مكة المكرمة</option>
+                  <option value="المدينة المنورة">المدينة المنورة</option>
+                  <option value="الدمام">الدمام</option>
+                  <option value="الأحساء">الأحساء</option>
+                  <option value="الطائف">الطائف</option>
+                  <option value="بريدة">بريدة</option>
+                  <option value="تبوك">تبوك</option>
+                  <option value="أبها">أبها</option>
+                  <option value="خميس مشيط">خميس مشيط</option>
+                  <option value="حائل">حائل</option>
+                  <option value="نجران">نجران</option>
+                  <option value="الجبيل">الجبيل</option>
+                  <option value="ينبع">ينبع</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="job-facility-type">نوع المنشأة <span style="color:#e53935;">*</span></label>
+                <select id="job-facility-type" required>
+                  <option value="">-- اختر نوع المنشأة --</option>
+                  <option value="مستشفى حكومي">مستشفى حكومي</option>
+                  <option value="مستشفى خاص">مستشفى خاص</option>
+                  <option value="عيادة خاصة">عيادة خاصة</option>
+                  <option value="مركز صحي">مركز صحي</option>
+                  <option value="مستوصف">مستوصف</option>
+                  <option value="صيدلية">صيدلية</option>
+                  <option value="مختبر">مختبر</option>
+                  <option value="شركة أدوية">شركة أدوية</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="job-type">نوع الدوام <span style="color:#e53935;">*</span></label>
+                <select id="job-type" required>
+                  <option value="">-- اختر نوع الدوام --</option>
+                  <option value="دوام كامل">دوام كامل</option>
+                  <option value="دوام جزئي">دوام جزئي</option>
+                  <option value="عن بُعد">عن بُعد</option>
+                  <option value="مؤقت">مؤقت</option>
+                  <option value="تدريب">تدريب</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="job-salary">الراتب <span class="optional">(اختياري)</span></label>
+                <input type="text" id="job-salary" placeholder="مثال: 8,000 - 12,000 ريال">
+              </div>
+              <div class="form-group">
+                <label for="job-company-logo">رمز المنشأة <span class="optional">(إيموجي اختياري)</span></label>
+                <input type="text" id="job-company-logo" placeholder="مثال: 🏥" maxlength="6">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="job-description">وصف الوظيفة <span style="color:#e53935;">*</span></label>
+              <textarea id="job-description" rows="5" placeholder="اكتب وصفاً مفصّلاً للوظيفة..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="job-tasks">المهام والمسؤوليات <span class="optional">(اختياري)</span></label>
+              <textarea id="job-tasks" rows="4" placeholder="اكتب كل مهمة في سطر منفصل..."></textarea>
+              <p class="form-hint">كل سطر سيُعرض كنقطة منفصلة.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="job-requirements">متطلبات الوظيفة <span class="optional">(اختياري)</span></label>
+              <textarea id="job-requirements" rows="4" placeholder="مثال:&#10;بكالوريوس علم الأدوية&#10;خبرة لا تقل عن 3 سنوات..."></textarea>
+              <p class="form-hint">كل سطر سيُعرض كنقطة منفصلة.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="job-benefits">المزايا والفوائد <span class="optional">(اختياري)</span></label>
+              <textarea id="job-benefits" rows="3" placeholder="مثال:&#10;تأمين طبي&#10;بدل سكن..."></textarea>
+              <p class="form-hint">كل سطر سيُعرض كنقطة منفصلة.</p>
+            </div>
+
+            <div id="form-msg"></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                🚀 نشر الوظيفة
+              </button>
+              <a href="dashboard.html" class="btn btn-outline btn-lg">
+                ↩ العودة للوحة التحكم
+              </a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" style="margin-top:0;">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2025 Rawad Health. جميع الحقوق محفوظة.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    // Guard: approved admins only
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) { window.location.href = 'login.html'; return; }
+      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
+        const u = doc.exists ? doc.data() : {};
+        if (u.role !== 'admin' || u.status !== 'approved') {
+          window.location.href = 'login.html';
+          return;
+        }
+        initPostJobForm(user.uid);
+      }).catch(function () { window.location.href = 'login.html'; });
+    });
+
+    function initPostJobForm(adminId) {
+      const form  = document.getElementById('post-job-form');
+      const btn   = document.getElementById('submit-btn');
+      const msgEl = document.getElementById('form-msg');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        msgEl.className = '';
+        msgEl.style.display = 'none';
+
+        const title        = document.getElementById('job-title').value.trim();
+        const company      = document.getElementById('job-company').value.trim();
+        const specialty    = document.getElementById('job-specialty').value;
+        const city         = document.getElementById('job-city').value;
+        const facilityType = document.getElementById('job-facility-type').value;
+        const jobType      = document.getElementById('job-type').value;
+        const salary       = document.getElementById('job-salary').value.trim();
+        const companyLogo  = document.getElementById('job-company-logo').value.trim() || '🏥';
+        const description  = document.getElementById('job-description').value.trim();
+
+        const splitLines = function (id) {
+          return document.getElementById(id).value
+            .split('\n').map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
+        };
+        const tasks        = splitLines('job-tasks');
+        const requirements = splitLines('job-requirements');
+        const benefits     = splitLines('job-benefits');
+
+        if (!title || !company || !specialty || !city || !facilityType || !jobType || !description) {
+          msgEl.textContent = 'يرجى تعبئة جميع الحقول المطلوبة.';
+          msgEl.className = 'error';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري النشر...';
+
+        firebase.firestore().collection('jobs').add({
+          title:        title,
+          company:      company,
+          companyLogo:  companyLogo,
+          specialty:    specialty,
+          city:         city,
+          facilityType: facilityType,
+          jobType:      jobType,
+          salary:       salary,
+          description:  description,
+          tasks:        tasks,
+          requirements: requirements,
+          benefits:     benefits,
+          adminId:      adminId,
+          date:         'منذ لحظات',
+          createdAt:    firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function () {
+          msgEl.textContent = '✅ تم نشر الوظيفة بنجاح! ستظهر على صفحة الوظائف فوراً.';
+          msgEl.className = 'success';
+          form.reset();
+          btn.disabled = false;
+          btn.textContent = '🚀 نشر وظيفة أخرى';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(function (err) {
+          console.error(err);
+          msgEl.textContent = 'حدث خطأ أثناء النشر. يرجى المحاولة مجدداً.';
+          msgEl.className = 'error';
+          btn.disabled = false;
+          btn.textContent = '🚀 نشر الوظيفة';
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -2,415 +2,16 @@
    Rawad Health - JavaScript
    ======================================== */
 
-// ===== Jobs Data =====
-const jobsData = [
-  {
-    id: 1,
-    title: "طبيب أسنان عام",
-    company: "مستشفى الملك فهد التخصصي",
-    companyLogo: "🏥",
-    specialty: "طب-اسنان",
-    city: "الرياض",
-    facilityType: "مستشفى",
-    jobType: "دوام-كامل",
-    salary: "25,000 - 35,000 ر.س",
-    date: "منذ 3 أيام",
-    description: "نبحث عن طبيب أسنان عام ذو خبرة للانضمام إلى فريقنا الطبي المتميز في مستشفى الملك فهد التخصصي بالرياض.",
-    tasks: [
-      "إجراء الفحوصات السريرية للمرضى وتشخيص الحالات",
-      "تنفيذ إجراءات علاج الأسنان المختلفة",
-      "وضع خطط علاجية شاملة للمرضى",
-      "متابعة حالات المرضى بعد العلاج",
-      "المشاركة في برامج التثقيف الصحي"
-    ],
-    requirements: [
-      "بكالوريوس طب وجراحة الفم والأسنان",
-      "تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية",
-      "خبرة لا تقل عن 3 سنوات",
-      "إجادة اللغة العربية والإنجليزية",
-      "مهارات تواصل ممتازة"
-    ],
-    benefits: [
-      "راتب تنافسي مع بدلات",
-      "تأمين طبي شامل",
-      "إجازة سنوية مدفوعة",
-      "فرص تدريب وتطوير مهني",
-      "بيئة عمل احترافية"
-    ]
-  },
-  {
-    id: 2,
-    title: "ممرض/ة عناية مركزة",
-    company: "مجموعة سليمان الحبيب الطبية",
-    companyLogo: "🏥",
-    specialty: "تمريض",
-    city: "جدة",
-    facilityType: "مستشفى",
-    jobType: "دوام-كامل",
-    salary: "15,000 - 22,000 ر.س",
-    date: "منذ يومين",
-    description: "مطلوب ممرض/ة متخصص/ة في العناية المركزة للعمل في مجموعة سليمان الحبيب الطبية بجدة.",
-    tasks: [
-      "تقديم الرعاية التمريضية المتقدمة لمرضى العناية المركزة",
-      "مراقبة العلامات الحيوية للمرضى بشكل مستمر",
-      "إدارة الأجهزة الطبية المتخصصة",
-      "التنسيق مع الفريق الطبي لتنفيذ خطط العلاج",
-      "توثيق الحالات الطبية بدقة"
-    ],
-    requirements: [
-      "بكالوريوس تمريض من جامعة معتمدة",
-      "تصنيف مهني ساري المفعول",
-      "خبرة 2 سنة في العناية المركزة",
-      "شهادة BLS و ACLS سارية",
-      "القدرة على العمل بنظام الورديات"
-    ],
-    benefits: [
-      "راتب مجزي مع بدل سكن",
-      "تأمين صحي للموظف والعائلة",
-      "بدل نقل",
-      "مكافآت أداء سنوية",
-      "تدريب مستمر"
-    ]
-  },
-  {
-    id: 3,
-    title: "صيدلي إكلينيكي",
-    company: "مستشفى المملكة",
-    companyLogo: "💊",
-    specialty: "صيدلة",
-    city: "الرياض",
-    facilityType: "مستشفى",
-    jobType: "دوام-كامل",
-    salary: "18,000 - 28,000 ر.س",
-    date: "منذ 5 أيام",
-    description: "فرصة مميزة لصيدلي إكلينيكي للعمل في أحد أكبر المستشفيات بالرياض.",
-    tasks: [
-      "مراجعة الوصفات الطبية والتحقق من سلامتها",
-      "تقديم الاستشارات الدوائية للفريق الطبي والمرضى",
-      "المشاركة في الجولات الطبية",
-      "متابعة التفاعلات الدوائية والأعراض الجانبية",
-      "المساهمة في وضع بروتوكولات العلاج الدوائي"
-    ],
-    requirements: [
-      "بكالوريوس صيدلة أو دكتور صيدلة (PharmD)",
-      "تصنيف مهني من هيئة التخصصات الصحية",
-      "خبرة 3 سنوات في الصيدلة الإكلينيكية",
-      "معرفة بأنظمة إدارة الصيدليات",
-      "مهارات تحليلية قوية"
-    ],
-    benefits: [
-      "حزمة رواتب تنافسية",
-      "تأمين طبي شامل",
-      "بدل سكن ونقل",
-      "إجازات سخية",
-      "فرص للتطوير المهني والأبحاث"
-    ]
-  },
-  {
-    id: 4,
-    title: "أخصائي علاج طبيعي",
-    company: "مركز التأهيل المتقدم",
-    companyLogo: "🦴",
-    specialty: "علاج-طبيعي",
-    city: "الدمام",
-    facilityType: "مركز-تأهيل",
-    jobType: "دوام-كامل",
-    salary: "14,000 - 20,000 ر.س",
-    date: "منذ أسبوع",
-    description: "نبحث عن أخصائي علاج طبيعي متميز للانضمام لمركز التأهيل المتقدم بالدمام.",
-    tasks: [
-      "تقييم حالات المرضى ووضع خطط علاجية فردية",
-      "تنفيذ برامج العلاج الطبيعي المتنوعة",
-      "استخدام الأجهزة والتقنيات العلاجية الحديثة",
-      "تثقيف المرضى والعائلات حول التمارين المنزلية",
-      "توثيق تقدم المرضى وتعديل الخطط العلاجية"
-    ],
-    requirements: [
-      "بكالوريوس علاج طبيعي",
-      "تصنيف مهني ساري",
-      "خبرة سنتين على الأقل",
-      "إلمام بتقنيات العلاج الطبيعي الحديثة",
-      "القدرة على العمل ضمن فريق متعدد التخصصات"
-    ],
-    benefits: [
-      "راتب تنافسي",
-      "تأمين صحي",
-      "بيئة عمل محفزة",
-      "دورات تدريبية متخصصة",
-      "إجازة سنوية 30 يوم"
-    ]
-  },
-  {
-    id: 5,
-    title: "أخصائي أشعة",
-    company: "مستشفى الحمادي",
-    companyLogo: "🔬",
-    specialty: "اشعة",
-    city: "جدة",
-    facilityType: "مستشفى",
-    jobType: "دوام-جزئي",
-    salary: "12,000 - 18,000 ر.س",
-    date: "منذ 4 أيام",
-    description: "مطلوب أخصائي أشعة للعمل بدوام جزئي في مستشفى الحمادي بجدة.",
-    tasks: [
-      "إجراء الفحوصات الإشعاعية المختلفة",
-      "تشغيل وصيانة أجهزة الأشعة",
-      "التأكد من جودة الصور الإشعاعية",
-      "الالتزام بمعايير السلامة الإشعاعية",
-      "التعاون مع أطباء الأشعة في إعداد التقارير"
-    ],
-    requirements: [
-      "بكالوريوس في تقنية الأشعة",
-      "تصنيف مهني ساري",
-      "خبرة لا تقل عن سنة",
-      "معرفة بأجهزة الأشعة الحديثة",
-      "الالتزام بمعايير الجودة والسلامة"
-    ],
-    benefits: [
-      "راتب مناسب للدوام الجزئي",
-      "تأمين طبي",
-      "مرونة في الجدول",
-      "بيئة عمل متطورة",
-      "فرص تدريب"
-    ]
-  },
-  {
-    id: 6,
-    title: "طبيب طوارئ",
-    company: "مستشفى الأمير سلطان",
-    companyLogo: "🚑",
-    specialty: "طب-عام",
-    city: "المدينة",
-    facilityType: "مستشفى",
-    jobType: "دوام-كامل",
-    salary: "30,000 - 45,000 ر.س",
-    date: "منذ يوم",
-    description: "فرصة عمل مميزة لطبيب طوارئ ذو خبرة في مستشفى الأمير سلطان بالمدينة المنورة.",
-    tasks: [
-      "استقبال وتقييم حالات الطوارئ",
-      "اتخاذ القرارات الطبية السريعة والحاسمة",
-      "إجراء عمليات الإنعاش والتدخلات الطارئة",
-      "الإشراف على فريق الطوارئ",
-      "التنسيق مع الأقسام الأخرى لتحويل المرضى"
-    ],
-    requirements: [
-      "بكالوريوس الطب والجراحة",
-      "شهادة البورد أو الزمالة في طب الطوارئ",
-      "تصنيف مهني ساري",
-      "خبرة 5 سنوات في طب الطوارئ",
-      "شهادات ATLS و ACLS سارية"
-    ],
-    benefits: [
-      "راتب تنافسي جداً",
-      "بدل خطورة",
-      "تأمين طبي VIP",
-      "سكن مؤثث",
-      "تذاكر سفر سنوية"
-    ]
-  }
-];
+// Mark HTML as JS-capable (ensures fade-in sections are always visible if JS fails)
+document.documentElement.classList.add('has-js');
 
-// ===== English Job Translations =====
-const jobsDataEn = {
-  1: {
-    title: "General Dentist",
-    company: "King Fahd Specialist Hospital",
-    salary: "25,000 - 35,000 SAR",
-    city: "Riyadh",
-    facilityType: "Hospital",
-    jobType: "Full-time",
-    specialty: "Dentistry",
-    date: "3 days ago",
-    description: "We are looking for an experienced general dentist to join our outstanding medical team at King Fahd Specialist Hospital in Riyadh.",
-    tasks: [
-      "Conduct clinical examinations and diagnose patients",
-      "Perform various dental treatment procedures",
-      "Develop comprehensive treatment plans for patients",
-      "Follow up on patient cases after treatment",
-      "Participate in health education programs"
-    ],
-    requirements: [
-      "Bachelor's in Dental Medicine and Surgery",
-      "Valid professional classification from SCFHS",
-      "Minimum 3 years of experience",
-      "Fluent in Arabic and English",
-      "Excellent communication skills"
-    ],
-    benefits: [
-      "Competitive salary with allowances",
-      "Comprehensive medical insurance",
-      "Paid annual leave",
-      "Training and professional development",
-      "Professional work environment"
-    ]
-  },
-  2: {
-    title: "ICU Nurse",
-    company: "Dr. Sulaiman Al Habib Medical Group",
-    salary: "15,000 - 22,000 SAR",
-    city: "Jeddah",
-    facilityType: "Hospital",
-    jobType: "Full-time",
-    specialty: "Nursing",
-    date: "2 days ago",
-    description: "We are seeking a specialized ICU nurse to work at Dr. Sulaiman Al Habib Medical Group in Jeddah.",
-    tasks: [
-      "Provide advanced nursing care for ICU patients",
-      "Continuously monitor patients' vital signs",
-      "Manage specialized medical equipment",
-      "Coordinate with the medical team to implement treatment plans",
-      "Accurately document medical cases"
-    ],
-    requirements: [
-      "Bachelor's in Nursing from an accredited university",
-      "Valid professional classification",
-      "2 years ICU experience",
-      "Valid BLS and ACLS certifications",
-      "Ability to work shift schedules"
-    ],
-    benefits: [
-      "Rewarding salary with housing allowance",
-      "Health insurance for employee and family",
-      "Transportation allowance",
-      "Annual performance bonuses",
-      "Continuous training"
-    ]
-  },
-  3: {
-    title: "Clinical Pharmacist",
-    company: "Kingdom Hospital",
-    salary: "18,000 - 28,000 SAR",
-    city: "Riyadh",
-    facilityType: "Hospital",
-    jobType: "Full-time",
-    specialty: "Pharmacy",
-    date: "5 days ago",
-    description: "An excellent opportunity for a clinical pharmacist to work at one of the largest hospitals in Riyadh.",
-    tasks: [
-      "Review prescriptions and verify their safety",
-      "Provide pharmaceutical consultations to the medical team and patients",
-      "Participate in medical rounds",
-      "Monitor drug interactions and side effects",
-      "Contribute to developing pharmacotherapy protocols"
-    ],
-    requirements: [
-      "Bachelor's in Pharmacy or PharmD",
-      "Professional classification from SCFHS",
-      "3 years clinical pharmacy experience",
-      "Knowledge of pharmacy management systems",
-      "Strong analytical skills"
-    ],
-    benefits: [
-      "Competitive salary package",
-      "Comprehensive medical insurance",
-      "Housing and transportation allowances",
-      "Generous leave",
-      "Professional development and research opportunities"
-    ]
-  },
-  4: {
-    title: "Physiotherapist",
-    company: "Advanced Rehabilitation Center",
-    salary: "14,000 - 20,000 SAR",
-    city: "Dammam",
-    facilityType: "Rehab Center",
-    jobType: "Full-time",
-    specialty: "Physiotherapy",
-    date: "1 week ago",
-    description: "We are looking for a distinguished physiotherapist to join the Advanced Rehabilitation Center in Dammam.",
-    tasks: [
-      "Assess patient conditions and develop individual treatment plans",
-      "Implement various physical therapy programs",
-      "Use modern therapeutic equipment and techniques",
-      "Educate patients and families about home exercises",
-      "Document patient progress and modify treatment plans"
-    ],
-    requirements: [
-      "Bachelor's in Physical Therapy",
-      "Valid professional classification",
-      "At least 2 years of experience",
-      "Familiarity with modern physiotherapy techniques",
-      "Ability to work in a multidisciplinary team"
-    ],
-    benefits: [
-      "Competitive salary",
-      "Health insurance",
-      "Motivating work environment",
-      "Specialized training courses",
-      "30 days annual leave"
-    ]
-  },
-  5: {
-    title: "Radiology Specialist",
-    company: "Al Hammadi Hospital",
-    salary: "12,000 - 18,000 SAR",
-    city: "Jeddah",
-    facilityType: "Hospital",
-    jobType: "Part-time",
-    specialty: "Radiology",
-    date: "4 days ago",
-    description: "We are seeking a radiology specialist for a part-time position at Al Hammadi Hospital in Jeddah.",
-    tasks: [
-      "Perform various radiological examinations",
-      "Operate and maintain radiology equipment",
-      "Ensure quality of radiological images",
-      "Comply with radiation safety standards",
-      "Collaborate with radiologists on report preparation"
-    ],
-    requirements: [
-      "Bachelor's in Radiology Technology",
-      "Valid professional classification",
-      "Minimum 1 year experience",
-      "Knowledge of modern radiology equipment",
-      "Commitment to quality and safety standards"
-    ],
-    benefits: [
-      "Suitable part-time salary",
-      "Medical insurance",
-      "Flexible schedule",
-      "Advanced work environment",
-      "Training opportunities"
-    ]
-  },
-  6: {
-    title: "Emergency Physician",
-    company: "Prince Sultan Hospital",
-    salary: "30,000 - 45,000 SAR",
-    city: "Madinah",
-    facilityType: "Hospital",
-    jobType: "Full-time",
-    specialty: "General Medicine",
-    date: "1 day ago",
-    description: "An outstanding career opportunity for an experienced emergency physician at Prince Sultan Hospital in Madinah.",
-    tasks: [
-      "Receive and assess emergency cases",
-      "Make quick and decisive medical decisions",
-      "Perform resuscitation and emergency interventions",
-      "Supervise the emergency team",
-      "Coordinate with other departments for patient transfers"
-    ],
-    requirements: [
-      "Bachelor's in Medicine and Surgery",
-      "Board or fellowship in Emergency Medicine",
-      "Valid professional classification",
-      "5 years emergency medicine experience",
-      "Valid ATLS and ACLS certifications"
-    ],
-    benefits: [
-      "Highly competitive salary",
-      "Hazard allowance",
-      "VIP medical insurance",
-      "Furnished housing",
-      "Annual travel tickets"
-    ]
-  }
-};
 
-// Helper: get localized job field
+// ===== Jobs Cache (loaded from Firestore) =====
+let jobsCache = [];
+
+// REMOVED: static jobsData = [
+// Helper: get job field (Firestore jobs — returns field directly)
 function getJobField(job, field) {
-  if (currentLang === 'en' && jobsDataEn[job.id] && jobsDataEn[job.id][field] !== undefined) {
-    return jobsDataEn[job.id][field];
-  }
   return job[field];
 }
 
@@ -446,16 +47,16 @@ function initAuthNav() {
     if (user) {
       firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
         const userData    = doc.exists ? doc.data() : {};
-        const displayName = userData.orgName || userData.name || user.displayName || 'المستخدم';
+        const displayName = userData.orgName || userData.name || user.displayName || 'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…';
         localStorage.setItem('rawad_current_user', JSON.stringify(Object.assign({}, userData, { uid: user.uid })));
         // Desktop
         if (authButtons)    authButtons.style.display    = 'none';
         if (userMenu)       userMenu.style.display        = 'flex';
-        if (userGreeting)   userGreeting.textContent      = 'مرحباً، ' + displayName;
+        if (userGreeting)   userGreeting.textContent      = 'Ù…Ø±Ø­Ø¨Ø§Ù‹ØŒ ' + displayName;
         // Mobile drawer
         if (mobileAuthBtns) mobileAuthBtns.style.display  = 'none';
         if (mobileUserMenu) mobileUserMenu.style.display   = 'flex';
-        if (mobileGreeting) mobileGreeting.textContent     = 'مرحباً، ' + displayName;
+        if (mobileGreeting) mobileGreeting.textContent     = 'Ù…Ø±Ø­Ø¨Ø§Ù‹ØŒ ' + displayName;
         // Mobile header
         if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'none';
         if (mobileHdrUser)     mobileHdrUser.style.display     = 'flex';
@@ -489,37 +90,37 @@ function initNavbar() {
   const navLinks   = document.querySelector('.nav-links');
   const header     = document.querySelector('.header');
 
-  // ── Inject mobile-only auth section into nav drawer (hidden on desktop via CSS) ──
+  // â”€â”€ Inject mobile-only auth section into nav drawer (hidden on desktop via CSS) â”€â”€
   if (navLinks && !navLinks.querySelector('.mobile-auth')) {
     const mobileAuth = document.createElement('div');
     mobileAuth.className = 'mobile-auth';
     mobileAuth.innerHTML = [
       '<div class="mobile-auth-divider"></div>',
       '<div class="mobile-auth-inner" id="mobileAuthButtons">',
-        '<a href="login.html"    class="btn btn-outline  mobile-auth-btn">تسجيل الدخول</a>',
-        '<a href="register.html" class="btn btn-primary  mobile-auth-btn">إنشاء حساب</a>',
+        '<a href="login.html"    class="btn btn-outline  mobile-auth-btn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>',
+        '<a href="register.html" class="btn btn-primary  mobile-auth-btn">Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨</a>',
       '</div>',
       '<div class="mobile-user-section" id="mobileUserMenu" style="display:none;">',
         '<span class="mobile-user-greeting" id="mobileUserGreeting"></span>',
-        '<button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">تسجيل الخروج</button>',
+        '<button class="btn btn-outline mobile-auth-btn" onclick="authLogout()">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>',
       '</div>'
     ].join('');
     navLinks.appendChild(mobileAuth);
   }
 
-  // ── Inject always-visible mobile auth buttons next to hamburger ──
+  // â”€â”€ Inject always-visible mobile auth buttons next to hamburger â”€â”€
   const navbar = document.querySelector('.navbar');
   if (navbar && !navbar.querySelector('.mobile-header-auth')) {
     const mobileHdrAuth = document.createElement('div');
     mobileHdrAuth.className = 'mobile-header-auth';
     mobileHdrAuth.innerHTML = [
       '<div id="mobileHdrAuthBtns" style="display:flex;gap:6px;">',
-        '<a href="login.html"    class="btn btn-outline  mobile-hdr-btn">تسجيل الدخول</a>',
-        '<a href="register.html" class="btn btn-primary  mobile-hdr-btn">إنشاء حساب</a>',
+        '<a href="login.html"    class="btn btn-outline  mobile-hdr-btn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>',
+        '<a href="register.html" class="btn btn-primary  mobile-hdr-btn">Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨</a>',
       '</div>',
       '<div id="mobileHdrUser" style="display:none;align-items:center;gap:8px;">',
         '<span id="mobileHdrGreeting" class="mobile-hdr-greeting"></span>',
-        '<button class="btn btn-outline mobile-hdr-btn" onclick="authLogout()">خروج</button>',
+        '<button class="btn btn-outline mobile-hdr-btn" onclick="authLogout()">Ø®Ø±ÙˆØ¬</button>',
       '</div>'
     ].join('');
     // Insert before hamburger so it appears to its left
@@ -632,32 +233,53 @@ function renderFeaturedJobs() {
   const grid = document.getElementById('featured-jobs-grid');
   if (!grid) return;
 
-  const featured = jobsData.slice(0, 3);
-  const viewDetailsText = currentLang === 'en' ? 'View Details →' : 'عرض التفاصيل ←';
-  grid.innerHTML = featured.map(job => `
-    <div class="job-card fade-in">
-      <div class="job-card-header">
-        <div class="job-company-logo">${job.companyLogo}</div>
-        <div>
-          <h3>${getJobField(job, 'title')}</h3>
-          <span>${getJobField(job, 'company')}</span>
-        </div>
-      </div>
-      <div class="job-tags">
-        <span class="job-tag tag-specialty">${getJobField(job, 'specialty')}</span>
-        <span class="job-tag tag-city">${getJobField(job, 'city')}</span>
-        <span class="job-tag tag-type">${getJobField(job, 'jobType')}</span>
-      </div>
-      <div class="job-salary">${getJobField(job, 'salary')}</div>
-      <div class="job-card-footer">
-        <span class="job-date">${getJobField(job, 'date')}</span>
-        <a href="job-details.html?id=${job.id}" class="job-apply-link">${viewDetailsText}</a>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;">جاري التحميل...</div>';
 
-  // Re-init animations for new elements
-  initScrollAnimations();
+  firebase.firestore().collection('jobs')
+    .orderBy('createdAt', 'desc')
+    .limit(3)
+    .get()
+    .then(function (snapshot) {
+      const jobs = [];
+      snapshot.forEach(function (doc) {
+        jobs.push(Object.assign({ firestoreId: doc.id }, doc.data()));
+      });
+
+      if (jobs.length === 0) {
+        grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;font-size:1rem;">لا يوجد وظائف متاحة حالياً</div>';
+        return;
+      }
+
+      const viewDetailsText = currentLang === 'en' ? 'View Details →' : 'عرض التفاصيل ←';
+      grid.innerHTML = jobs.map(function (job) {
+        return `
+          <div class="job-card fade-in">
+            <div class="job-card-header">
+              <div class="job-company-logo">${job.companyLogo || '🏥'}</div>
+              <div>
+                <h3>${job.title || ''}</h3>
+                <span>${job.company || ''}</span>
+              </div>
+            </div>
+            <div class="job-tags">
+              <span class="job-tag tag-specialty">${job.specialty || ''}</span>
+              <span class="job-tag tag-city">${job.city || ''}</span>
+              <span class="job-tag tag-type">${job.jobType || ''}</span>
+            </div>
+            <div class="job-salary">${job.salary || ''}</div>
+            <div class="job-card-footer">
+              <span class="job-date">${job.date || ''}</span>
+              <a href="job-details.html?id=${job.firestoreId}" class="job-apply-link">${viewDetailsText}</a>
+            </div>
+          </div>`;
+      }).join('');
+      initScrollAnimations();
+    })
+    .catch(function () {
+      grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;">تعذّر تحميل الوظائف</div>';
+    });
+}
+  const viewDetailsText = currentLang === 'en' ? 'View Details â†’' : 'Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ â†';
 }
 
 function animateCounters() {
@@ -680,41 +302,57 @@ function animateCounters() {
 }
 
 // ===== Jobs Page =====
+function loadJobsFromFirestore() {
+  const list = document.getElementById('jobs-list');
+  const countEl = document.getElementById('jobs-count');
+  if (!list) return;
+
+  list.innerHTML = '<div class="text-center" style="padding:60px 20px;"><div style="font-size:2rem;margin-bottom:12px;">⏳</div><p style="color:#888;">جاري تحميل الوظائف...</p></div>';
+
+  firebase.firestore().collection('jobs')
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then(function (snapshot) {
+      jobsCache = [];
+      snapshot.forEach(function (doc) {
+        jobsCache.push(Object.assign({ firestoreId: doc.id }, doc.data()));
+      });
+      renderJobsList(jobsCache);
+    })
+    .catch(function () {
+      list.innerHTML = '<div class="text-center" style="padding:60px 20px;"><p style="color:#888;">تعذّر تحميل الوظائف، حاول مجدداً.</p></div>';
+    });
+}
+
 function initJobsPage() {
-  renderJobsList(jobsData);
+  loadJobsFromFirestore();
 
-  // Filter handlers
   const filterBtn = document.getElementById('filter-btn');
-  if (filterBtn) {
-    filterBtn.addEventListener('click', applyFilters);
-  }
+  if (filterBtn) filterBtn.addEventListener('click', applyFilters);
 
-  // Also apply on select change
-  document.querySelectorAll('.filters-grid select').forEach(select => {
+  document.querySelectorAll('.filters-grid select').forEach(function (select) {
     select.addEventListener('change', applyFilters);
   });
 
   const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce(applyFilters, 300));
-  }
+  if (searchInput) searchInput.addEventListener('input', debounce(applyFilters, 300));
 }
 
 function applyFilters() {
-  const specialty = document.getElementById('filter-specialty')?.value || '';
-  const city = document.getElementById('filter-city')?.value || '';
+  const specialty   = document.getElementById('filter-specialty')?.value || '';
+  const city        = document.getElementById('filter-city')?.value || '';
   const facilityType = document.getElementById('filter-facility')?.value || '';
-  const jobType = document.getElementById('filter-type')?.value || '';
-  const searchTerm = document.getElementById('search-input')?.value?.toLowerCase() || '';
+  const jobType     = document.getElementById('filter-type')?.value || '';
+  const searchTerm  = (document.getElementById('search-input')?.value || '').toLowerCase();
 
-  let filtered = jobsData.filter(job => {
-    if (specialty && job.specialty !== specialty) return false;
-    if (city && job.city !== city) return false;
+  const filtered = jobsCache.filter(function (job) {
+    if (specialty    && job.specialty    !== specialty)    return false;
+    if (city         && job.city         !== city)         return false;
     if (facilityType && job.facilityType !== facilityType) return false;
-    if (jobType && job.jobType !== jobType) return false;
+    if (jobType      && job.jobType      !== jobType)      return false;
     if (searchTerm) {
-      const searchable = `${job.title} ${job.company} ${job.description}`.toLowerCase();
-      if (!searchable.includes(searchTerm)) return false;
+      const s = ((job.title || '') + ' ' + (job.company || '') + ' ' + (job.description || '')).toLowerCase();
+      if (!s.includes(searchTerm)) return false;
     }
     return true;
   });
@@ -723,86 +361,101 @@ function applyFilters() {
 }
 
 function renderJobsList(jobs) {
-  const list = document.getElementById('jobs-list');
+  const list    = document.getElementById('jobs-list');
   const countEl = document.getElementById('jobs-count');
   if (!list) return;
 
   if (countEl) countEl.textContent = jobs.length;
 
-  const noResultsTitle = currentLang === 'en' ? 'No results found' : 'لم يتم العثور على نتائج';
-  const noResultsDesc = currentLang === 'en' ? 'Try changing your search criteria or filters' : 'جرّب تغيير معايير البحث أو الفلاتر';
-  const viewDetailsText = currentLang === 'en' ? 'View Details' : 'عرض التفاصيل';
+  const hasFilter = (document.getElementById('filter-specialty')?.value  || '') ||
+                    (document.getElementById('filter-city')?.value        || '') ||
+                    (document.getElementById('filter-facility')?.value    || '') ||
+                    (document.getElementById('filter-type')?.value        || '') ||
+                    (document.getElementById('search-input')?.value       || '');
 
   if (jobs.length === 0) {
+    const title = hasFilter
+      ? (currentLang === 'en' ? 'No results found' : 'لم يتم العثور على نتائج')
+      : (currentLang === 'en' ? 'No jobs available at the moment' : 'لا يوجد وظائف متاحة حالياً');
+    const desc  = hasFilter
+      ? (currentLang === 'en' ? 'Try changing your search criteria or filters' : 'جرّب تغيير معايير البحث أو الفلاتر')
+      : '';
     list.innerHTML = `
-      <div class="text-center" style="padding: 60px 20px;">
-        <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
-        <h3 style="color: #023E8A; margin-bottom: 10px;">${noResultsTitle}</h3>
-        <p style="color: #666;">${noResultsDesc}</p>
-      </div>
-    `;
+      <div class="no-jobs-msg">
+        <div class="no-jobs-icon">💼</div>
+        <h3>${title}</h3>
+        ${desc ? `<p>${desc}</p>` : ''}
+      </div>`;
     return;
   }
 
-  list.innerHTML = jobs.map(job => `
-    <div class="job-list-card fade-in">
-      <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-        <div class="job-company-logo">${job.companyLogo}</div>
-        <div class="job-list-info">
-          <h3>${getJobField(job, 'title')}</h3>
-          <div class="company-name">${getJobField(job, 'company')}</div>
-          <div class="job-list-meta">
-            <span>📍 ${getJobField(job, 'city')}</span>
-            <span>🏥 ${getJobField(job, 'facilityType')}</span>
-            <span>⏰ ${getJobField(job, 'jobType')}</span>
-            <span>📅 ${getJobField(job, 'date')}</span>
+  const viewDetailsText = currentLang === 'en' ? 'View Details' : 'عرض التفاصيل';
+  list.innerHTML = jobs.map(function (job) {
+    return `
+      <div class="job-list-card fade-in">
+        <div style="display:flex;align-items:center;gap:20px;flex:1;">
+          <div class="job-company-logo">${job.companyLogo || '🏥'}</div>
+          <div class="job-list-info">
+            <h3>${job.title || ''}</h3>
+            <div class="company-name">${job.company || ''}</div>
+            <div class="job-list-meta">
+              <span>📍 ${job.city || '-'}</span>
+              <span>🏥 ${job.facilityType || '-'}</span>
+              <span>⏰ ${job.jobType || '-'}</span>
+              <span>📅 ${job.date || ''}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="job-list-actions">
-        <div class="job-list-salary">${getJobField(job, 'salary')}</div>
-        <a href="job-details.html?id=${job.id}" class="btn btn-primary" style="padding: 8px 24px; font-size: 0.9rem;">${viewDetailsText}</a>
-      </div>
-    </div>
-  `).join('');
-
+        <div class="job-list-actions">
+          <div class="job-list-salary">${job.salary || ''}</div>
+          <a href="job-details.html?id=${job.firestoreId}" class="btn btn-primary" style="padding:8px 24px;font-size:0.9rem;">${viewDetailsText}</a>
+        </div>
+      </div>`;
+  }).join('');
   initScrollAnimations();
 }
 
 // ===== Job Details Page =====
 function initJobDetailsPage() {
   const params = new URLSearchParams(window.location.search);
-  const jobId = parseInt(params.get('id')) || 1;
-  const job = jobsData.find(j => j.id === jobId) || jobsData[0];
+  const jobId  = params.get('id');
 
-  if (!job) return;
-
-  // Fill page content with localized data
-  setTextContent('job-title', getJobField(job, 'title'));
-  setTextContent('job-company', getJobField(job, 'company'));
-  setTextContent('job-description', getJobField(job, 'description'));
-  setTextContent('job-salary-value', getJobField(job, 'salary'));
-  setTextContent('job-city-value', getJobField(job, 'city'));
-  setTextContent('job-type-value', getJobField(job, 'jobType'));
-  setTextContent('job-specialty-value', getJobField(job, 'specialty'));
-  setTextContent('job-facility-value', getJobField(job, 'facilityType'));
-  setTextContent('job-date-value', getJobField(job, 'date'));
-
-  // Render lists with localized data
-  renderList('job-tasks-list', getJobField(job, 'tasks'));
-  renderList('job-requirements-list', getJobField(job, 'requirements'));
-  renderList('job-benefits-list', getJobField(job, 'benefits'));
-
-  // Apply button link
-  const applyBtn = document.getElementById('apply-btn');
-  if (applyBtn) {
-    applyBtn.href = `apply.html?job=${encodeURIComponent(job.title)}&id=${job.id}`;
+  if (!jobId) {
+    setTextContent('job-title', 'الوظيفة غير موجودة');
+    return;
   }
 
-  const applySidebarBtn = document.getElementById('apply-sidebar-btn');
-  if (applySidebarBtn) {
-    applySidebarBtn.href = `apply.html?job=${encodeURIComponent(job.title)}&id=${job.id}`;
-  }
+  firebase.firestore().collection('jobs').doc(jobId).get()
+    .then(function (doc) {
+      if (!doc.exists) {
+        setTextContent('job-title', 'الوظيفة غير موجودة');
+        return;
+      }
+      const job = doc.data();
+
+      setTextContent('job-title',          job.title        || '');
+      setTextContent('job-company',        job.company      || '');
+      setTextContent('job-description',    job.description  || '');
+      setTextContent('job-salary-value',   job.salary       || '-');
+      setTextContent('job-city-value',     job.city         || '-');
+      setTextContent('job-type-value',     job.jobType      || '-');
+      setTextContent('job-specialty-value',job.specialty    || '-');
+      setTextContent('job-facility-value', job.facilityType || '-');
+      setTextContent('job-date-value',     job.date         || '-');
+
+      renderList('job-tasks-list',        job.tasks);
+      renderList('job-requirements-list', job.requirements);
+      renderList('job-benefits-list',     job.benefits);
+
+      const link = `apply.html?job=${encodeURIComponent(job.title || '')}&id=${doc.id}`;
+      const applyBtn = document.getElementById('apply-btn');
+      if (applyBtn) applyBtn.href = link;
+      const applySidebarBtn = document.getElementById('apply-sidebar-btn');
+      if (applySidebarBtn) applySidebarBtn.href = link;
+    })
+    .catch(function () {
+      setTextContent('job-title', 'تعذّر تحميل الوظيفة');
+    });
 }
 
 function setTextContent(id, text) {
@@ -824,7 +477,7 @@ function initApplyPage() {
 
   if (jobTitle) {
     const titleEl = document.getElementById('apply-job-title');
-    if (titleEl) titleEl.textContent = `التقديم على: ${decodeURIComponent(jobTitle)}`;
+    if (titleEl) titleEl.textContent = `Ø§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø¹Ù„Ù‰: ${decodeURIComponent(jobTitle)}`;
   }
 
   // File upload
@@ -871,7 +524,7 @@ function initApplyPage() {
 
 function updateFileName(input, display) {
   if (input.files.length && display) {
-    display.textContent = `✅ ${input.files[0].name}`;
+    display.textContent = `âœ… ${input.files[0].name}`;
     display.style.color = '#2D9F4E';
     display.style.fontWeight = '600';
   }
@@ -892,7 +545,7 @@ function validateApplyForm(form) {
   });
 
   if (!valid) {
-    const msg = currentLang === 'en' ? 'Please fill in all required fields' : 'يرجى ملء جميع الحقول المطلوبة';
+    const msg = currentLang === 'en' ? 'Please fill in all required fields' : 'ÙŠØ±Ø¬Ù‰ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©';
     showAlert('error-alert', msg);
   }
 
@@ -922,7 +575,7 @@ function initContactPage() {
         showModal('success-modal');
         form.reset();
       } else {
-        const msg = currentLang === 'en' ? 'Please fill in all required fields' : 'يرجى ملء جميع الحقول المطلوبة';
+        const msg = currentLang === 'en' ? 'Please fill in all required fields' : 'ÙŠØ±Ø¬Ù‰ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©';
         showAlert('error-alert', msg);
       }
     });
@@ -989,243 +642,243 @@ const translations = {
   ar: {
     // Header / Nav
     langLabel: 'EN',
-    navHome: 'الرئيسية',
-    navJobs: 'الوظائف',
-    navContact: 'تواصل معنا',
-    browseJobs: 'تصفح الوظائف',
+    navHome: 'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©',
+    navJobs: 'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù',
+    navContact: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§',
+    browseJobs: 'ØªØµÙØ­ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù',
 
     // Hero
-    heroBadge: '🏥 المنصة الصحية الأولى في المملكة',
-    heroTitle: 'وظيفتك الصحية <span>تبدأ من هنا</span>',
-    heroDesc: 'منصة Rawad Health تربط الكفاءات الصحية بأفضل المنشآت الطبية في المملكة العربية السعودية. اكتشف فرصاً مميزة تناسب تخصصك وطموحك المهني.',
-    heroBtnJobs: 'تصفح الوظائف المتاحة',
-    heroBtnContact: 'تواصل معنا',
+    heroBadge: 'ðŸ¥ Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„ØµØ­ÙŠØ© Ø§Ù„Ø£ÙˆÙ„Ù‰ ÙÙŠ Ø§Ù„Ù…Ù…Ù„ÙƒØ©',
+    heroTitle: 'ÙˆØ¸ÙŠÙØªÙƒ Ø§Ù„ØµØ­ÙŠØ© <span>ØªØ¨Ø¯Ø£ Ù…Ù† Ù‡Ù†Ø§</span>',
+    heroDesc: 'Ù…Ù†ØµØ© Rawad Health ØªØ±Ø¨Ø· Ø§Ù„ÙƒÙØ§Ø¡Ø§Øª Ø§Ù„ØµØ­ÙŠØ© Ø¨Ø£ÙØ¶Ù„ Ø§Ù„Ù…Ù†Ø´Ø¢Øª Ø§Ù„Ø·Ø¨ÙŠØ© ÙÙŠ Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ©. Ø§ÙƒØªØ´Ù ÙØ±ØµØ§Ù‹ Ù…Ù…ÙŠØ²Ø© ØªÙ†Ø§Ø³Ø¨ ØªØ®ØµØµÙƒ ÙˆØ·Ù…ÙˆØ­Ùƒ Ø§Ù„Ù…Ù‡Ù†ÙŠ.',
+    heroBtnJobs: 'ØªØµÙØ­ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…ØªØ§Ø­Ø©',
+    heroBtnContact: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§',
 
     // Hero stats
-    statJobs: 'وظيفة متاحة',
-    statFacilities: 'منشأة صحية',
-    statHired: 'تم توظيفهم',
+    statJobs: 'ÙˆØ¸ÙŠÙØ© Ù…ØªØ§Ø­Ø©',
+    statFacilities: 'Ù…Ù†Ø´Ø£Ø© ØµØ­ÙŠØ©',
+    statHired: 'ØªÙ… ØªÙˆØ¸ÙŠÙÙ‡Ù…',
 
     // Features
-    featuresBadge: 'مميزاتنا',
-    featuresTitle: 'لماذا تختار Rawad Health؟',
-    featuresDesc: 'نقدم لك تجربة توظيف صحي متكاملة ومميزة',
-    feat1Title: 'وظائف متخصصة',
-    feat1Desc: 'نوفر وظائف في جميع التخصصات الصحية من الطب والتمريض إلى الصيدلة والعلاج الطبيعي والمختبرات.',
-    feat2Title: 'منشآت موثوقة',
-    feat2Desc: 'نتعاون مع أفضل المستشفيات والمراكز الطبية والعيادات المرخصة في جميع أنحاء المملكة.',
-    feat3Title: 'تقديم سريع',
-    feat3Desc: 'قدّم على الوظائف بسهولة وسرعة من خلال نموذج تقديم بسيط ومباشر بدون تعقيد.',
-    feat4Title: 'تنبيهات فورية',
-    feat4Desc: 'احصل على إشعارات فورية بأحدث الوظائف التي تناسب تخصصك ومدينتك.',
+    featuresBadge: 'Ù…Ù…ÙŠØ²Ø§ØªÙ†Ø§',
+    featuresTitle: 'Ù„Ù…Ø§Ø°Ø§ ØªØ®ØªØ§Ø± Rawad HealthØŸ',
+    featuresDesc: 'Ù†Ù‚Ø¯Ù… Ù„Ùƒ ØªØ¬Ø±Ø¨Ø© ØªÙˆØ¸ÙŠÙ ØµØ­ÙŠ Ù…ØªÙƒØ§Ù…Ù„Ø© ÙˆÙ…Ù…ÙŠØ²Ø©',
+    feat1Title: 'ÙˆØ¸Ø§Ø¦Ù Ù…ØªØ®ØµØµØ©',
+    feat1Desc: 'Ù†ÙˆÙØ± ÙˆØ¸Ø§Ø¦Ù ÙÙŠ Ø¬Ù…ÙŠØ¹ Ø§Ù„ØªØ®ØµØµØ§Øª Ø§Ù„ØµØ­ÙŠØ© Ù…Ù† Ø§Ù„Ø·Ø¨ ÙˆØ§Ù„ØªÙ…Ø±ÙŠØ¶ Ø¥Ù„Ù‰ Ø§Ù„ØµÙŠØ¯Ù„Ø© ÙˆØ§Ù„Ø¹Ù„Ø§Ø¬ Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠ ÙˆØ§Ù„Ù…Ø®ØªØ¨Ø±Ø§Øª.',
+    feat2Title: 'Ù…Ù†Ø´Ø¢Øª Ù…ÙˆØ«ÙˆÙ‚Ø©',
+    feat2Desc: 'Ù†ØªØ¹Ø§ÙˆÙ† Ù…Ø¹ Ø£ÙØ¶Ù„ Ø§Ù„Ù…Ø³ØªØ´ÙÙŠØ§Øª ÙˆØ§Ù„Ù…Ø±Ø§ÙƒØ² Ø§Ù„Ø·Ø¨ÙŠØ© ÙˆØ§Ù„Ø¹ÙŠØ§Ø¯Ø§Øª Ø§Ù„Ù…Ø±Ø®ØµØ© ÙÙŠ Ø¬Ù…ÙŠØ¹ Ø£Ù†Ø­Ø§Ø¡ Ø§Ù„Ù…Ù…Ù„ÙƒØ©.',
+    feat3Title: 'ØªÙ‚Ø¯ÙŠÙ… Ø³Ø±ÙŠØ¹',
+    feat3Desc: 'Ù‚Ø¯Ù‘Ù… Ø¹Ù„Ù‰ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø¨Ø³Ù‡ÙˆÙ„Ø© ÙˆØ³Ø±Ø¹Ø© Ù…Ù† Ø®Ù„Ø§Ù„ Ù†Ù…ÙˆØ°Ø¬ ØªÙ‚Ø¯ÙŠÙ… Ø¨Ø³ÙŠØ· ÙˆÙ…Ø¨Ø§Ø´Ø± Ø¨Ø¯ÙˆÙ† ØªØ¹Ù‚ÙŠØ¯.',
+    feat4Title: 'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ÙÙˆØ±ÙŠØ©',
+    feat4Desc: 'Ø§Ø­ØµÙ„ Ø¹Ù„Ù‰ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª ÙÙˆØ±ÙŠØ© Ø¨Ø£Ø­Ø¯Ø« Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„ØªÙŠ ØªÙ†Ø§Ø³Ø¨ ØªØ®ØµØµÙƒ ÙˆÙ…Ø¯ÙŠÙ†ØªÙƒ.',
 
     // Services
-    servicesBadge: 'خدماتنا',
-    servicesTitle: 'ماذا نقدم لك؟',
-    servicesDesc: 'نوفر لك مجموعة متكاملة من الخدمات لدعم مسيرتك المهنية في القطاع الصحي',
-    svc1Title: 'التوظيف الطبي',
-    svc1Desc: 'نربطك بأفضل الفرص الوظيفية في المستشفيات والمراكز الطبية المرموقة في جميع أنحاء المملكة، في أكثر من 20 تخصصاً صحياً.',
-    svc2Title: 'التدريب والتطوير',
-    svc2Desc: 'نوفر برامج تدريبية متخصصة للكوادر الصحية لتعزيز مهاراتهم، ومواكبة أحدث المستجدات الطبية وتطوير أدائهم المهني.',
+    servicesBadge: 'Ø®Ø¯Ù…Ø§ØªÙ†Ø§',
+    servicesTitle: 'Ù…Ø§Ø°Ø§ Ù†Ù‚Ø¯Ù… Ù„ÙƒØŸ',
+    servicesDesc: 'Ù†ÙˆÙØ± Ù„Ùƒ Ù…Ø¬Ù…ÙˆØ¹Ø© Ù…ØªÙƒØ§Ù…Ù„Ø© Ù…Ù† Ø§Ù„Ø®Ø¯Ù…Ø§Øª Ù„Ø¯Ø¹Ù… Ù…Ø³ÙŠØ±ØªÙƒ Ø§Ù„Ù…Ù‡Ù†ÙŠØ© ÙÙŠ Ø§Ù„Ù‚Ø·Ø§Ø¹ Ø§Ù„ØµØ­ÙŠ',
+    svc1Title: 'Ø§Ù„ØªÙˆØ¸ÙŠÙ Ø§Ù„Ø·Ø¨ÙŠ',
+    svc1Desc: 'Ù†Ø±Ø¨Ø·Ùƒ Ø¨Ø£ÙØ¶Ù„ Ø§Ù„ÙØ±Øµ Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© ÙÙŠ Ø§Ù„Ù…Ø³ØªØ´ÙÙŠØ§Øª ÙˆØ§Ù„Ù…Ø±Ø§ÙƒØ² Ø§Ù„Ø·Ø¨ÙŠØ© Ø§Ù„Ù…Ø±Ù…ÙˆÙ‚Ø© ÙÙŠ Ø¬Ù…ÙŠØ¹ Ø£Ù†Ø­Ø§Ø¡ Ø§Ù„Ù…Ù…Ù„ÙƒØ©ØŒ ÙÙŠ Ø£ÙƒØ«Ø± Ù…Ù† 20 ØªØ®ØµØµØ§Ù‹ ØµØ­ÙŠØ§Ù‹.',
+    svc2Title: 'Ø§Ù„ØªØ¯Ø±ÙŠØ¨ ÙˆØ§Ù„ØªØ·ÙˆÙŠØ±',
+    svc2Desc: 'Ù†ÙˆÙØ± Ø¨Ø±Ø§Ù…Ø¬ ØªØ¯Ø±ÙŠØ¨ÙŠØ© Ù…ØªØ®ØµØµØ© Ù„Ù„ÙƒÙˆØ§Ø¯Ø± Ø§Ù„ØµØ­ÙŠØ© Ù„ØªØ¹Ø²ÙŠØ² Ù…Ù‡Ø§Ø±Ø§ØªÙ‡Ù…ØŒ ÙˆÙ…ÙˆØ§ÙƒØ¨Ø© Ø£Ø­Ø¯Ø« Ø§Ù„Ù…Ø³ØªØ¬Ø¯Ø§Øª Ø§Ù„Ø·Ø¨ÙŠØ© ÙˆØªØ·ÙˆÙŠØ± Ø£Ø¯Ø§Ø¦Ù‡Ù… Ø§Ù„Ù…Ù‡Ù†ÙŠ.',
 
     // Latest jobs
-    latestJobsTitle: 'أحدث الوظائف المتاحة',
-    latestJobsDesc: 'اكتشف أحدث الفرص الوظيفية في القطاع الصحي',
-    viewAllJobs: 'عرض جميع الوظائف →',
-    learnMore: 'اعرف أكثر',
+    latestJobsTitle: 'Ø£Ø­Ø¯Ø« Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…ØªØ§Ø­Ø©',
+    latestJobsDesc: 'Ø§ÙƒØªØ´Ù Ø£Ø­Ø¯Ø« Ø§Ù„ÙØ±Øµ Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© ÙÙŠ Ø§Ù„Ù‚Ø·Ø§Ø¹ Ø§Ù„ØµØ­ÙŠ',
+    viewAllJobs: 'Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù â†’',
+    learnMore: 'Ø§Ø¹Ø±Ù Ø£ÙƒØ«Ø±',
 
     // CTA
-    ctaTitle: 'جاهز للخطوة القادمة في مسيرتك المهنية؟',
-    ctaDesc: 'انضم إلى آلاف المهنيين الصحيين الذين وجدوا وظائفهم المثالية عبر Rawad Health',
-    ctaContact: 'تواصل معنا',
+    ctaTitle: 'Ø¬Ø§Ù‡Ø² Ù„Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© ÙÙŠ Ù…Ø³ÙŠØ±ØªÙƒ Ø§Ù„Ù…Ù‡Ù†ÙŠØ©ØŸ',
+    ctaDesc: 'Ø§Ù†Ø¶Ù… Ø¥Ù„Ù‰ Ø¢Ù„Ø§Ù Ø§Ù„Ù…Ù‡Ù†ÙŠÙŠÙ† Ø§Ù„ØµØ­ÙŠÙŠÙ† Ø§Ù„Ø°ÙŠÙ† ÙˆØ¬Ø¯ÙˆØ§ ÙˆØ¸Ø§Ø¦ÙÙ‡Ù… Ø§Ù„Ù…Ø«Ø§Ù„ÙŠØ© Ø¹Ø¨Ø± Rawad Health',
+    ctaContact: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§',
 
     // Footer
-    footerAbout: 'منصة التوظيف الصحي الرائدة في المملكة العربية السعودية. نربط الكفاءات الصحية بأفضل الفرص الوظيفية في القطاع الصحي.',
-    quickLinks: 'روابط سريعة',
-    specialties: 'التخصصات',
-    contactUs: 'تواصل معنا',
-    copyright: '© 2026 Rawad Health. جميع الحقوق محفوظة.',
-    footerAddress: 'الرياض، المملكة العربية السعودية',
+    footerAbout: 'Ù…Ù†ØµØ© Ø§Ù„ØªÙˆØ¸ÙŠÙ Ø§Ù„ØµØ­ÙŠ Ø§Ù„Ø±Ø§Ø¦Ø¯Ø© ÙÙŠ Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ©. Ù†Ø±Ø¨Ø· Ø§Ù„ÙƒÙØ§Ø¡Ø§Øª Ø§Ù„ØµØ­ÙŠØ© Ø¨Ø£ÙØ¶Ù„ Ø§Ù„ÙØ±Øµ Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© ÙÙŠ Ø§Ù„Ù‚Ø·Ø§Ø¹ Ø§Ù„ØµØ­ÙŠ.',
+    quickLinks: 'Ø±ÙˆØ§Ø¨Ø· Ø³Ø±ÙŠØ¹Ø©',
+    specialties: 'Ø§Ù„ØªØ®ØµØµØ§Øª',
+    contactUs: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§',
+    copyright: 'Â© 2026 Rawad Health. Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.',
+    footerAddress: 'Ø§Ù„Ø±ÙŠØ§Ø¶ØŒ Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ©',
 
     // Jobs page
-    jobsPageTitle: 'الوظائف المتاحة',
-    jobsPageDesc: 'اكتشف فرصاً وظيفية مميزة في القطاع الصحي بالمملكة',
-    breadcrumbHome: 'الرئيسية',
-    breadcrumbJobs: 'الوظائف',
-    filterSearch: 'بحث',
-    filterSearchPlaceholder: 'ابحث عن وظيفة...',
-    filterSpecialty: 'التخصص',
-    filterAllSpecialties: 'جميع التخصصات',
-    filterCity: 'المدينة',
-    filterAllCities: 'جميع المدن',
-    filterFacility: 'نوع المنشأة',
-    filterAllFacilities: 'جميع المنشآت',
-    filterWorkType: 'نوع الدوام',
-    filterAllTypes: 'جميع الأنواع',
-    filterBtn: '🔍 بحث',
-    searchResults: 'نتائج البحث:',
-    jobUnit: 'وظيفة',
-    noJobCta: 'لم تجد الوظيفة المناسبة؟',
-    noJobCtaDesc: 'تواصل معنا وسنساعدك في إيجاد الفرصة المثالية التي تناسب تخصصك',
+    jobsPageTitle: 'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…ØªØ§Ø­Ø©',
+    jobsPageDesc: 'Ø§ÙƒØªØ´Ù ÙØ±ØµØ§Ù‹ ÙˆØ¸ÙŠÙÙŠØ© Ù…Ù…ÙŠØ²Ø© ÙÙŠ Ø§Ù„Ù‚Ø·Ø§Ø¹ Ø§Ù„ØµØ­ÙŠ Ø¨Ø§Ù„Ù…Ù…Ù„ÙƒØ©',
+    breadcrumbHome: 'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©',
+    breadcrumbJobs: 'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù',
+    filterSearch: 'Ø¨Ø­Ø«',
+    filterSearchPlaceholder: 'Ø§Ø¨Ø­Ø« Ø¹Ù† ÙˆØ¸ÙŠÙØ©...',
+    filterSpecialty: 'Ø§Ù„ØªØ®ØµØµ',
+    filterAllSpecialties: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„ØªØ®ØµØµØ§Øª',
+    filterCity: 'Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©',
+    filterAllCities: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…Ø¯Ù†',
+    filterFacility: 'Ù†ÙˆØ¹ Ø§Ù„Ù…Ù†Ø´Ø£Ø©',
+    filterAllFacilities: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…Ù†Ø´Ø¢Øª',
+    filterWorkType: 'Ù†ÙˆØ¹ Ø§Ù„Ø¯ÙˆØ§Ù…',
+    filterAllTypes: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ù†ÙˆØ§Ø¹',
+    filterBtn: 'ðŸ” Ø¨Ø­Ø«',
+    searchResults: 'Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø¨Ø­Ø«:',
+    jobUnit: 'ÙˆØ¸ÙŠÙØ©',
+    noJobCta: 'Ù„Ù… ØªØ¬Ø¯ Ø§Ù„ÙˆØ¸ÙŠÙØ© Ø§Ù„Ù…Ù†Ø§Ø³Ø¨Ø©ØŸ',
+    noJobCtaDesc: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§ ÙˆØ³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥ÙŠØ¬Ø§Ø¯ Ø§Ù„ÙØ±ØµØ© Ø§Ù„Ù…Ø«Ø§Ù„ÙŠØ© Ø§Ù„ØªÙŠ ØªÙ†Ø§Ø³Ø¨ ØªØ®ØµØµÙƒ',
 
     // Specialties for filters
-    specGeneral: 'طب عام',
-    specDentistry: 'طب أسنان',
-    specNursing: 'تمريض',
-    specPharmacy: 'صيدلة',
-    specPhysio: 'علاج طبيعي',
-    specRadiology: 'أشعة',
-    specLab: 'مختبرات',
-    specNutrition: 'تغذية إكلينيكية',
-    specOptics: 'بصريات',
+    specGeneral: 'Ø·Ø¨ Ø¹Ø§Ù…',
+    specDentistry: 'Ø·Ø¨ Ø£Ø³Ù†Ø§Ù†',
+    specNursing: 'ØªÙ…Ø±ÙŠØ¶',
+    specPharmacy: 'ØµÙŠØ¯Ù„Ø©',
+    specPhysio: 'Ø¹Ù„Ø§Ø¬ Ø·Ø¨ÙŠØ¹ÙŠ',
+    specRadiology: 'Ø£Ø´Ø¹Ø©',
+    specLab: 'Ù…Ø®ØªØ¨Ø±Ø§Øª',
+    specNutrition: 'ØªØºØ°ÙŠØ© Ø¥ÙƒÙ„ÙŠÙ†ÙŠÙƒÙŠØ©',
+    specOptics: 'Ø¨ØµØ±ÙŠØ§Øª',
 
     // Cities
-    cityRiyadh: 'الرياض',
-    cityJeddah: 'جدة',
-    cityDammam: 'الدمام',
-    cityMadinah: 'المدينة المنورة',
-    cityMakkah: 'مكة المكرمة',
-    cityTaif: 'الطائف',
-    cityTabuk: 'تبوك',
-    cityAbha: 'أبها',
-    cityHail: 'حائل',
+    cityRiyadh: 'Ø§Ù„Ø±ÙŠØ§Ø¶',
+    cityJeddah: 'Ø¬Ø¯Ø©',
+    cityDammam: 'Ø§Ù„Ø¯Ù…Ø§Ù…',
+    cityMadinah: 'Ø§Ù„Ù…Ø¯ÙŠÙ†Ø© Ø§Ù„Ù…Ù†ÙˆØ±Ø©',
+    cityMakkah: 'Ù…ÙƒØ© Ø§Ù„Ù…ÙƒØ±Ù…Ø©',
+    cityTaif: 'Ø§Ù„Ø·Ø§Ø¦Ù',
+    cityTabuk: 'ØªØ¨ÙˆÙƒ',
+    cityAbha: 'Ø£Ø¨Ù‡Ø§',
+    cityHail: 'Ø­Ø§Ø¦Ù„',
 
     // Facility types
-    facilityHospital: 'مستشفى',
-    facilityCenter: 'مركز طبي',
-    facilityClinics: 'عيادات',
-    facilityRehab: 'مركز تأهيل',
+    facilityHospital: 'Ù…Ø³ØªØ´ÙÙ‰',
+    facilityCenter: 'Ù…Ø±ÙƒØ² Ø·Ø¨ÙŠ',
+    facilityClinics: 'Ø¹ÙŠØ§Ø¯Ø§Øª',
+    facilityRehab: 'Ù…Ø±ÙƒØ² ØªØ£Ù‡ÙŠÙ„',
 
     // Work types
-    typeFullTime: 'دوام كامل',
-    typePartTime: 'دوام جزئي',
-    typeContract: 'عقد مؤقت',
+    typeFullTime: 'Ø¯ÙˆØ§Ù… ÙƒØ§Ù…Ù„',
+    typePartTime: 'Ø¯ÙˆØ§Ù… Ø¬Ø²Ø¦ÙŠ',
+    typeContract: 'Ø¹Ù‚Ø¯ Ù…Ø¤Ù‚Øª',
 
     // Contact page
-    contactPageTitle: 'تواصل معنا',
-    contactPageDesc: 'نسعد بتواصلكم ونرحب باستفساراتكم ومقترحاتكم',
-    contactFormTitle: '📩 أرسل لنا رسالة',
-    contactFormDesc: 'سنقوم بالرد عليك في أقرب وقت ممكن خلال ساعات العمل الرسمية.',
-    labelFullName: 'الاسم الكامل',
-    labelEmail: 'البريد الإلكتروني',
-    labelPhone: 'رقم الجوال',
-    labelSubject: 'الموضوع',
-    labelMessage: 'الرسالة',
-    placeholderName: 'أدخل اسمك',
+    contactPageTitle: 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§',
+    contactPageDesc: 'Ù†Ø³Ø¹Ø¯ Ø¨ØªÙˆØ§ØµÙ„ÙƒÙ… ÙˆÙ†Ø±Ø­Ø¨ Ø¨Ø§Ø³ØªÙØ³Ø§Ø±Ø§ØªÙƒÙ… ÙˆÙ…Ù‚ØªØ±Ø­Ø§ØªÙƒÙ…',
+    contactFormTitle: 'ðŸ“© Ø£Ø±Ø³Ù„ Ù„Ù†Ø§ Ø±Ø³Ø§Ù„Ø©',
+    contactFormDesc: 'Ø³Ù†Ù‚ÙˆÙ… Ø¨Ø§Ù„Ø±Ø¯ Ø¹Ù„ÙŠÙƒ ÙÙŠ Ø£Ù‚Ø±Ø¨ ÙˆÙ‚Øª Ù…Ù…ÙƒÙ† Ø®Ù„Ø§Ù„ Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ø¹Ù…Ù„ Ø§Ù„Ø±Ø³Ù…ÙŠØ©.',
+    labelFullName: 'Ø§Ù„Ø§Ø³Ù… Ø§Ù„ÙƒØ§Ù…Ù„',
+    labelEmail: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ',
+    labelPhone: 'Ø±Ù‚Ù… Ø§Ù„Ø¬ÙˆØ§Ù„',
+    labelSubject: 'Ø§Ù„Ù…ÙˆØ¶ÙˆØ¹',
+    labelMessage: 'Ø§Ù„Ø±Ø³Ø§Ù„Ø©',
+    placeholderName: 'Ø£Ø¯Ø®Ù„ Ø§Ø³Ù…Ùƒ',
     placeholderPhone: '05XXXXXXXX',
-    selectSubject: 'اختر الموضوع',
-    subjectInquiry: 'استفسار عام',
-    subjectTechnical: 'مشكلة تقنية',
-    subjectPartnership: 'طلب شراكة',
-    subjectSuggestion: 'اقتراح أو ملاحظة',
-    subjectComplaint: 'شكوى',
-    subjectOther: 'أخرى',
-    placeholderMessage: 'اكتب رسالتك هنا...',
-    sendMessage: '📨 إرسال الرسالة',
-    infoEmail: 'البريد الإلكتروني',
-    infoPhone: 'الهاتف',
-    infoAddress: 'العنوان',
-    infoAddressValue: 'الرياض، المملكة العربية السعودية',
-    infoAddressDetail: 'طريق الملك فهد، برج المملكة، الطابق 15',
-    infoHours: 'ساعات العمل',
-    infoHoursValue: 'الأحد - الخميس: 8:00 ص - 5:00 م',
-    infoHoursClosed: 'الجمعة والسبت: مغلق',
-    infoPhoneHours: 'الأحد - الخميس: 8 ص - 5 م',
-    mapTitle: '📍 موقعنا على الخريطة',
-    mapDesc: 'الرياض - طريق الملك فهد',
-    mapBtn: 'فتح في خرائط جوجل',
-    faqBadge: 'أسئلة شائعة',
-    faqTitle: 'الأسئلة الأكثر شيوعاً',
-    faqDesc: 'إجابات على الأسئلة المتكررة حول منصتنا',
-    faq1Q: '❓ كيف يمكنني التقديم على وظيفة؟',
-    faq1A: 'يمكنك تصفح الوظائف المتاحة من صفحة الوظائف، ثم الضغط على "عرض التفاصيل" واختيار "قدّم الآن" لملء نموذج التقديم.',
-    faq2Q: '❓ هل التسجيل مجاني؟',
-    faq2A: 'نعم، التسجيل والتقديم على الوظائف مجاني بالكامل للباحثين عن عمل.',
-    faq3Q: '❓ كم يستغرق الرد على طلبي؟',
-    faq3A: 'عادةً ما يتم مراجعة الطلبات خلال 3-5 أيام عمل. سيتم التواصل معك عبر البريد الإلكتروني أو الهاتف.',
-    faq4Q: '❓ هل يجب أن أمتلك تصنيف مهني؟',
-    faq4A: 'نعم، معظم الوظائف الصحية تتطلب تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية.',
-    successMsgSent: 'تم إرسال رسالتك بنجاح!',
-    successMsgDesc: 'شكراً لتواصلك معنا. سيقوم فريقنا بالرد عليك في أقرب وقت ممكن.',
-    backToHome: 'العودة للرئيسية',
-    closeBtn: 'إغلاق',
+    selectSubject: 'Ø§Ø®ØªØ± Ø§Ù„Ù…ÙˆØ¶ÙˆØ¹',
+    subjectInquiry: 'Ø§Ø³ØªÙØ³Ø§Ø± Ø¹Ø§Ù…',
+    subjectTechnical: 'Ù…Ø´ÙƒÙ„Ø© ØªÙ‚Ù†ÙŠØ©',
+    subjectPartnership: 'Ø·Ù„Ø¨ Ø´Ø±Ø§ÙƒØ©',
+    subjectSuggestion: 'Ø§Ù‚ØªØ±Ø§Ø­ Ø£Ùˆ Ù…Ù„Ø§Ø­Ø¸Ø©',
+    subjectComplaint: 'Ø´ÙƒÙˆÙ‰',
+    subjectOther: 'Ø£Ø®Ø±Ù‰',
+    placeholderMessage: 'Ø§ÙƒØªØ¨ Ø±Ø³Ø§Ù„ØªÙƒ Ù‡Ù†Ø§...',
+    sendMessage: 'ðŸ“¨ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø³Ø§Ù„Ø©',
+    infoEmail: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ',
+    infoPhone: 'Ø§Ù„Ù‡Ø§ØªÙ',
+    infoAddress: 'Ø§Ù„Ø¹Ù†ÙˆØ§Ù†',
+    infoAddressValue: 'Ø§Ù„Ø±ÙŠØ§Ø¶ØŒ Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ©',
+    infoAddressDetail: 'Ø·Ø±ÙŠÙ‚ Ø§Ù„Ù…Ù„Ùƒ ÙÙ‡Ø¯ØŒ Ø¨Ø±Ø¬ Ø§Ù„Ù…Ù…Ù„ÙƒØ©ØŒ Ø§Ù„Ø·Ø§Ø¨Ù‚ 15',
+    infoHours: 'Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ø¹Ù…Ù„',
+    infoHoursValue: 'Ø§Ù„Ø£Ø­Ø¯ - Ø§Ù„Ø®Ù…ÙŠØ³: 8:00 Øµ - 5:00 Ù…',
+    infoHoursClosed: 'Ø§Ù„Ø¬Ù…Ø¹Ø© ÙˆØ§Ù„Ø³Ø¨Øª: Ù…ØºÙ„Ù‚',
+    infoPhoneHours: 'Ø§Ù„Ø£Ø­Ø¯ - Ø§Ù„Ø®Ù…ÙŠØ³: 8 Øµ - 5 Ù…',
+    mapTitle: 'ðŸ“ Ù…ÙˆÙ‚Ø¹Ù†Ø§ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø±ÙŠØ·Ø©',
+    mapDesc: 'Ø§Ù„Ø±ÙŠØ§Ø¶ - Ø·Ø±ÙŠÙ‚ Ø§Ù„Ù…Ù„Ùƒ ÙÙ‡Ø¯',
+    mapBtn: 'ÙØªØ­ ÙÙŠ Ø®Ø±Ø§Ø¦Ø· Ø¬ÙˆØ¬Ù„',
+    faqBadge: 'Ø£Ø³Ø¦Ù„Ø© Ø´Ø§Ø¦Ø¹Ø©',
+    faqTitle: 'Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø£ÙƒØ«Ø± Ø´ÙŠÙˆØ¹Ø§Ù‹',
+    faqDesc: 'Ø¥Ø¬Ø§Ø¨Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ù…ØªÙƒØ±Ø±Ø© Ø­ÙˆÙ„ Ù…Ù†ØµØªÙ†Ø§',
+    faq1Q: 'â“ ÙƒÙŠÙ ÙŠÙ…ÙƒÙ†Ù†ÙŠ Ø§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø¹Ù„Ù‰ ÙˆØ¸ÙŠÙØ©ØŸ',
+    faq1A: 'ÙŠÙ…ÙƒÙ†Ùƒ ØªØµÙØ­ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…ØªØ§Ø­Ø© Ù…Ù† ØµÙØ­Ø© Ø§Ù„ÙˆØ¸Ø§Ø¦ÙØŒ Ø«Ù… Ø§Ù„Ø¶ØºØ· Ø¹Ù„Ù‰ "Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„" ÙˆØ§Ø®ØªÙŠØ§Ø± "Ù‚Ø¯Ù‘Ù… Ø§Ù„Ø¢Ù†" Ù„Ù…Ù„Ø¡ Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„ØªÙ‚Ø¯ÙŠÙ….',
+    faq2Q: 'â“ Ù‡Ù„ Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ù…Ø¬Ø§Ù†ÙŠØŸ',
+    faq2A: 'Ù†Ø¹Ù…ØŒ Ø§Ù„ØªØ³Ø¬ÙŠÙ„ ÙˆØ§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø¹Ù„Ù‰ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ù…Ø¬Ø§Ù†ÙŠ Ø¨Ø§Ù„ÙƒØ§Ù…Ù„ Ù„Ù„Ø¨Ø§Ø­Ø«ÙŠÙ† Ø¹Ù† Ø¹Ù…Ù„.',
+    faq3Q: 'â“ ÙƒÙ… ÙŠØ³ØªØºØ±Ù‚ Ø§Ù„Ø±Ø¯ Ø¹Ù„Ù‰ Ø·Ù„Ø¨ÙŠØŸ',
+    faq3A: 'Ø¹Ø§Ø¯Ø©Ù‹ Ù…Ø§ ÙŠØªÙ… Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø®Ù„Ø§Ù„ 3-5 Ø£ÙŠØ§Ù… Ø¹Ù…Ù„. Ø³ÙŠØªÙ… Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹Ùƒ Ø¹Ø¨Ø± Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø§Ù„Ù‡Ø§ØªÙ.',
+    faq4Q: 'â“ Ù‡Ù„ ÙŠØ¬Ø¨ Ø£Ù† Ø£Ù…ØªÙ„Ùƒ ØªØµÙ†ÙŠÙ Ù…Ù‡Ù†ÙŠØŸ',
+    faq4A: 'Ù†Ø¹Ù…ØŒ Ù…Ø¹Ø¸Ù… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„ØµØ­ÙŠØ© ØªØªØ·Ù„Ø¨ ØªØµÙ†ÙŠÙ Ù…Ù‡Ù†ÙŠ Ø³Ø§Ø±ÙŠ Ù…Ù† Ø§Ù„Ù‡ÙŠØ¦Ø© Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠØ© Ù„Ù„ØªØ®ØµØµØ§Øª Ø§Ù„ØµØ­ÙŠØ©.',
+    successMsgSent: 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø±Ø³Ø§Ù„ØªÙƒ Ø¨Ù†Ø¬Ø§Ø­!',
+    successMsgDesc: 'Ø´ÙƒØ±Ø§Ù‹ Ù„ØªÙˆØ§ØµÙ„Ùƒ Ù…Ø¹Ù†Ø§. Ø³ÙŠÙ‚ÙˆÙ… ÙØ±ÙŠÙ‚Ù†Ø§ Ø¨Ø§Ù„Ø±Ø¯ Ø¹Ù„ÙŠÙƒ ÙÙŠ Ø£Ù‚Ø±Ø¨ ÙˆÙ‚Øª Ù…Ù…ÙƒÙ†.',
+    backToHome: 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©',
+    closeBtn: 'Ø¥ØºÙ„Ø§Ù‚',
 
     // Apply page
-    applyPageTitle: 'التقديم على وظيفة',
-    applyPageDesc: 'أكمل بياناتك للتقديم على الوظيفة',
-    breadcrumbApply: 'التقديم',
-    applyFormTitle: '📝 نموذج التقديم',
-    applyFormDesc: 'يرجى ملء جميع الحقول المطلوبة بدقة لضمان معالجة طلبك بشكل صحيح.',
-    labelFullName4: 'الاسم الكامل',
-    labelSpecialty: 'التخصص',
-    selectSpecialty: 'اختر التخصص',
-    labelClassification: 'رقم التصنيف المهني',
-    placeholderClassification: 'رقم التصنيف من هيئة التخصصات',
-    labelCityApply: 'المدينة',
-    selectCity: 'اختر المدينة',
-    placeholderFullname: 'أدخل اسمك الرباعي',
-    labelExperience: 'سنوات الخبرة',
-    selectExperience: 'اختر',
-    expLess1: 'أقل من سنة',
-    exp1to3: '1 - 3 سنوات',
-    exp3to5: '3 - 5 سنوات',
-    exp5to10: '5 - 10 سنوات',
-    exp10plus: 'أكثر من 10 سنوات',
-    labelQualification: 'المؤهل العلمي',
-    qualDiploma: 'دبلوم',
-    qualBachelor: 'بكالوريوس',
-    qualMaster: 'ماجستير',
-    qualPhd: 'دكتوراه',
-    qualBoard: 'بورد / زمالة',
-    labelCV: 'السيرة الذاتية',
-    cvDragText: 'اسحب الملف هنا أو <span>اضغط للاختيار</span>',
-    cvLimit: 'PDF, DOC, DOCX - حد أقصى 5 ميجابايت',
-    labelNote: 'رسالة مختصرة',
-    placeholderNote: 'اكتب رسالة مختصرة عن نفسك وسبب اهتمامك بالوظيفة (اختياري)...',
-    submitApplication: '📨 إرسال الطلب',
-    successApply: 'تم إرسال طلبك بنجاح!',
-    successApplyDesc: 'شكراً لتقديمك عبر Rawad Health. سيتم مراجعة طلبك والتواصل معك في أقرب وقت ممكن.',
-    browseOtherJobs: 'تصفح وظائف أخرى',
+    applyPageTitle: 'Ø§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø¹Ù„Ù‰ ÙˆØ¸ÙŠÙØ©',
+    applyPageDesc: 'Ø£ÙƒÙ…Ù„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ù„Ù„ØªÙ‚Ø¯ÙŠÙ… Ø¹Ù„Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    breadcrumbApply: 'Ø§Ù„ØªÙ‚Ø¯ÙŠÙ…',
+    applyFormTitle: 'ðŸ“ Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„ØªÙ‚Ø¯ÙŠÙ…',
+    applyFormDesc: 'ÙŠØ±Ø¬Ù‰ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø© Ø¨Ø¯Ù‚Ø© Ù„Ø¶Ù…Ø§Ù† Ù…Ø¹Ø§Ù„Ø¬Ø© Ø·Ù„Ø¨Ùƒ Ø¨Ø´ÙƒÙ„ ØµØ­ÙŠØ­.',
+    labelFullName4: 'Ø§Ù„Ø§Ø³Ù… Ø§Ù„ÙƒØ§Ù…Ù„',
+    labelSpecialty: 'Ø§Ù„ØªØ®ØµØµ',
+    selectSpecialty: 'Ø§Ø®ØªØ± Ø§Ù„ØªØ®ØµØµ',
+    labelClassification: 'Ø±Ù‚Ù… Ø§Ù„ØªØµÙ†ÙŠÙ Ø§Ù„Ù…Ù‡Ù†ÙŠ',
+    placeholderClassification: 'Ø±Ù‚Ù… Ø§Ù„ØªØµÙ†ÙŠÙ Ù…Ù† Ù‡ÙŠØ¦Ø© Ø§Ù„ØªØ®ØµØµØ§Øª',
+    labelCityApply: 'Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©',
+    selectCity: 'Ø§Ø®ØªØ± Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©',
+    placeholderFullname: 'Ø£Ø¯Ø®Ù„ Ø§Ø³Ù…Ùƒ Ø§Ù„Ø±Ø¨Ø§Ø¹ÙŠ',
+    labelExperience: 'Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø®Ø¨Ø±Ø©',
+    selectExperience: 'Ø§Ø®ØªØ±',
+    expLess1: 'Ø£Ù‚Ù„ Ù…Ù† Ø³Ù†Ø©',
+    exp1to3: '1 - 3 Ø³Ù†ÙˆØ§Øª',
+    exp3to5: '3 - 5 Ø³Ù†ÙˆØ§Øª',
+    exp5to10: '5 - 10 Ø³Ù†ÙˆØ§Øª',
+    exp10plus: 'Ø£ÙƒØ«Ø± Ù…Ù† 10 Ø³Ù†ÙˆØ§Øª',
+    labelQualification: 'Ø§Ù„Ù…Ø¤Ù‡Ù„ Ø§Ù„Ø¹Ù„Ù…ÙŠ',
+    qualDiploma: 'Ø¯Ø¨Ù„ÙˆÙ…',
+    qualBachelor: 'Ø¨ÙƒØ§Ù„ÙˆØ±ÙŠÙˆØ³',
+    qualMaster: 'Ù…Ø§Ø¬Ø³ØªÙŠØ±',
+    qualPhd: 'Ø¯ÙƒØªÙˆØ±Ø§Ù‡',
+    qualBoard: 'Ø¨ÙˆØ±Ø¯ / Ø²Ù…Ø§Ù„Ø©',
+    labelCV: 'Ø§Ù„Ø³ÙŠØ±Ø© Ø§Ù„Ø°Ø§ØªÙŠØ©',
+    cvDragText: 'Ø§Ø³Ø­Ø¨ Ø§Ù„Ù…Ù„Ù Ù‡Ù†Ø§ Ø£Ùˆ <span>Ø§Ø¶ØºØ· Ù„Ù„Ø§Ø®ØªÙŠØ§Ø±</span>',
+    cvLimit: 'PDF, DOC, DOCX - Ø­Ø¯ Ø£Ù‚ØµÙ‰ 5 Ù…ÙŠØ¬Ø§Ø¨Ø§ÙŠØª',
+    labelNote: 'Ø±Ø³Ø§Ù„Ø© Ù…Ø®ØªØµØ±Ø©',
+    placeholderNote: 'Ø§ÙƒØªØ¨ Ø±Ø³Ø§Ù„Ø© Ù…Ø®ØªØµØ±Ø© Ø¹Ù† Ù†ÙØ³Ùƒ ÙˆØ³Ø¨Ø¨ Ø§Ù‡ØªÙ…Ø§Ù…Ùƒ Ø¨Ø§Ù„ÙˆØ¸ÙŠÙØ© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)...',
+    submitApplication: 'ðŸ“¨ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨',
+    successApply: 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨Ùƒ Ø¨Ù†Ø¬Ø§Ø­!',
+    successApplyDesc: 'Ø´ÙƒØ±Ø§Ù‹ Ù„ØªÙ‚Ø¯ÙŠÙ…Ùƒ Ø¹Ø¨Ø± Rawad Health. Ø³ÙŠØªÙ… Ù…Ø±Ø§Ø¬Ø¹Ø© Ø·Ù„Ø¨Ùƒ ÙˆØ§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹Ùƒ ÙÙŠ Ø£Ù‚Ø±Ø¨ ÙˆÙ‚Øª Ù…Ù…ÙƒÙ†.',
+    browseOtherJobs: 'ØªØµÙØ­ ÙˆØ¸Ø§Ø¦Ù Ø£Ø®Ø±Ù‰',
 
     // Footer specialties
-    footSpecGeneral: 'طب عام',
-    footSpecNursing: 'تمريض',
-    footSpecPharmacy: 'صيدلة',
-    footSpecDentistry: 'طب أسنان',
-    footSpecPhysio: 'علاج طبيعي',
+    footSpecGeneral: 'Ø·Ø¨ Ø¹Ø§Ù…',
+    footSpecNursing: 'ØªÙ…Ø±ÙŠØ¶',
+    footSpecPharmacy: 'ØµÙŠØ¯Ù„Ø©',
+    footSpecDentistry: 'Ø·Ø¨ Ø£Ø³Ù†Ø§Ù†',
+    footSpecPhysio: 'Ø¹Ù„Ø§Ø¬ Ø·Ø¨ÙŠØ¹ÙŠ',
 
     // Job Details page
-    jobDetailsBreadcrumb: 'تفاصيل الوظيفة',
-    jobDescLabel: '📋 وصف الوظيفة',
-    jobTasksLabel: '📌 المهام والمسؤوليات',
-    jobReqLabel: '📝 المتطلبات والمؤهلات',
-    jobBenefitsLabel: '🎁 المزايا والحوافز',
-    applyNowBtn: 'قدّم الآن على هذه الوظيفة',
-    jobInfoTitle: 'معلومات الوظيفة',
-    labelSalary: '💰 الراتب',
-    labelCitySidebar: '📍 المدينة',
-    labelWorkType: '⏰ نوع الدوام',
-    labelSpecSidebar: '🩺 التخصص',
-    labelFacilityType: '🏥 نوع المنشأة',
-    labelPostDate: '📅 تاريخ النشر',
-    interestedTitle: 'هل أنت مهتم؟',
-    interestedDesc: 'لا تفوّت هذه الفرصة وقدّم طلبك الآن',
-    applyNowShort: 'قدّم الآن',
-    shareJob: 'شارك الوظيفة',
-    shareTwitter: '𝕏 تويتر',
-    shareLinkedin: 'in لينكدإن',
-    shareCopy: '📋 نسخ',
+    jobDetailsBreadcrumb: 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    jobDescLabel: 'ðŸ“‹ ÙˆØµÙ Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    jobTasksLabel: 'ðŸ“Œ Ø§Ù„Ù…Ù‡Ø§Ù… ÙˆØ§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ§Øª',
+    jobReqLabel: 'ðŸ“ Ø§Ù„Ù…ØªØ·Ù„Ø¨Ø§Øª ÙˆØ§Ù„Ù…Ø¤Ù‡Ù„Ø§Øª',
+    jobBenefitsLabel: 'ðŸŽ Ø§Ù„Ù…Ø²Ø§ÙŠØ§ ÙˆØ§Ù„Ø­ÙˆØ§ÙØ²',
+    applyNowBtn: 'Ù‚Ø¯Ù‘Ù… Ø§Ù„Ø¢Ù† Ø¹Ù„Ù‰ Ù‡Ø°Ù‡ Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    jobInfoTitle: 'Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    labelSalary: 'ðŸ’° Ø§Ù„Ø±Ø§ØªØ¨',
+    labelCitySidebar: 'ðŸ“ Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©',
+    labelWorkType: 'â° Ù†ÙˆØ¹ Ø§Ù„Ø¯ÙˆØ§Ù…',
+    labelSpecSidebar: 'ðŸ©º Ø§Ù„ØªØ®ØµØµ',
+    labelFacilityType: 'ðŸ¥ Ù†ÙˆØ¹ Ø§Ù„Ù…Ù†Ø´Ø£Ø©',
+    labelPostDate: 'ðŸ“… ØªØ§Ø±ÙŠØ® Ø§Ù„Ù†Ø´Ø±',
+    interestedTitle: 'Ù‡Ù„ Ø£Ù†Øª Ù…Ù‡ØªÙ…ØŸ',
+    interestedDesc: 'Ù„Ø§ ØªÙÙˆÙ‘Øª Ù‡Ø°Ù‡ Ø§Ù„ÙØ±ØµØ© ÙˆÙ‚Ø¯Ù‘Ù… Ø·Ù„Ø¨Ùƒ Ø§Ù„Ø¢Ù†',
+    applyNowShort: 'Ù‚Ø¯Ù‘Ù… Ø§Ù„Ø¢Ù†',
+    shareJob: 'Ø´Ø§Ø±Ùƒ Ø§Ù„ÙˆØ¸ÙŠÙØ©',
+    shareTwitter: 'ð• ØªÙˆÙŠØªØ±',
+    shareLinkedin: 'in Ù„ÙŠÙ†ÙƒØ¯Ø¥Ù†',
+    shareCopy: 'ðŸ“‹ Ù†Ø³Ø®',
   },
   en: {
     // Header / Nav
-    langLabel: 'عربي',
+    langLabel: 'Ø¹Ø±Ø¨ÙŠ',
     navHome: 'Home',
     navJobs: 'Jobs',
     navContact: 'Contact Us',
     browseJobs: 'Browse Jobs',
 
     // Hero
-    heroBadge: '🏥 The Leading Health Platform in Saudi Arabia',
+    heroBadge: 'ðŸ¥ The Leading Health Platform in Saudi Arabia',
     heroTitle: 'Your Health Career <span>Starts Here</span>',
     heroDesc: 'Rawad Health connects healthcare professionals with top medical facilities across Saudi Arabia. Discover outstanding opportunities that match your specialty and ambition.',
     heroBtnJobs: 'Browse Available Jobs',
@@ -1261,7 +914,7 @@ const translations = {
     // Latest jobs
     latestJobsTitle: 'Latest Available Jobs',
     latestJobsDesc: 'Discover the latest job opportunities in the healthcare sector',
-    viewAllJobs: 'View All Jobs →',
+    viewAllJobs: 'View All Jobs â†’',
     learnMore: 'Learn More',
 
     // CTA
@@ -1274,7 +927,7 @@ const translations = {
     quickLinks: 'Quick Links',
     specialties: 'Specialties',
     contactUs: 'Contact Us',
-    copyright: '© 2026 Rawad Health. All rights reserved.',
+    copyright: 'Â© 2026 Rawad Health. All rights reserved.',
     footerAddress: 'Riyadh, Saudi Arabia',
 
     // Jobs page
@@ -1292,7 +945,7 @@ const translations = {
     filterAllFacilities: 'All Facilities',
     filterWorkType: 'Work Type',
     filterAllTypes: 'All Types',
-    filterBtn: '🔍 Search',
+    filterBtn: 'ðŸ” Search',
     searchResults: 'Search Results:',
     jobUnit: 'job(s)',
     noJobCta: "Didn't find the right job?",
@@ -1334,7 +987,7 @@ const translations = {
     // Contact page
     contactPageTitle: 'Contact Us',
     contactPageDesc: 'We welcome your inquiries and suggestions',
-    contactFormTitle: '📩 Send Us a Message',
+    contactFormTitle: 'ðŸ“© Send Us a Message',
     contactFormDesc: 'We will respond as soon as possible during business hours.',
     labelFullName: 'Full Name',
     labelEmail: 'Email Address',
@@ -1351,7 +1004,7 @@ const translations = {
     subjectComplaint: 'Complaint',
     subjectOther: 'Other',
     placeholderMessage: 'Write your message here...',
-    sendMessage: '📨 Send Message',
+    sendMessage: 'ðŸ“¨ Send Message',
     infoEmail: 'Email',
     infoPhone: 'Phone',
     infoAddress: 'Address',
@@ -1361,19 +1014,19 @@ const translations = {
     infoHoursValue: 'Sunday - Thursday: 8:00 AM - 5:00 PM',
     infoHoursClosed: 'Friday & Saturday: Closed',
     infoPhoneHours: 'Sunday - Thursday: 8 AM - 5 PM',
-    mapTitle: '📍 Our Location on Map',
+    mapTitle: 'ðŸ“ Our Location on Map',
     mapDesc: 'Riyadh - King Fahd Road',
     mapBtn: 'Open in Google Maps',
     faqBadge: 'FAQ',
     faqTitle: 'Frequently Asked Questions',
     faqDesc: 'Answers to common questions about our platform',
-    faq1Q: '❓ How can I apply for a job?',
+    faq1Q: 'â“ How can I apply for a job?',
     faq1A: 'You can browse available jobs from the Jobs page, then click "View Details" and select "Apply Now" to fill out the application form.',
-    faq2Q: '❓ Is registration free?',
+    faq2Q: 'â“ Is registration free?',
     faq2A: 'Yes, registration and job applications are completely free for job seekers.',
-    faq3Q: '❓ How long does it take to hear back?',
+    faq3Q: 'â“ How long does it take to hear back?',
     faq3A: 'Applications are typically reviewed within 3-5 business days. You will be contacted via email or phone.',
-    faq4Q: '❓ Do I need a professional classification?',
+    faq4Q: 'â“ Do I need a professional classification?',
     faq4A: 'Yes, most healthcare jobs require a valid professional classification from the Saudi Commission for Health Specialties.',
     successMsgSent: 'Your message was sent successfully!',
     successMsgDesc: 'Thank you for contacting us. Our team will respond to you as soon as possible.',
@@ -1384,7 +1037,7 @@ const translations = {
     applyPageTitle: 'Apply for a Job',
     applyPageDesc: 'Complete your details to apply for the position',
     breadcrumbApply: 'Apply',
-    applyFormTitle: '📝 Application Form',
+    applyFormTitle: 'ðŸ“ Application Form',
     applyFormDesc: 'Please fill in all required fields accurately to ensure your application is processed correctly.',
     labelFullName4: 'Full Name',
     labelSpecialty: 'Specialty',
@@ -1412,7 +1065,7 @@ const translations = {
     cvLimit: 'PDF, DOC, DOCX - Max 5 MB',
     labelNote: 'Short Message',
     placeholderNote: 'Write a brief message about yourself and why you are interested in this position (optional)...',
-    submitApplication: '📨 Submit Application',
+    submitApplication: 'ðŸ“¨ Submit Application',
     successApply: 'Your application was submitted successfully!',
     successApplyDesc: 'Thank you for applying through Rawad Health. Your application will be reviewed and we will contact you soon.',
     browseOtherJobs: 'Browse Other Jobs',
@@ -1426,25 +1079,25 @@ const translations = {
 
     // Job Details page
     jobDetailsBreadcrumb: 'Job Details',
-    jobDescLabel: '📋 Job Description',
-    jobTasksLabel: '📌 Tasks & Responsibilities',
-    jobReqLabel: '📝 Requirements & Qualifications',
-    jobBenefitsLabel: '🎁 Benefits & Incentives',
+    jobDescLabel: 'ðŸ“‹ Job Description',
+    jobTasksLabel: 'ðŸ“Œ Tasks & Responsibilities',
+    jobReqLabel: 'ðŸ“ Requirements & Qualifications',
+    jobBenefitsLabel: 'ðŸŽ Benefits & Incentives',
     applyNowBtn: 'Apply Now for This Job',
     jobInfoTitle: 'Job Information',
-    labelSalary: '💰 Salary',
-    labelCitySidebar: '📍 City',
-    labelWorkType: '⏰ Work Type',
-    labelSpecSidebar: '🩺 Specialty',
-    labelFacilityType: '🏥 Facility Type',
-    labelPostDate: '📅 Posted',
+    labelSalary: 'ðŸ’° Salary',
+    labelCitySidebar: 'ðŸ“ City',
+    labelWorkType: 'â° Work Type',
+    labelSpecSidebar: 'ðŸ©º Specialty',
+    labelFacilityType: 'ðŸ¥ Facility Type',
+    labelPostDate: 'ðŸ“… Posted',
     interestedTitle: 'Interested?',
     interestedDesc: "Don't miss this opportunity - apply now",
     applyNowShort: 'Apply Now',
     shareJob: 'Share Job',
-    shareTwitter: '𝕏 Twitter',
+    shareTwitter: 'ð• Twitter',
     shareLinkedin: 'in LinkedIn',
-    shareCopy: '📋 Copy',
+    shareCopy: 'ðŸ“‹ Copy',
   }
 };
 
@@ -1478,11 +1131,11 @@ function setLanguage(lang) {
 
   // Update page title
   const titleMap = {
-    'index.html': lang === 'ar' ? 'Rawad Health | منصة التوظيف الصحي' : 'Rawad Health | Healthcare Recruitment',
-    'jobs.html':  lang === 'ar' ? 'الوظائف | Rawad Health' : 'Jobs | Rawad Health',
-    'contact.html': lang === 'ar' ? 'تواصل معنا | Rawad Health' : 'Contact Us | Rawad Health',
-    'apply.html': lang === 'ar' ? 'التقديم | Rawad Health' : 'Apply | Rawad Health',
-    'job-details.html': lang === 'ar' ? 'تفاصيل الوظيفة | Rawad Health' : 'Job Details | Rawad Health',
+    'index.html': lang === 'ar' ? 'Rawad Health | Ù…Ù†ØµØ© Ø§Ù„ØªÙˆØ¸ÙŠÙ Ø§Ù„ØµØ­ÙŠ' : 'Rawad Health | Healthcare Recruitment',
+    'jobs.html':  lang === 'ar' ? 'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù | Rawad Health' : 'Jobs | Rawad Health',
+    'contact.html': lang === 'ar' ? 'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§ | Rawad Health' : 'Contact Us | Rawad Health',
+    'apply.html': lang === 'ar' ? 'Ø§Ù„ØªÙ‚Ø¯ÙŠÙ… | Rawad Health' : 'Apply | Rawad Health',
+    'job-details.html': lang === 'ar' ? 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ© | Rawad Health' : 'Job Details | Rawad Health',
   };
   const page = window.location.pathname.split('/').pop() || 'index.html';
   if (titleMap[page]) document.title = titleMap[page];
@@ -1496,15 +1149,14 @@ function setLanguage(lang) {
   } else if (page === 'job-details.html') {
     initJobDetailsPage();
   } else if (page === 'apply.html') {
-    // Re-set apply page title with localized job name
+    // Update apply page title from URL param (job title is passed as ?job=...)
     const params = new URLSearchParams(window.location.search);
-    const jobId = parseInt(params.get('id'));
-    if (jobId) {
-      const job = jobsData.find(j => j.id === jobId);
-      if (job) {
-        const titleEl = document.getElementById('apply-job-title');
+    const jobTitle = params.get('job');
+    if (jobTitle) {
+      const titleEl = document.getElementById('apply-job-title');
+      if (titleEl) {
         const prefix = lang === 'en' ? 'Applying for: ' : 'التقديم على: ';
-        if (titleEl) titleEl.textContent = prefix + getJobField(job, 'title');
+        titleEl.textContent = prefix + decodeURIComponent(jobTitle);
       }
     }
   }
