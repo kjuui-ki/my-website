@@ -265,6 +265,10 @@ html[dir="ltr"] .nav-links a::after {
   padding: 5px;
   background: none;
   border: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 1100;
 }
 
 .hamburger span {

@@ -664,6 +664,48 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
   <script src="script.js"></script>
+
+  <!-- ── Hamburger menu — inline so it runs after everything loads ── -->
+  <script>
+    (function () {
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks  = document.querySelector('.nav-links');
+      var overlay   = document.getElementById('navOverlay');
+      if (!hamburger || !navLinks) return;
+
+      function closeMenu() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isOpen = navLinks.classList.contains('active');
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+        document.body.style.overflow = isOpen ? '' : 'hidden';
+      });
+
+      if (overlay) overlay.addEventListener('click', closeMenu);
+
+      document.addEventListener('click', function (e) {
+        if (navLinks.classList.contains('active') &&
+            !hamburger.contains(e.target) &&
+            !navLinks.contains(e.target)) {
+          closeMenu();
+        }
+      });
+
+      navLinks.addEventListener('click', function (e) {
+        if (e.target.closest('a') || e.target.closest('button')) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
 
