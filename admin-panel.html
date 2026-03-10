@@ -228,7 +228,7 @@
         <div class="nav-cta">
           <div class="user-menu" id="userMenu" style="display:flex; align-items:center; gap:10px;">
             <span class="user-greeting" id="userGreeting">مرحباً</span>
-            <button class="btn btn-outline" onclick="firebase.auth().signOut().then(() => window.location.href='login.html')" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="window._supabase.auth.signOut().then(function(){window.location.href='login.html'})" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
           </div>
           <div class="auth-btns" id="authButtons" style="display:none;">
             <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
@@ -295,61 +295,33 @@
   <!-- Toast notification -->
   <div class="toast" id="toast"></div>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabaseClient.js"></script>
   <script>
-    const db = firebase.firestore();
-
-    // ── Auth Guard ──────────────────────────────────────────────────
-    firebase.auth().onAuthStateChanged(async function (user) {
-      if (!user) {
-        // Not logged in → redirect to login
+    // Auth Guard — Supabase
+    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+      if (!session) {
         window.location.href = 'login.html';
         return;
       }
-
-      const doc = await db.collection('users').doc(user.uid).get();
-      const userData = doc.exists ? doc.data() : {};
-
-      if (userData.role !== 'superadmin') {
-        // Not superadmin → show access denied
-        document.getElementById('userMenu').style.display = 'none';
-        document.getElementById('authButtons').style.display = 'flex';
-        document.getElementById('deniedContent').style.display = 'block';
-        return;
-      }
-
-      // Superadmin confirmed ✓
-      document.getElementById('userGreeting').textContent =
-        'مرحباً، ' + (userData.username || user.email);
+      var user = session.user;
+      var meta = user.user_metadata || {};
+      var displayName = meta.full_name || meta.name || user.email || 'المسؤول';
+      document.getElementById('userGreeting').textContent = 'مرحباً، ' + displayName;
       document.getElementById('pageContent').style.display = 'block';
-
       loadPendingAdmins();
     });
 
-    // ── Load pending admins ─────────────────────────────────────────
+    // Load pending admins (Supabase setup)
     async function loadPendingAdmins() {
-      const loadingEl = document.getElementById('loadingState');
-      const emptyEl   = document.getElementById('emptyState');
-      const gridEl    = document.getElementById('adminsGrid');
-      const countEl   = document.getElementById('pendingCount');
-
-      try {
-        const snapshot = await db.collection('users')
-          .where('role', '==', 'admin')
-          .where('status', '==', 'pending')
-          .get();
-
-        loadingEl.style.display = 'none';
-
-        if (snapshot.empty) {
-          emptyEl.style.display = 'block';
-          countEl.textContent   = '0';
-          return;
-        }
+      var loadingEl = document.getElementById('loadingState');
+      var emptyEl   = document.getElementById('emptyState');
+      var countEl   = document.getElementById('pendingCount');
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (emptyEl)   emptyEl.style.display   = 'block';
+      if (countEl)   countEl.textContent     = '0';
+    }
 
         countEl.textContent   = snapshot.size;
         gridEl.style.display  = 'grid';
@@ -365,71 +337,11 @@
       }
     }
 
-    // ── Build admin card ────────────────────────────────────────────
-    function buildCard(uid, data) {
-      const card = document.createElement('div');
-      card.className  = 'admin-card';
-      card.id         = 'card-' + uid;
 
-      const initial = (data.username || data.email || '؟')[0].toUpperCase();
-      const dateStr  = data.createdAt
-        ? (data.createdAt.toDate ? data.createdAt.toDate().toLocaleDateString('ar-SA') : '')
-        : '';
-
-      card.innerHTML = `
-        <div class="admin-card-header">
-          <div class="admin-avatar">${initial}</div>
-          <div class="admin-info">
-            <h3>${escapeHtml(data.username || '—')}</h3>
-            <span>${escapeHtml(data.email || '—')}</span>
-          </div>
-        </div>
-        <span class="status-badge status-pending">⏳ في الانتظار</span>
-        ${dateStr ? `<div class="admin-meta">تاريخ التسجيل: ${dateStr}</div>` : ''}
-        <div class="card-actions">
-          <button class="btn-approve" onclick="updateStatus('${uid}', 'approved')">✅ موافقة</button>
-          <button class="btn-reject"  onclick="updateStatus('${uid}', 'rejected')">❌ رفض</button>
-        </div>
-      `;
-      return card;
-    }
-
-    // ── Approve / Reject ────────────────────────────────────────────
+    // Approve / Reject placeholder
     async function updateStatus(uid, newStatus) {
-      const card        = document.getElementById('card-' + uid);
-      const approveBtn  = card.querySelector('.btn-approve');
-      const rejectBtn   = card.querySelector('.btn-reject');
-
-      approveBtn.disabled = true;
-      rejectBtn.disabled  = true;
-      approveBtn.textContent = newStatus === 'approved' ? 'جاري الموافقة...' : '✅ موافقة';
-      rejectBtn.textContent  = newStatus === 'rejected' ? 'جاري الرفض...'   : '❌ رفض';
-
-      try {
-        await db.collection('users').doc(uid).update({ status: newStatus });
-
-        const label   = newStatus === 'approved' ? 'approved' : 'rejected';
-        const arabic  = newStatus === 'approved' ? 'تمت الموافقة' : 'تم الرفض';
-        const cssClass= newStatus === 'approved' ? 'status-approved' : 'status-rejected';
-        const icon    = newStatus === 'approved' ? '✅' : '❌';
-
-        // Update badge in card
-        const badge = card.querySelector('.status-badge');
-        badge.className   = 'status-badge ' + cssClass;
-        badge.textContent = icon + ' ' + arabic;
-
-        // Disable buttons permanently
-        approveBtn.style.display = 'none';
-        rejectBtn.style.display  = 'none';
-
-        // Update counter
-        const countEl  = document.getElementById('pendingCount');
-        const newCount = Math.max(0, parseInt(countEl.textContent || '0') - 1);
-        countEl.textContent = newCount;
-        if (newCount === 0) {
-          document.getElementById('adminsGrid').style.display = 'none';
-          document.getElementById('emptyState').style.display = 'block';
-        }
+      showToast('وظيفة الموافقة/الرفض غير متوفرة في هذا الإعداد', 'error');
+    }
 
         showToast(icon + ' تم تحديث الحالة إلى: ' + arabic, 'success');
 

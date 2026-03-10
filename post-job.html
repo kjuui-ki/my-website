@@ -321,25 +321,16 @@
     </div>
   </footer>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabaseClient.js"></script>
   <script src="script.js"></script>
 
   <script>
     // Guard: approved admins only
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) { window.location.href = 'login.html'; return; }
-      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
-        const u = doc.exists ? doc.data() : {};
-        if (u.role !== 'admin' || u.status !== 'approved') {
-          window.location.href = 'login.html';
-          return;
-        }
-        initPostJobForm(user.uid);
-      }).catch(function () { window.location.href = 'login.html'; });
+    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+      if (!session) { window.location.href = 'login.html'; return; }
+      initPostJobForm(session.user.id);
     });
 
     function initPostJobForm(adminId) {
@@ -379,35 +370,31 @@
         btn.disabled = true;
         btn.textContent = '⏳ جاري النشر...';
 
-        firebase.firestore().collection('jobs').add({
-          title:        title,
-          company:      company,
-          companyLogo:  companyLogo,
-          specialty:    specialty,
-          city:         city,
-          facilityType: facilityType,
-          jobType:      jobType,
-          salary:       salary,
-          description:  description,
-          tasks:        tasks,
-          requirements: requirements,
-          benefits:     benefits,
-          adminId:      adminId,
-          date:         'منذ لحظات',
-          createdAt:    firebase.firestore.FieldValue.serverTimestamp()
-        }).then(function () {
+        window._supabase.from('jobs').insert([{
+          title:         title,
+          company:       company,
+          company_logo:  companyLogo,
+          specialty:     specialty,
+          city:          city,
+          facility_type: facilityType,
+          job_type:      jobType,
+          salary:        salary,
+          description:   description
+        }]).then(function ({ error }) {
+          if (error) {
+            console.error(error);
+            msgEl.textContent = 'حدث خطأ أثناء النشر. يرجى المحاولة مجدداً.';
+            msgEl.className = 'error';
+            btn.disabled = false;
+            btn.textContent = '🚀 نشر الوظيفة';
+            return;
+          }
           msgEl.textContent = '✅ تم نشر الوظيفة بنجاح! ستظهر على صفحة الوظائف فوراً.';
           msgEl.className = 'success';
           form.reset();
           btn.disabled = false;
           btn.textContent = '🚀 نشر وظيفة أخرى';
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        }).catch(function (err) {
-          console.error(err);
-          msgEl.textContent = 'حدث خطأ أثناء النشر. يرجى المحاولة مجدداً.';
-          msgEl.className = 'error';
-          btn.disabled = false;
-          btn.textContent = '🚀 نشر الوظيفة';
         });
       });
     }

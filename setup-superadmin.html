@@ -42,11 +42,9 @@
     </div>
   </div>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabaseClient.js"></script>
   <script>
     async function createSuperAdmin() {
       const btn    = document.getElementById('createBtn');
@@ -58,43 +56,34 @@
 
       const email    = 'kramabid1@gmail.com';
       const password = 'Aa885522@';
-      const username = 'kjuui-ki';
 
-      try {
-        // Create user in Firebase Auth
-        const credential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-        const user = credential.user;
+      const { data, error } = await window._supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: 'kjuui-ki', role: 'superadmin' }
+        }
+      });
 
-        // Save data to Firestore
-        await firebase.firestore().collection('users').doc(user.uid).set({
-          uid: user.uid,
-          username: username,
-          email: email,
-          role: 'superadmin',
-          status: 'approved',
-          createdAt: new Date()
-        });
-
-        status.className   = 'success';
-        status.textContent = '✅ تم إنشاء حساب Superadmin بنجاح! يمكنك الآن تسجيل الدخول.';
-        status.style.display = 'block';
-        btn.textContent = 'تم الإنشاء ✓';
-
-      } catch (err) {
+      if (error) {
         btn.disabled    = false;
         btn.textContent = 'إنشاء حساب Superadmin';
-
-        let msg = 'حدث خطأ: ' + err.message;
-        if (err.code === 'auth/email-already-in-use') {
-          msg = '⚠️ هذا البريد الإلكتروني مسجّل مسبقاً. تحقق من Firestore لضمان أن الدور superadmin محفوظ بشكل صحيح.';
+        let msg = 'حدث خطأ: ' + error.message;
+        if (error.message && error.message.includes('already registered')) {
+          msg = '⚠️ هذا البريد الإلكتروني مسجّل مسبقاً.';
           status.className = 'warning';
         } else {
           status.className = 'error';
         }
-
         status.textContent   = msg;
         status.style.display = 'block';
+        return;
       }
+
+      status.className   = 'success';
+      status.textContent = '✅ تم إنشاء حساب Superadmin بنجاح! يمكنك الآن تسجيل الدخول.';
+      status.style.display = 'block';
+      btn.textContent = 'تم الإنشاء ✓';
     }
   </script>
 </body>

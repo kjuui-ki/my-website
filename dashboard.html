@@ -102,43 +102,6 @@
         </div>
       </div>
 
-      <!-- ⚡ Firestore Rules Diagnostic Banner (hidden until error detected) -->
-      <div id="rulesBanner" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:14px;padding:20px 24px;margin-bottom:28px;">
-        <h3 style="color:#b71c1c;margin:0 0 10px;font-size:1.05rem;">⛔ مشكلة في صلاحيات قاعدة البيانات</h3>
-        <p style="color:#c62828;margin:0 0 14px;font-size:.92rem;line-height:1.7;">
-          قاعدة البيانات لا تسمح بقراءة أو كتابة طلبات التوظيف حالياً.<br>
-          هذا هو السبب الرئيسي لعدم ظهور المتقدمين وعدم حفظ الطلبات.
-        </p>
-        <p style="color:#333;font-weight:700;margin:0 0 8px;">🔧 الحل — اتبع هذه الخطوات:</p>
-        <ol style="color:#333;font-size:.9rem;line-height:2;margin:0 0 16px;padding-right:20px;">
-          <li>افتح <strong>Firebase Console</strong> → مشروع <code style="background:#f5f5f5;padding:2px 5px;border-radius:4px;">rawad-health2</code></li>
-          <li>اذهب إلى <strong>Firestore Database</strong> → تبويب <strong>Rules</strong></li>
-          <li>احذف كل النص الموجود وضع مكانه النص التالي تماماً، ثم اضغط <strong>Publish</strong></li>
-        </ol>
-        <div style="position:relative;">
-          <pre id="rulesText" style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:10px;font-size:.8rem;line-height:1.7;overflow-x:auto;direction:ltr;text-align:left;">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read:  if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId;
-    }
-    match /jobs/{jobId} {
-      allow read:                   if true;
-      allow create, update, delete: if request.auth != null;
-    }
-    match /jobs/{jobId}/applications/{appId} {
-      allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
-      allow read:   if request.auth != null;
-    }
-  }
-}</pre>
-          <button onclick="copyRules()" style="position:absolute;top:10px;left:10px;background:#0077B6;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:.8rem;cursor:pointer;font-family:inherit;">📋 نسخ</button>
-        </div>
-        <p style="color:#555;font-size:.82rem;margin:12px 0 0;">بعد الضغط على Publish انتظر ثوانٍ ثم أعد تحميل هذه الصفحة.</p>
-      </div>
-
       <!-- Posted Jobs Table -->
       <div class="dashboard-actions">
         <h2>الوظائف المنشورة</h2>
@@ -159,11 +122,9 @@ service cloud.firestore {
     </div>
   </footer>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabaseClient.js"></script>
   <script src="script.js"></script>
 
   <!-- Edit Job Modal -->
@@ -253,197 +214,131 @@ service cloud.firestore {
   </div>
 
   <script>
-    // Guard: only approved admins
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) { window.location.href = 'login.html'; return; }
+    // ===== Dashboard — Supabase =====
 
-      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
-        var u = doc.exists ? doc.data() : {};
+    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+      if (!session) { window.location.href = 'login.html'; return; }
+      var user = session.user;
+      var meta = user.user_metadata || {};
+      var displayName = meta.full_name || meta.name || user.email || 'المسؤول';
 
-        if (u.role !== 'admin' || u.status !== 'approved') {
-          window.location.href = 'login.html';
-          return;
-        }
+      var greeting = document.getElementById('userGreeting');
+      var title    = document.getElementById('dashboardTitle');
+      var subtitle = document.getElementById('dashboardSubtitle');
+      if (greeting) greeting.textContent = 'مرحباً، ' + displayName;
+      if (title)    title.textContent    = 'لوحة التحكم';
+      if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
 
-        var greeting = document.getElementById('userGreeting');
-        var title    = document.getElementById('dashboardTitle');
-        var subtitle = document.getElementById('dashboardSubtitle');
-        if (greeting) greeting.textContent = 'مرحباً، ' + (u.orgName || u.name || 'المسؤول');
-        if (title)    title.textContent    = 'لوحة تحكم ' + (u.orgName || '');
-        if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
-
-        loadDashboard(user.uid);
-        checkFirestorePermissions();
-      }).catch(function () { window.location.href = 'login.html'; });
+      loadDashboard(user.id);
     });
 
-    function copyRules() {
-      var text = document.getElementById('rulesText').innerText;
-      navigator.clipboard.writeText(text).then(function () {
-        var btn = event.target;
-        btn.textContent = '✅ تم النسخ';
-        setTimeout(function () { btn.textContent = '📋 نسخ'; }, 2000);
-      }).catch(function () {
-        alert('انسخ النص يدوياً من المربع أعلاه.');
-      });
-    }
-
-    // Test if Firestore jobs subcollection is accessible.
-    // Shows the rules banner if permission-denied.
-    function checkFirestorePermissions() {
-      firebase.firestore().collection('jobs').limit(1).get()
-        .then(function (snap) {
-          if (snap.empty) {
-            document.getElementById('rulesBanner').style.display = 'none';
-            return;
-          }
-          // Try reading the applications subcollection of the first job
-          var firstJobId = snap.docs[0].id;
-          firebase.firestore().collection('jobs').doc(firstJobId).collection('applications').limit(1).get()
-            .then(function () {
-              document.getElementById('rulesBanner').style.display = 'none';
-            })
-            .catch(function (err) {
-              if (err.code === 'permission-denied') {
-                document.getElementById('rulesBanner').style.display = 'block';
-                document.getElementById('rulesBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            });
-        })
-        .catch(function () {
-          document.getElementById('rulesBanner').style.display = 'none';
+    function loadDashboard(adminUid) {
+      window._supabase
+        .from('jobs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .then(function ({ data, error }) {
+          if (error) { console.error('[Dashboard] Error:', error.message); return; }
+          var jobs = (data || []).map(function (d) {
+            return {
+              id:         d.id,
+              title:      d.title     || '-',
+              city:       d.city      || '-',
+              specialty:  d.specialty || '-',
+              created_at: d.created_at || ''
+            };
+          });
+          var countEl = document.getElementById('postedJobsCount');
+          var activeEl = document.getElementById('activeJobsCount');
+          if (countEl)  countEl.textContent = jobs.length;
+          if (activeEl) activeEl.textContent = jobs.length;
+          if (jobs.length === 0) { renderJobsTable(jobs, {}); return; }
+          loadApplicantCounts(jobs);
         });
     }
 
-    function loadDashboard(adminUid) {
-      firebase.firestore().collection('jobs')
-        .where('adminId', '==', adminUid)
-        .get()
-        .then(function (snapshot) {
-          var myJobs = [];
-          snapshot.forEach(function (d) { myJobs.push(Object.assign({}, d.data(), { id: d.id })); });
-
-          var countEl = document.getElementById('postedJobsCount');
-          var activeEl = document.getElementById('activeJobsCount');
-          if (countEl)  countEl.textContent  = myJobs.length;
-          if (activeEl) activeEl.textContent = myJobs.length;
-
-          // Load applicant counts for all jobs then render
-          if (myJobs.length === 0) {
-            renderJobsTable(myJobs, {});
-            return;
+    function loadApplicantCounts(jobsList) {
+      if (jobsList.length === 0) { renderJobsTable(jobsList, {}); return; }
+      var ids = jobsList.map(function (j) { return j.id; });
+      window._supabase
+        .from('applications')
+        .select('job_id')
+        .in('job_id', ids)
+        .then(function ({ data, error }) {
+          var counts = {};
+          if (!error && data) {
+            data.forEach(function (row) {
+              counts[row.job_id] = (counts[row.job_id] || 0) + 1;
+            });
           }
-
-          // Fetch applicant counts from each job's subcollection: jobs/{jobId}/applications
-          var applicantCounts = {};
-          var pending = myJobs.length;
-
-          myJobs.forEach(function (j) {
-            firebase.firestore().collection('jobs').doc(j.id).collection('applications')
-              .get()
-              .then(function (appSnap) {
-                applicantCounts[j.id] = appSnap.size;
-                pending--;
-                if (pending === 0) {
-                  var total = Object.values(applicantCounts).reduce(function(a, b){ return a + b; }, 0);
-                  var totalEl = document.getElementById('totalApplicantsCount');
-                  if (totalEl) totalEl.textContent = total;
-                  renderJobsTable(myJobs, applicantCounts);
-                }
-              })
-              .catch(function () {
-                pending--;
-                if (pending === 0) renderJobsTable(myJobs, applicantCounts);
-              });
-          });
+          var total = Object.values(counts).reduce(function (a, b) { return a + b; }, 0);
+          var totalEl = document.getElementById('totalApplicantsCount');
+          if (totalEl) totalEl.textContent = total;
+          renderJobsTable(jobsList, counts);
         });
     }
 
     function renderJobsTable(myJobs, counts) {
       var container = document.getElementById('postedJobsContainer');
       if (!container) return;
-
       if (myJobs.length === 0) {
-        container.innerHTML = '<p class="empty-state-msg">لا توجد وظائف منشورة حتى الآن. ابدأ بنشر وظيفتك الأولى!</p>';
+        container.innerHTML = '<p class="empty-state-msg">لا توجد وظائف منشورة حتى الآن.</p>';
         return;
       }
-
       var rows = myJobs.map(function (j) {
-        var cnt = counts[j.id] || 0;
-        return '<tr>' +
-          '<td>' + (j.title || '-') + '</td>' +
-          '<td>' + (j.specialty || '-') + '</td>' +
-          '<td>' + (j.city || '-') + '</td>' +
-          '<td>' + (j.date || '-') + '</td>' +
+        var cnt  = counts[j.id] || 0;
+        var date = j.created_at ? new Date(j.created_at).toLocaleDateString('ar-SA') : '-';
+        return (
+          '<tr>' +
+          '<td>' + escHtml(j.title) + '</td>' +
+          '<td>' + escHtml(j.specialty) + '</td>' +
+          '<td>' + escHtml(j.city) + '</td>' +
+          '<td>' + date + '</td>' +
           '<td><span style="background:#ebf5fb;color:#0077B6;border-radius:20px;padding:3px 12px;font-weight:700;font-size:.88rem;">' + cnt + ' متقدم</span></td>' +
-          '<td>' +
-            '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-              '<button class="btn btn-primary" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openApplicants(\'' + j.id + '\',\'' + escHtml(j.title) + '\')">' +
-                '👥 المتقدمون' +
-              '</button>' +
-              '<button class="btn btn-outline" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openEditModal(\'' + j.id + '\')">' +
-                '✏️ تعديل' +
-              '</button>' +
-              '<button style="padding:6px 14px;font-size:.8rem;border-radius:8px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:700;" onclick="deleteJob(\'' + j.id + '\',\'' + escHtml(j.title) + '\')">' +
-                '🗑️ حذف' +
-              '</button>' +
-            '</div>' +
-          '</td>' +
-        '</tr>';
+          '<td><div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<button class="btn btn-primary" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openApplicants(' + j.id + ',\'' + escHtml(j.title).replace(/\'/g, "\\\\'") + '\')">&#128101; المتقدمون</button>' +
+            '<button class="btn btn-outline" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openEditModal(' + j.id + ')">&#9999;&#65039; تعديل</button>' +
+            '<button style="padding:6px 14px;font-size:.8rem;border-radius:8px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:700;" onclick="deleteJob(' + j.id + ',\'' + escHtml(j.title).replace(/\'/g, "\\\\'") + '\')">&#128465;&#65039; حذف</button>' +
+          '</div></td>' +
+          '</tr>'
+        );
       }).join('');
 
       var table = document.createElement('table');
       table.className = 'jobs-table';
       table.innerHTML =
         '<thead><tr>' +
-          '<th>المسمى الوظيفي</th>' +
-          '<th>التخصص</th>' +
-          '<th>المدينة</th>' +
-          '<th>تاريخ النشر</th>' +
-          '<th>المتقدمون</th>' +
-          '<th>الإجراءات</th>' +
-        '</tr></thead>' +
-        '<tbody>' + rows + '</tbody>';
-
+        '<th>المسمى الوظيفي</th>' +
+        '<th>التخصص</th>' +
+        '<th>المدينة</th>' +
+        '<th>تاريخ النشر</th>' +
+        '<th>المتقدمون</th>' +
+        '<th>الإجراءات</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody>';
       container.innerHTML = '';
       container.appendChild(table);
     }
 
-    // ===== Delete Job =====
     function deleteJob(jobId, jobTitle) {
-      if (!confirm('هل أنت متأكد من حذف وظيفة "' + jobTitle + '"؟\nلا يمكن التراجع عن هذا الإجراء.')) return;
-
-      firebase.firestore().collection('jobs').doc(jobId).delete()
-        .then(function () {
-          // Remove row immediately from the DOM
-          var rows = document.querySelectorAll('#postedJobsContainer tbody tr');
-          rows.forEach(function (row) {
-            if (row.innerHTML.indexOf(jobId) !== -1) row.remove();
-          });
-          // Full reload to keep counts accurate
-          firebase.auth().onAuthStateChanged(function (user) {
-            if (user) loadDashboard(user.uid);
-          });
-        })
-        .catch(function (err) {
-          console.error('Delete error:', err);
-          alert('حدث خطأ أثناء الحذف. يرجى المحاولة مجدداً.');
+      if (!confirm('هل أنت متأكد من حذف وظيفة "' + jobTitle + '"؟')) return;
+      window._supabase.from('jobs').delete().eq('id', jobId).then(function ({ error }) {
+        if (error) { alert('حدث خطأ: ' + error.message); return; }
+        window._supabase.auth.getSession().then(function ({ data: { session } }) {
+          if (session) loadDashboard(session.user.id);
         });
+      });
     }
 
-    // ===== Edit Job =====
     function openEditModal(jobId) {
-      firebase.firestore().collection('jobs').doc(jobId).get().then(function (doc) {
-        if (!doc.exists) return;
-        var d = doc.data();
-        document.getElementById('editJobId').value       = jobId;
-        document.getElementById('editTitle').value       = d.title        || '';
-        document.getElementById('editSpecialty').value   = d.specialty    || '';
-        document.getElementById('editCity').value        = d.city         || '';
-        document.getElementById('editFacilityType').value= d.facilityType || '';
-        document.getElementById('editJobType').value     = d.jobType      || d.workType || '';
-        var msg = document.getElementById('editFormMsg');
-        msg.style.display = 'none';
+      window._supabase.from('jobs').select('*').eq('id', jobId).single().then(function ({ data, error }) {
+        if (error || !data) return;
+        document.getElementById('editJobId').value        = jobId;
+        document.getElementById('editTitle').value        = data.title        || '';
+        document.getElementById('editSpecialty').value    = data.specialty    || '';
+        document.getElementById('editCity').value         = data.city         || '';
+        document.getElementById('editFacilityType').value = data.facility_type || '';
+        document.getElementById('editJobType').value      = data.job_type     || '';
+        document.getElementById('editFormMsg').style.display = 'none';
         document.getElementById('editJobModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
       });
@@ -456,49 +351,42 @@ service cloud.firestore {
 
     document.getElementById('editJobForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      var jobId    = document.getElementById('editJobId').value;
-      var title    = document.getElementById('editTitle').value.trim();
-      var msg      = document.getElementById('editFormMsg');
-
+      var jobId = document.getElementById('editJobId').value;
+      var title = document.getElementById('editTitle').value.trim();
+      var msg   = document.getElementById('editFormMsg');
       if (!title) {
-        msg.textContent = 'يرجى إدخال المسمى الوظيفي.';
+        msg.textContent  = 'يرجى إدخال المسمى الوظيفي.';
         msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#fdecea;color:#c62828;margin-bottom:16px;';
         return;
       }
-
       var updates = {
-        title:        title,
-        specialty:    document.getElementById('editSpecialty').value,
-        city:         document.getElementById('editCity').value,
-        facilityType: document.getElementById('editFacilityType').value,
-        jobType:      document.getElementById('editJobType').value
+        title:         title,
+        specialty:     document.getElementById('editSpecialty').value,
+        city:          document.getElementById('editCity').value,
+        facility_type: document.getElementById('editFacilityType').value,
+        job_type:      document.getElementById('editJobType').value
       };
-
       var btn = this.querySelector('[type="submit"]');
       btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
-
-      firebase.firestore().collection('jobs').doc(jobId).update(updates)
-        .then(function () {
-          msg.textContent = '✅ تم حفظ التعديلات بنجاح!';
-          msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#e8f5e9;color:#2e7d32;margin-bottom:16px;';
-          btn.disabled = false; btn.textContent = '💾 حفظ التعديلات';
-          // Reload dashboard after a short delay
-          setTimeout(function () {
-            closeEditModal();
-            firebase.auth().onAuthStateChanged(function (user) {
-              if (user) loadDashboard(user.uid);
-            });
-          }, 1000);
-        })
-        .catch(function (err) {
-          console.error('Update error:', err);
-          msg.textContent = 'حدث خطأ أثناء الحفظ. يرجى المحاولة مجدداً.';
+      window._supabase.from('jobs').update(updates).eq('id', jobId).then(function ({ error }) {
+        if (error) {
+          msg.textContent  = 'حدث خطأ: ' + error.message;
           msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#fdecea;color:#c62828;margin-bottom:16px;';
           btn.disabled = false; btn.textContent = '💾 حفظ التعديلات';
-        });
+          return;
+        }
+        msg.textContent  = '✅ تم حفظ التعديلات بنجاح!';
+        msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#e8f5e9;color:#2e7d32;margin-bottom:16px;';
+        btn.disabled = false; btn.textContent = '💾 حفظ التعديلات';
+        setTimeout(function () {
+          closeEditModal();
+          window._supabase.auth.getSession().then(function ({ data: { session } }) {
+            if (session) loadDashboard(session.user.id);
+          });
+        }, 1000);
+      });
     });
 
-    // ===== View Applicants =====
     function openApplicants(jobId, jobTitle) {
       document.getElementById('applicantsModalTitle').textContent = '👥 المتقدمون على: ' + jobTitle;
       var container = document.getElementById('applicantsListContainer');
@@ -506,70 +394,46 @@ service cloud.firestore {
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
-      console.log('[Dashboard] Loading applicants from jobs/' + jobId + '/applications');
-
-      firebase.firestore().collection('jobs').doc(jobId).collection('applications')
-        .get()
-        .then(function (snap) {
-          console.log('[Dashboard] Applicants found:', snap.size);
-
-          if (snap.empty) {
-            container.innerHTML =
-              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+      window._supabase
+        .from('applications')
+        .select('*')
+        .eq('job_id', jobId)
+        .order('created_at', { ascending: false })
+        .then(function ({ data, error }) {
+          if (error) {
+            container.innerHTML = '<p style="color:#e74c3c;text-align:center;padding:30px 0;">حدث خطأ: ' + error.message + '</p>';
             return;
           }
-
-          renderApplicantCards(snap);
-        })
-        .catch(function (err) {
-          console.error('[Dashboard] Applicants query error:', err.code, err.message);
-          var msg = err.code === 'permission-denied'
-            ? 'خطأ في الصلاحيات: تأكد من إعداد Firestore Security Rules بشكل صحيح.'
-            : 'حدث خطأ أثناء التحميل: ' + (err.message || '');
-          container.innerHTML =
-            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' + msg + '</p>';
+          if (!data || data.length === 0) {
+            container.innerHTML = '<p style="color:#aaa;text-align:center;padding:40px 0;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+            return;
+          }
+          renderApplicantCards(data);
         });
     }
 
-    function renderApplicantCards(snap) {
-      var docs = [];
-      snap.forEach(function (d) { docs.push(d.data()); });
-      docs.sort(function (a, b) {
-        var ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
-        var tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
-        return tb - ta;
-      });
-
-      var cards = docs.map(function (a) {
-        var displayName = a.applicantName || a.fullname || '-';
-        var date = a.createdAt && a.createdAt.toDate
-          ? a.createdAt.toDate().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
+    function renderApplicantCards(rows) {
+      var cards = rows.map(function (a) {
+        var displayName = a.name || '-';
+        var date = a.created_at
+          ? new Date(a.created_at).toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
           : '-';
         return (
           '<div style="border:1.5px solid #e8eef8;border-radius:12px;padding:18px 20px;margin-bottom:14px;">' +
-            '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-              '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
-                (displayName !== '-' ? displayName.charAt(0) : '؟') +
-              '</div>' +
-              '<div>' +
-                '<div style="font-weight:700;color:#023E8A;font-size:.98rem;">' + displayName + '</div>' +
-                '<div style="font-size:.82rem;color:#888;">📅 ' + date + '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;">' +
-              '<span>📧 ' + (a.email || '-') + '</span>' +
-              '<span>📞 ' + (a.phone || '-') + '</span>' +
-              '<span>🏙️ ' + (a.city || '-') + '</span>' +
-              '<span>🩺 ' + (a.specialty || '-') + '</span>' +
-              (a.experience ? '<span>⏳ خبرة: ' + a.experience + '</span>' : '') +
-              (a.qualification ? '<span>🎓 ' + a.qualification + '</span>' : '') +
-              (a.cvFileName ? '<span style="grid-column:1/-1;">📄 السيرة الذاتية: ' + a.cvFileName + '</span>' : '') +
-            '</div>' +
-            (a.message ? '<div style="margin-top:10px;padding:10px;background:#f8faff;border-radius:8px;font-size:.88rem;color:#555;border-right:3px solid #0077B6;">' + a.message + '</div>' : '') +
-          '</div>'
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+          '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
+          (displayName !== '-' ? displayName.charAt(0) : '?') +
+          '</div>' +
+          '<div>' +
+          '<div style="font-weight:700;color:#023E8A;">' + escHtml(displayName) + '</div>' +
+          '<div style="font-size:.82rem;color:#888;">📅 ' + date + '</div>' +
+          '</div></div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;">' +
+          '<span>📧 ' + escHtml(a.email || '-') + '</span>' +
+          '<span>📞 ' + escHtml(a.phone || '-') + '</span>' +
+          '</div></div>'
         );
       });
-
       document.getElementById('applicantsListContainer').innerHTML = cards.join('');
     }
 
@@ -578,24 +442,21 @@ service cloud.firestore {
       document.body.style.overflow = '';
     }
 
-    // Close modals on overlay click
     document.getElementById('editJobModal').addEventListener('click', function (e) {
       if (e.target === this) closeEditModal();
     });
     document.getElementById('applicantsModal').addEventListener('click', function (e) {
       if (e.target === this) closeApplicantsModal();
     });
-
-    // Escape key closes modals
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { closeEditModal(); closeApplicantsModal(); }
     });
 
     function escHtml(str) {
-      return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return String(str || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
   </script>
 </body>
 </html>
-
-

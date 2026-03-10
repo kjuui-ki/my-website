@@ -100,39 +100,16 @@
     </div>
   </main>
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
-  <script src="script.js?v=2"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabaseClient.js"></script>
+  <script src="script.js"></script>
   <script>
     // Redirect if already logged in
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+      if (session) {
         var nextUrl = new URLSearchParams(window.location.search).get('next');
-        firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
-          const userData = doc.exists ? doc.data() : {};
-          if (userData.role === 'superadmin') {
-            window.location.href = 'admin-panel.html';
-          } else if (userData.role === 'admin') {
-            if (userData.status === 'pending') {
-              firebase.auth().signOut();
-              const box = document.getElementById('loginError');
-              box.textContent = 'طلب التسجيل كمسؤول قيد المراجعة';
-              box.style.display = 'block';
-            } else if (userData.status === 'rejected') {
-              firebase.auth().signOut();
-              const box = document.getElementById('loginError');
-              box.textContent = 'تم رفض طلب التسجيل كمسؤول';
-              box.style.display = 'block';
-            } else {
-              window.location.href = nextUrl || 'dashboard.html';
-            }
-          } else {
-            window.location.href = nextUrl || 'jobs.html';
-          }
-        });
+        window.location.href = nextUrl || 'dashboard.html';
       }
     });
 
@@ -170,54 +147,23 @@
       btn.textContent = 'جاري الدخول...';
       btn.disabled = true;
 
-      try {
-        const credential = await firebase.auth().signInWithEmailAndPassword(email, password);
-        const user = credential.user;
+      const { data, error } = await window._supabase.auth.signInWithPassword({ email, password });
 
-        const doc = await firebase.firestore().collection('users').doc(user.uid).get();
-        const userData = doc.exists ? doc.data() : { uid: user.uid, email: user.email, role: 'jobseeker' };
-        localStorage.setItem('rawad_current_user', JSON.stringify(userData));
-
-        errorBox.style.display = 'none';
-        // Check for ?next= redirect (e.g. coming from apply.html)
-        var nextUrl = new URLSearchParams(window.location.search).get('next');
-        if (userData.role === 'superadmin') {
-          window.location.href = 'admin-panel.html';
-        } else if (userData.role === 'admin') {
-          if (userData.status === 'pending') {
-            await firebase.auth().signOut();
-            localStorage.removeItem('rawad_current_user');
-            btn.textContent = 'دخول';
-            btn.disabled = false;
-            errorBox.textContent = 'طلب التسجيل كمسؤول قيد المراجعة';
-            errorBox.style.display = 'block';
-          } else if (userData.status === 'rejected') {
-            await firebase.auth().signOut();
-            localStorage.removeItem('rawad_current_user');
-            btn.textContent = 'دخول';
-            btn.disabled = false;
-            errorBox.textContent = 'تم رفض طلب التسجيل كمسؤول';
-            errorBox.style.display = 'block';
-          } else {
-            window.location.href = nextUrl || 'dashboard.html';
-          }
-        } else {
-          window.location.href = nextUrl || 'jobs.html';
-        }
-      } catch (err) {
+      if (error) {
         btn.textContent = 'دخول';
         btn.disabled = false;
-
         let msg = 'حدث خطأ، يرجى المحاولة مجدداً';
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        if (error.message && (error.message.includes('Invalid login') || error.message.includes('invalid_credentials'))) {
           msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-        } else if (err.code === 'auth/too-many-requests') {
-          msg = 'تم تعليق الحساب مؤقتاً بسبب محاولات متعددة، يرجى المحاولة لاحقاً';
         }
-
         errorBox.textContent   = msg;
         errorBox.style.display = 'block';
+        return;
       }
+
+      errorBox.style.display = 'none';
+      var nextUrl = new URLSearchParams(window.location.search).get('next');
+      window.location.href = nextUrl || 'dashboard.html';
     });
   </script>
 </body>

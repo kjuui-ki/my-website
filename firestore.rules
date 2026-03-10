@@ -3,44 +3,16 @@ rules_version = '2';
 // ================================================================
 // Rawad Health — Firestore Security Rules
 //
-// HOW TO APPLY (Firebase Console):
-//   1. Go to Firebase Console → Firestore Database → Rules
-//   2. Replace everything with the rules below
-//   3. Click "Publish"
-//
-// HOW TO DEPLOY (Firebase CLI):
-//   firebase deploy --only firestore:rules
+// طريقة التطبيق:
+//   1. افتح Firebase Console → Firestore Database → Rules
+//   2. احذف كل شيء وضع هذا النص بدلاً منه
+//   3. اضغط Publish
 // ================================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // ── users ────────────────────────────────────────────────────
-    // Any logged-in user can read user docs (needed for auth checks).
-    // A user can only write their own document.
-    match /users/{userId} {
-      allow read:  if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId;
-    }
-
-    // ── jobs ─────────────────────────────────────────────────────
-    // Anyone (even unauthenticated) can read jobs so the public
-    // jobs page works without login.
-    // Only authenticated users can create / update / delete jobs.
-    match /jobs/{jobId} {
-      allow read:                    if true;
-      allow create, update, delete:  if request.auth != null;
-    }
-
-    // ── applications (subcollection under each job) ───────────────
-    // Path: jobs/{jobId}/applications/{appId}
-    // Any authenticated user can create an application (job seeker).
-    // Any authenticated user can read applications (admin dashboard).
-    match /jobs/{jobId}/applications/{appId} {
-      allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
-
-      allow read:   if request.auth != null;
+    match /{document=**} {
+      allow read, write: if request.auth != null;
     }
   }
 }
