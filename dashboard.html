@@ -441,24 +441,32 @@
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
+      // Simple equality-only query — no orderBy — avoids requiring a composite Firestore index.
+      // Results are sorted client-side by createdAt after fetching.
       firebase.firestore().collection('applications')
         .where('jobId', '==', jobId)
-        .orderBy('createdAt', 'desc')
         .get()
         .then(function (snap) {
           if (snap.empty) {
             document.getElementById('applicantsListContainer').innerHTML =
-              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حتى الآن.</p>';
+              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
             return;
           }
 
-          var cards = [];
-          snap.forEach(function (d) {
-            var a = d.data();
+          // Collect all docs then sort newest-first in JS
+          var docs = [];
+          snap.forEach(function (d) { docs.push(d.data()); });
+          docs.sort(function (a, b) {
+            var ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+            var tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+            return tb - ta;
+          });
+
+          var cards = docs.map(function (a) {
             var date = a.createdAt && a.createdAt.toDate
               ? a.createdAt.toDate().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
               : '-';
-            cards.push(
+            return (
               '<div style="border:1.5px solid #e8eef8;border-radius:12px;padding:18px 20px;margin-bottom:14px;">' +
                 '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
                   '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
@@ -486,9 +494,9 @@
           document.getElementById('applicantsListContainer').innerHTML = cards.join('');
         })
         .catch(function (err) {
-          console.error('Error loading applicants:', err);
+          console.error('[Applicants] Firestore error:', err);
           document.getElementById('applicantsListContainer').innerHTML =
-            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">حدث خطأ أثناء تحميل البيانات.</p>';
+            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">حدث خطأ أثناء تحميل البيانات.<br><small style="color:#aaa;">' + (err.message || '') + '</small></p>';
         });
     }
 
