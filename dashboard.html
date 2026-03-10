@@ -74,17 +74,17 @@
           </div>
         </div>
         <div class="dashboard-card">
-          <div class="dashboard-card-icon icon-green">✅</div>
+          <div class="dashboard-card-icon icon-green">👥</div>
           <div class="dashboard-card-info">
-            <h3>0</h3>
-            <p>طلب مقبول</p>
+            <h3 id="totalApplicantsCount">0</h3>
+            <p>إجمالي المتقدمين</p>
           </div>
         </div>
         <div class="dashboard-card">
           <div class="dashboard-card-icon icon-orange">📋</div>
           <div class="dashboard-card-info">
-            <h3>0</h3>
-            <p>طلب قيد المراجعة</p>
+            <h3 id="activeJobsCount">0</h3>
+            <p>وظيفة فعّالة</p>
           </div>
         </div>
       </div>
@@ -128,72 +128,391 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
   <script src="script.js"></script>
+
+  <!-- Edit Job Modal -->
+  <div id="editJobModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;">
+    <div style="background:#fff;max-width:560px;margin:60px auto 40px;border-radius:16px;padding:36px 32px;box-shadow:0 8px 40px rgba(0,0,0,.2);">
+      <h3 style="color:#023E8A;font-size:1.3rem;font-weight:800;margin-bottom:24px;">✏️ تعديل الوظيفة</h3>
+      <form id="editJobForm">
+        <input type="hidden" id="editJobId">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-weight:700;color:#023E8A;margin-bottom:6px;">المسمى الوظيفي <span style="color:#e74c3c;">*</span></label>
+          <input id="editTitle" type="text" required style="width:100%;padding:10px 14px;border:1.5px solid #dde3ef;border-radius:8px;font-family:inherit;font-size:.95rem;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-weight:700;color:#023E8A;margin-bottom:6px;">التخصص</label>
+          <select id="editSpecialty" style="width:100%;padding:10px 14px;border:1.5px solid #dde3ef;border-radius:8px;font-family:inherit;font-size:.95rem;box-sizing:border-box;">
+            <option value="">اختر التخصص</option>
+            <option value="طب-عام">طب عام</option>
+            <option value="طب-اسنان">طب أسنان</option>
+            <option value="تمريض">تمريض</option>
+            <option value="صيدلة">صيدلة</option>
+            <option value="علاج-طبيعي">علاج طبيعي</option>
+            <option value="اشعة">أشعة</option>
+            <option value="مختبرات">مختبرات</option>
+            <option value="تغذية">تغذية إكلينيكية</option>
+            <option value="بصريات">بصريات</option>
+            <option value="اخرى">أخرى</option>
+          </select>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-weight:700;color:#023E8A;margin-bottom:6px;">المدينة</label>
+          <select id="editCity" style="width:100%;padding:10px 14px;border:1.5px solid #dde3ef;border-radius:8px;font-family:inherit;font-size:.95rem;box-sizing:border-box;">
+            <option value="">اختر المدينة</option>
+            <option value="الرياض">الرياض</option>
+            <option value="جدة">جدة</option>
+            <option value="الدمام">الدمام</option>
+            <option value="المدينة">المدينة المنورة</option>
+            <option value="مكة">مكة المكرمة</option>
+            <option value="الطائف">الطائف</option>
+            <option value="تبوك">تبوك</option>
+            <option value="أبها">أبها</option>
+            <option value="حائل">حائل</option>
+            <option value="اخرى">أخرى</option>
+          </select>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-weight:700;color:#023E8A;margin-bottom:6px;">نوع المنشأة</label>
+          <select id="editFacilityType" style="width:100%;padding:10px 14px;border:1.5px solid #dde3ef;border-radius:8px;font-family:inherit;font-size:.95rem;box-sizing:border-box;">
+            <option value="">اختر</option>
+            <option value="مستشفى">مستشفى</option>
+            <option value="مستوصف">مستوصف</option>
+            <option value="مركز-تأهيل">مركز تأهيل</option>
+            <option value="عيادة-خاصة">عيادة خاصة</option>
+            <option value="مختبر">مختبر</option>
+            <option value="اخرى">أخرى</option>
+          </select>
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-weight:700;color:#023E8A;margin-bottom:6px;">نوع العمل</label>
+          <select id="editJobType" style="width:100%;padding:10px 14px;border:1.5px solid #dde3ef;border-radius:8px;font-family:inherit;font-size:.95rem;box-sizing:border-box;">
+            <option value="">اختر</option>
+            <option value="دوام-كامل">دوام كامل</option>
+            <option value="دوام-جزئي">دوام جزئي</option>
+            <option value="عقد">عقد</option>
+            <option value="تدريب">تدريب</option>
+          </select>
+        </div>
+        <div id="editFormMsg" style="display:none;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-weight:600;"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary" style="flex:1;">💾 حفظ التعديلات</button>
+          <button type="button" class="btn btn-outline" onclick="closeEditModal()" style="flex:1;">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Applicants Modal -->
+  <div id="applicantsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;">
+    <div style="background:#fff;max-width:780px;margin:60px auto 40px;border-radius:16px;padding:36px 32px;box-shadow:0 8px 40px rgba(0,0,0,.2);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap;">
+        <h3 id="applicantsModalTitle" style="color:#023E8A;font-size:1.3rem;font-weight:800;">👥 المتقدمون</h3>
+        <button class="btn btn-outline" onclick="closeApplicantsModal()" style="padding:8px 20px;font-size:.9rem;">إغلاق</button>
+      </div>
+      <div id="applicantsListContainer">
+        <p style="color:#aaa;text-align:center;padding:30px 0;">جاري التحميل...</p>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Guard: only admins can access this page
+    // Guard: only approved admins
     firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!user) { window.location.href = 'login.html'; return; }
 
       firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
-        const u = doc.exists ? doc.data() : {};
+        var u = doc.exists ? doc.data() : {};
 
         if (u.role !== 'admin' || u.status !== 'approved') {
           window.location.href = 'login.html';
           return;
         }
 
-        // Set greeting
-        const greeting = document.getElementById('userGreeting');
-        const title    = document.getElementById('dashboardTitle');
-        const subtitle = document.getElementById('dashboardSubtitle');
-
+        var greeting = document.getElementById('userGreeting');
+        var title    = document.getElementById('dashboardTitle');
+        var subtitle = document.getElementById('dashboardSubtitle');
         if (greeting) greeting.textContent = 'مرحباً، ' + (u.orgName || u.name || 'المسؤول');
         if (title)    title.textContent    = 'لوحة تحكم ' + (u.orgName || '');
         if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
 
-        // Load posted jobs from Firestore
-        firebase.firestore().collection('jobs')
-          .where('adminId', '==', user.uid)
-          .get()
-          .then(function (snapshot) {
-            const myJobs = [];
-            snapshot.forEach(function (d) { myJobs.push(d.data()); });
-
-            const countEl = document.getElementById('postedJobsCount');
-            if (countEl) countEl.textContent = myJobs.length;
-
-            const container = document.getElementById('postedJobsContainer');
-            if (myJobs.length && container) {
-              const table = document.createElement('table');
-              table.className = 'jobs-table';
-              table.innerHTML = `
-                <thead>
-                  <tr>
-                    <th>المسمى الوظيفي</th>
-                    <th>التخصص</th>
-                    <th>المدينة</th>
-                    <th>تاريخ النشر</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${myJobs.map(function (j) { return `
-                    <tr>
-                      <td>${j.title}</td>
-                      <td>${j.specialty || '-'}</td>
-                      <td>${j.city || '-'}</td>
-                      <td>${j.date || '-'}</td>
-                    </tr>
-                  `; }).join('')}
-                </tbody>
-              `;
-              container.innerHTML = '';
-              container.appendChild(table);
-            }
-          });
-      });
+        loadDashboard(user.uid);
+      }).catch(function () { window.location.href = 'login.html'; });
     });
+
+    function loadDashboard(adminUid) {
+      firebase.firestore().collection('jobs')
+        .where('adminId', '==', adminUid)
+        .get()
+        .then(function (snapshot) {
+          var myJobs = [];
+          snapshot.forEach(function (d) { myJobs.push(Object.assign({}, d.data(), { id: d.id })); });
+
+          var countEl = document.getElementById('postedJobsCount');
+          var activeEl = document.getElementById('activeJobsCount');
+          if (countEl)  countEl.textContent  = myJobs.length;
+          if (activeEl) activeEl.textContent = myJobs.length;
+
+          // Load applicant counts for all jobs then render
+          if (myJobs.length === 0) {
+            renderJobsTable(myJobs, {});
+            return;
+          }
+
+          // Fetch applications for all admin's jobs at once
+          var jobIds = myJobs.map(function (j) { return j.id; });
+          // Firestore 'in' query supports up to 30 items
+          var batches = [];
+          for (var i = 0; i < jobIds.length; i += 30) {
+            batches.push(jobIds.slice(i, i + 30));
+          }
+
+          var applicantCounts = {};
+          var pending = batches.length;
+          if (pending === 0) { renderJobsTable(myJobs, applicantCounts); return; }
+
+          batches.forEach(function (batch) {
+            firebase.firestore().collection('applications')
+              .where('jobId', 'in', batch)
+              .get()
+              .then(function (appSnap) {
+                appSnap.forEach(function (ad) {
+                  var jid = ad.data().jobId;
+                  applicantCounts[jid] = (applicantCounts[jid] || 0) + 1;
+                });
+                pending--;
+                if (pending === 0) {
+                  var total = Object.values(applicantCounts).reduce(function(a, b){ return a + b; }, 0);
+                  var totalEl = document.getElementById('totalApplicantsCount');
+                  if (totalEl) totalEl.textContent = total;
+                  renderJobsTable(myJobs, applicantCounts);
+                }
+              })
+              .catch(function () {
+                pending--;
+                if (pending === 0) renderJobsTable(myJobs, applicantCounts);
+              });
+          });
+        });
+    }
+
+    function renderJobsTable(myJobs, counts) {
+      var container = document.getElementById('postedJobsContainer');
+      if (!container) return;
+
+      if (myJobs.length === 0) {
+        container.innerHTML = '<p class="empty-state-msg">لا توجد وظائف منشورة حتى الآن. ابدأ بنشر وظيفتك الأولى!</p>';
+        return;
+      }
+
+      var rows = myJobs.map(function (j) {
+        var cnt = counts[j.id] || 0;
+        return '<tr>' +
+          '<td>' + (j.title || '-') + '</td>' +
+          '<td>' + (j.specialty || '-') + '</td>' +
+          '<td>' + (j.city || '-') + '</td>' +
+          '<td>' + (j.date || '-') + '</td>' +
+          '<td><span style="background:#ebf5fb;color:#0077B6;border-radius:20px;padding:3px 12px;font-weight:700;font-size:.88rem;">' + cnt + ' متقدم</span></td>' +
+          '<td>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+              '<button class="btn btn-primary" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openApplicants(\'' + j.id + '\',\'' + escHtml(j.title) + '\')">' +
+                '👥 المتقدمون' +
+              '</button>' +
+              '<button class="btn btn-outline" style="padding:6px 14px;font-size:.8rem;border-radius:8px;" onclick="openEditModal(\'' + j.id + '\')">' +
+                '✏️ تعديل' +
+              '</button>' +
+              '<button style="padding:6px 14px;font-size:.8rem;border-radius:8px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:700;" onclick="deleteJob(\'' + j.id + '\',\'' + escHtml(j.title) + '\')">' +
+                '🗑️ حذف' +
+              '</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>';
+      }).join('');
+
+      var table = document.createElement('table');
+      table.className = 'jobs-table';
+      table.innerHTML =
+        '<thead><tr>' +
+          '<th>المسمى الوظيفي</th>' +
+          '<th>التخصص</th>' +
+          '<th>المدينة</th>' +
+          '<th>تاريخ النشر</th>' +
+          '<th>المتقدمون</th>' +
+          '<th>الإجراءات</th>' +
+        '</tr></thead>' +
+        '<tbody>' + rows + '</tbody>';
+
+      container.innerHTML = '';
+      container.appendChild(table);
+    }
+
+    // ===== Delete Job =====
+    function deleteJob(jobId, jobTitle) {
+      if (!confirm('هل أنت متأكد من حذف وظيفة "' + jobTitle + '"؟\nلا يمكن التراجع عن هذا الإجراء.')) return;
+
+      firebase.firestore().collection('jobs').doc(jobId).delete()
+        .then(function () {
+          // Remove row immediately from the DOM
+          var rows = document.querySelectorAll('#postedJobsContainer tbody tr');
+          rows.forEach(function (row) {
+            if (row.innerHTML.indexOf(jobId) !== -1) row.remove();
+          });
+          // Full reload to keep counts accurate
+          firebase.auth().onAuthStateChanged(function (user) {
+            if (user) loadDashboard(user.uid);
+          });
+        })
+        .catch(function (err) {
+          console.error('Delete error:', err);
+          alert('حدث خطأ أثناء الحذف. يرجى المحاولة مجدداً.');
+        });
+    }
+
+    // ===== Edit Job =====
+    function openEditModal(jobId) {
+      firebase.firestore().collection('jobs').doc(jobId).get().then(function (doc) {
+        if (!doc.exists) return;
+        var d = doc.data();
+        document.getElementById('editJobId').value       = jobId;
+        document.getElementById('editTitle').value       = d.title        || '';
+        document.getElementById('editSpecialty').value   = d.specialty    || '';
+        document.getElementById('editCity').value        = d.city         || '';
+        document.getElementById('editFacilityType').value= d.facilityType || '';
+        document.getElementById('editJobType').value     = d.jobType      || d.workType || '';
+        var msg = document.getElementById('editFormMsg');
+        msg.style.display = 'none';
+        document.getElementById('editJobModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    function closeEditModal() {
+      document.getElementById('editJobModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('editJobForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var jobId    = document.getElementById('editJobId').value;
+      var title    = document.getElementById('editTitle').value.trim();
+      var msg      = document.getElementById('editFormMsg');
+
+      if (!title) {
+        msg.textContent = 'يرجى إدخال المسمى الوظيفي.';
+        msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#fdecea;color:#c62828;margin-bottom:16px;';
+        return;
+      }
+
+      var updates = {
+        title:        title,
+        specialty:    document.getElementById('editSpecialty').value,
+        city:         document.getElementById('editCity').value,
+        facilityType: document.getElementById('editFacilityType').value,
+        jobType:      document.getElementById('editJobType').value
+      };
+
+      var btn = this.querySelector('[type="submit"]');
+      btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+
+      firebase.firestore().collection('jobs').doc(jobId).update(updates)
+        .then(function () {
+          msg.textContent = '✅ تم حفظ التعديلات بنجاح!';
+          msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#e8f5e9;color:#2e7d32;margin-bottom:16px;';
+          btn.disabled = false; btn.textContent = '💾 حفظ التعديلات';
+          // Reload dashboard after a short delay
+          setTimeout(function () {
+            closeEditModal();
+            firebase.auth().onAuthStateChanged(function (user) {
+              if (user) loadDashboard(user.uid);
+            });
+          }, 1000);
+        })
+        .catch(function (err) {
+          console.error('Update error:', err);
+          msg.textContent = 'حدث خطأ أثناء الحفظ. يرجى المحاولة مجدداً.';
+          msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-weight:600;background:#fdecea;color:#c62828;margin-bottom:16px;';
+          btn.disabled = false; btn.textContent = '💾 حفظ التعديلات';
+        });
+    });
+
+    // ===== View Applicants =====
+    function openApplicants(jobId, jobTitle) {
+      document.getElementById('applicantsModalTitle').textContent = '👥 المتقدمون على: ' + jobTitle;
+      document.getElementById('applicantsListContainer').innerHTML = '<p style="color:#aaa;text-align:center;padding:30px 0;">جاري التحميل...</p>';
+      document.getElementById('applicantsModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+
+      firebase.firestore().collection('applications')
+        .where('jobId', '==', jobId)
+        .orderBy('createdAt', 'desc')
+        .get()
+        .then(function (snap) {
+          if (snap.empty) {
+            document.getElementById('applicantsListContainer').innerHTML =
+              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حتى الآن.</p>';
+            return;
+          }
+
+          var cards = [];
+          snap.forEach(function (d) {
+            var a = d.data();
+            var date = a.createdAt && a.createdAt.toDate
+              ? a.createdAt.toDate().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
+              : '-';
+            cards.push(
+              '<div style="border:1.5px solid #e8eef8;border-radius:12px;padding:18px 20px;margin-bottom:14px;">' +
+                '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+                  '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
+                    (a.fullname ? a.fullname.charAt(0) : '؟') +
+                  '</div>' +
+                  '<div>' +
+                    '<div style="font-weight:700;color:#023E8A;font-size:.98rem;">' + (a.fullname || '-') + '</div>' +
+                    '<div style="font-size:.82rem;color:#888;">📅 ' + date + '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;">' +
+                  '<span>📧 ' + (a.email || '-') + '</span>' +
+                  '<span>📞 ' + (a.phone || '-') + '</span>' +
+                  '<span>🏙️ ' + (a.city || '-') + '</span>' +
+                  '<span>🩺 ' + (a.specialty || '-') + '</span>' +
+                  (a.experience ? '<span>⏳ خبرة: ' + a.experience + '</span>' : '') +
+                  (a.qualification ? '<span>🎓 ' + a.qualification + '</span>' : '') +
+                  (a.cvFileName ? '<span style="grid-column:1/-1;">📄 السيرة الذاتية: ' + a.cvFileName + '</span>' : '') +
+                '</div>' +
+                (a.message ? '<div style="margin-top:10px;padding:10px;background:#f8faff;border-radius:8px;font-size:.88rem;color:#555;border-right:3px solid #0077B6;">' + a.message + '</div>' : '') +
+              '</div>'
+            );
+          });
+
+          document.getElementById('applicantsListContainer').innerHTML = cards.join('');
+        })
+        .catch(function (err) {
+          console.error('Error loading applicants:', err);
+          document.getElementById('applicantsListContainer').innerHTML =
+            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">حدث خطأ أثناء تحميل البيانات.</p>';
+        });
+    }
+
+    function closeApplicantsModal() {
+      document.getElementById('applicantsModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // Close modals on overlay click
+    document.getElementById('editJobModal').addEventListener('click', function (e) {
+      if (e.target === this) closeEditModal();
+    });
+    document.getElementById('applicantsModal').addEventListener('click', function (e) {
+      if (e.target === this) closeApplicantsModal();
+    });
+
+    // Escape key closes modals
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeEditModal(); closeApplicantsModal(); }
+    });
+
+    function escHtml(str) {
+      return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
   </script>
 </body>
 </html>
