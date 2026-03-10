@@ -441,68 +441,60 @@
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
-      console.log('[Applicants] Searching for jobId:', jobId, '| type:', typeof jobId);
+      console.log('[Applicants] Looking for jobId:', jobId, ' | jobTitle:', jobTitle);
 
-      // Step 1: Try filtered query (by jobId)
+      var container = document.getElementById('applicantsListContainer');
+
+      function showEmpty() {
+        container.innerHTML = '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+      }
+
+      function showError(msg) {
+        container.innerHTML = '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' + msg + '</p>';
+      }
+
+      // Step 1: query by Firestore doc jobId
       firebase.firestore().collection('applications')
         .where('jobId', '==', jobId)
         .get()
         .then(function (snap) {
-          console.log('[Applicants] Filtered results:', snap.size, 'docs');
+          console.log('[Applicants] Step-1 (jobId) results:', snap.size);
+          if (!snap.empty) { renderApplicantCards(snap); return; }
 
-          if (!snap.empty) {
-            // Found applicants — render them normally
-            renderApplicantCards(snap);
-            return;
-          }
+          // Step 2: query by jobTitle (catches records saved before fix)
+          return firebase.firestore().collection('applications')
+            .where('jobTitle', '==', jobTitle)
+            .get()
+            .then(function (titleSnap) {
+              console.log('[Applicants] Step-2 (jobTitle) results:', titleSnap.size);
+              if (!titleSnap.empty) { renderApplicantCards(titleSnap); return; }
 
-          // Step 2: No match found — fallback: load ALL applications and diagnose
-          console.warn('[Applicants] No results found for jobId="' + jobId + '". Checking full collection...');
-          firebase.firestore().collection('applications').get()
-            .then(function (allSnap) {
-              console.log('[Applicants] Total applications in collection:', allSnap.size);
-              if (allSnap.size === 0) {
-                document.getElementById('applicantsListContainer').innerHTML =
-                  '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
-                return;
-              }
+              // Step 3: show all applications with a diagnostic banner
+              return firebase.firestore().collection('applications').get()
+                .then(function (allSnap) {
+                  console.log('[Applicants] Step-3 (all) results:', allSnap.size);
+                  if (allSnap.size === 0) { showEmpty(); return; }
 
-              // Show ALL applications but flag that jobId didn't match
-              var mismatchedIds = [];
-              allSnap.forEach(function(d) {
-                var savedId = d.data().jobId;
-                console.log('[Applicants] Found application with jobId="' + savedId + '"');
-                if (mismatchedIds.indexOf(savedId) === -1) mismatchedIds.push(savedId);
-              });
+                  var ids = [];
+                  allSnap.forEach(function (d) {
+                    var sid = d.data().jobId;
+                    if (ids.indexOf(sid) === -1) ids.push(sid);
+                  });
 
-              // If this job's ID appears nowhere, show all applications as a fallback
-              document.getElementById('applicantsListContainer').innerHTML =
-                '<div style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.88rem;color:#6d4c00;">' +
-                  '<strong>⚠️ تنبيه:</strong> تم إيجاد ' + allSnap.size + ' طلب في قاعدة البيانات، لكن لا يوجد طلب مرتبط بمعرّف هذه الوظيفة.<br>' +
-                  'معرّف الوظيفة المطلوب: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + jobId + '</code><br>' +
-                  'المعرّفات الموجودة في الطلبات: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + mismatchedIds.join(', ') + '</code>' +
-                '</div>';
-
-              // Render all applications anyway so admin can see them
-              renderApplicantCards(allSnap, true);
-            })
-            .catch(function (err2) {
-              console.error('[Applicants] Full collection query also failed:', err2);
-              document.getElementById('applicantsListContainer').innerHTML =
-                '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' +
-                  'لا يمكن الوصول إلى قاعدة البيانات.<br>' +
-                  '<small style="color:#aaa;">يرجى التحقق من قواعد الأمان في Firebase Console (Firestore → Rules).<br>' +
-                  (err2.message || '') + '</small>' +
-                '</p>';
+                  container.innerHTML =
+                    '<div style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.88rem;color:#6d4c00;">' +
+                      '<strong>⚠️ تنبيه:</strong> تم إيجاد ' + allSnap.size + ' طلب في قاعدة البيانات لكن لا يطابق هذه الوظيفة تحديداً.<br>' +
+                      'معرّف الوظيفة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + jobId + '</code> | ' +
+                      'اسم الوظيفة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + escHtml(jobTitle) + '</code><br>' +
+                      'معرّفات الطلبات الموجودة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + ids.map(escHtml).join(', ') + '</code>' +
+                    '</div>';
+                  renderApplicantCards(allSnap, true);
+                });
             });
         })
         .catch(function (err) {
-          console.error('[Applicants] Query error:', err);
-          document.getElementById('applicantsListContainer').innerHTML =
-            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' +
-              'حدث خطأ أثناء تحميل البيانات.<br>' +
-              '<small style="color:#aaa;">' + (err.message || '') + '</small>' +
-            '</p>';
+          console.error('[Applicants] Error:', err);
+          showError('حدث خطأ أثناء تحميل البيانات.<br><small style="color:#aaa;">' + (err.message || '') + '</small>');
         });
     }
 
