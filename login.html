@@ -110,6 +110,7 @@
     // Redirect if already logged in
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
+        var nextUrl = new URLSearchParams(window.location.search).get('next');
         firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
           const userData = doc.exists ? doc.data() : {};
           if (userData.role === 'superadmin') {
@@ -126,10 +127,10 @@
               box.textContent = 'تم رفض طلب التسجيل كمسؤول';
               box.style.display = 'block';
             } else {
-              window.location.href = 'dashboard.html';
+              window.location.href = nextUrl || 'dashboard.html';
             }
           } else {
-            window.location.href = 'jobs.html';
+            window.location.href = nextUrl || 'jobs.html';
           }
         });
       }
@@ -178,6 +179,8 @@
         localStorage.setItem('rawad_current_user', JSON.stringify(userData));
 
         errorBox.style.display = 'none';
+        // Check for ?next= redirect (e.g. coming from apply.html)
+        var nextUrl = new URLSearchParams(window.location.search).get('next');
         if (userData.role === 'superadmin') {
           window.location.href = 'admin-panel.html';
         } else if (userData.role === 'admin') {
@@ -196,10 +199,10 @@
             errorBox.textContent = 'تم رفض طلب التسجيل كمسؤول';
             errorBox.style.display = 'block';
           } else {
-            window.location.href = 'dashboard.html';
+            window.location.href = nextUrl || 'dashboard.html';
           }
         } else {
-          window.location.href = 'jobs.html';
+          window.location.href = nextUrl || 'jobs.html';
         }
       } catch (err) {
         btn.textContent = 'دخول';

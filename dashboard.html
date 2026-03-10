@@ -441,63 +441,113 @@
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
-      // Simple equality-only query — no orderBy — avoids requiring a composite Firestore index.
-      // Results are sorted client-side by createdAt after fetching.
+      console.log('[Applicants] Searching for jobId:', jobId, '| type:', typeof jobId);
+
+      // Step 1: Try filtered query (by jobId)
       firebase.firestore().collection('applications')
         .where('jobId', '==', jobId)
         .get()
         .then(function (snap) {
-          if (snap.empty) {
-            document.getElementById('applicantsListContainer').innerHTML =
-              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+          console.log('[Applicants] Filtered results:', snap.size, 'docs');
+
+          if (!snap.empty) {
+            // Found applicants — render them normally
+            renderApplicantCards(snap);
             return;
           }
 
-          // Collect all docs then sort newest-first in JS
-          var docs = [];
-          snap.forEach(function (d) { docs.push(d.data()); });
-          docs.sort(function (a, b) {
-            var ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
-            var tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
-            return tb - ta;
-          });
+          // Step 2: No match found — fallback: load ALL applications and diagnose
+          console.warn('[Applicants] No results found for jobId="' + jobId + '". Checking full collection...');
+          firebase.firestore().collection('applications').get()
+            .then(function (allSnap) {
+              console.log('[Applicants] Total applications in collection:', allSnap.size);
+              if (allSnap.size === 0) {
+                document.getElementById('applicantsListContainer').innerHTML =
+                  '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+                return;
+              }
 
-          var cards = docs.map(function (a) {
-            var date = a.createdAt && a.createdAt.toDate
-              ? a.createdAt.toDate().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
-              : '-';
-            return (
-              '<div style="border:1.5px solid #e8eef8;border-radius:12px;padding:18px 20px;margin-bottom:14px;">' +
-                '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-                  '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
-                    (a.fullname ? a.fullname.charAt(0) : '؟') +
-                  '</div>' +
-                  '<div>' +
-                    '<div style="font-weight:700;color:#023E8A;font-size:.98rem;">' + (a.fullname || '-') + '</div>' +
-                    '<div style="font-size:.82rem;color:#888;">📅 ' + date + '</div>' +
-                  '</div>' +
-                '</div>' +
-                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;">' +
-                  '<span>📧 ' + (a.email || '-') + '</span>' +
-                  '<span>📞 ' + (a.phone || '-') + '</span>' +
-                  '<span>🏙️ ' + (a.city || '-') + '</span>' +
-                  '<span>🩺 ' + (a.specialty || '-') + '</span>' +
-                  (a.experience ? '<span>⏳ خبرة: ' + a.experience + '</span>' : '') +
-                  (a.qualification ? '<span>🎓 ' + a.qualification + '</span>' : '') +
-                  (a.cvFileName ? '<span style="grid-column:1/-1;">📄 السيرة الذاتية: ' + a.cvFileName + '</span>' : '') +
-                '</div>' +
-                (a.message ? '<div style="margin-top:10px;padding:10px;background:#f8faff;border-radius:8px;font-size:.88rem;color:#555;border-right:3px solid #0077B6;">' + a.message + '</div>' : '') +
-              '</div>'
-            );
-          });
+              // Show ALL applications but flag that jobId didn't match
+              var mismatchedIds = [];
+              allSnap.forEach(function(d) {
+                var savedId = d.data().jobId;
+                console.log('[Applicants] Found application with jobId="' + savedId + '"');
+                if (mismatchedIds.indexOf(savedId) === -1) mismatchedIds.push(savedId);
+              });
 
-          document.getElementById('applicantsListContainer').innerHTML = cards.join('');
+              // If this job's ID appears nowhere, show all applications as a fallback
+              document.getElementById('applicantsListContainer').innerHTML =
+                '<div style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.88rem;color:#6d4c00;">' +
+                  '<strong>⚠️ تنبيه:</strong> تم إيجاد ' + allSnap.size + ' طلب في قاعدة البيانات، لكن لا يوجد طلب مرتبط بمعرّف هذه الوظيفة.<br>' +
+                  'معرّف الوظيفة المطلوب: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + jobId + '</code><br>' +
+                  'المعرّفات الموجودة في الطلبات: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + mismatchedIds.join(', ') + '</code>' +
+                '</div>';
+
+              // Render all applications anyway so admin can see them
+              renderApplicantCards(allSnap, true);
+            })
+            .catch(function (err2) {
+              console.error('[Applicants] Full collection query also failed:', err2);
+              document.getElementById('applicantsListContainer').innerHTML =
+                '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' +
+                  'لا يمكن الوصول إلى قاعدة البيانات.<br>' +
+                  '<small style="color:#aaa;">يرجى التحقق من قواعد الأمان في Firebase Console (Firestore → Rules).<br>' +
+                  (err2.message || '') + '</small>' +
+                '</p>';
+            });
         })
         .catch(function (err) {
-          console.error('[Applicants] Firestore error:', err);
+          console.error('[Applicants] Query error:', err);
           document.getElementById('applicantsListContainer').innerHTML =
-            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">حدث خطأ أثناء تحميل البيانات.<br><small style="color:#aaa;">' + (err.message || '') + '</small></p>';
+            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' +
+              'حدث خطأ أثناء تحميل البيانات.<br>' +
+              '<small style="color:#aaa;">' + (err.message || '') + '</small>' +
+            '</p>';
         });
+    }
+
+    function renderApplicantCards(snap, showAll) {
+      var docs = [];
+      snap.forEach(function (d) { docs.push(d.data()); });
+      docs.sort(function (a, b) {
+        var ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+        var tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+        return tb - ta;
+      });
+
+      var cards = docs.map(function (a) {
+        var displayName = a.applicantName || a.fullname || '-';
+        var date = a.createdAt && a.createdAt.toDate
+          ? a.createdAt.toDate().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
+          : '-';
+        return (
+          '<div style="border:1.5px solid #e8eef8;border-radius:12px;padding:18px 20px;margin-bottom:14px;">' +
+            '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+              '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0077B6,#023E8A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:700;flex-shrink:0;">' +
+                (displayName !== '-' ? displayName.charAt(0) : '؟') +
+              '</div>' +
+              '<div>' +
+                '<div style="font-weight:700;color:#023E8A;font-size:.98rem;">' + displayName + '</div>' +
+                '<div style="font-size:.82rem;color:#888;">📅 ' + date + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;">' +
+              '<span>📧 ' + (a.email || '-') + '</span>' +
+              '<span>📞 ' + (a.phone || '-') + '</span>' +
+              '<span>🏙️ ' + (a.city || '-') + '</span>' +
+              '<span>🩺 ' + (a.specialty || '-') + '</span>' +
+              (a.experience ? '<span>⏳ خبرة: ' + a.experience + '</span>' : '') +
+              (a.qualification ? '<span>🎓 ' + a.qualification + '</span>' : '') +
+              (a.cvFileName ? '<span style="grid-column:1/-1;">📄 السيرة الذاتية: ' + a.cvFileName + '</span>' : '') +
+              (a.jobTitle ? '<span style="grid-column:1/-1;color:#777;">🔗 الوظيفة: ' + a.jobTitle + '</span>' : '') +
+            '</div>' +
+            (a.message ? '<div style="margin-top:10px;padding:10px;background:#f8faff;border-radius:8px;font-size:.88rem;color:#555;border-right:3px solid #0077B6;">' + a.message + '</div>' : '') +
+          '</div>'
+        );
+      });
+
+      var existing = document.getElementById('applicantsListContainer').innerHTML;
+      document.getElementById('applicantsListContainer').innerHTML = existing + cards.join('');
     }
 
     function closeApplicantsModal() {

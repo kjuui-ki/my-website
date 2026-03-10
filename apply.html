@@ -281,6 +281,15 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
   <script src="script.js?v=2"></script>
+  <script>
+    // Require login before applying
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
+        var returnUrl = encodeURIComponent(window.location.href);
+        window.location.href = 'login.html?next=' + returnUrl;
+      }
+    });
+  </script>
 </body>
 </html>
 
