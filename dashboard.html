@@ -437,68 +437,38 @@
     // ===== View Applicants =====
     function openApplicants(jobId, jobTitle) {
       document.getElementById('applicantsModalTitle').textContent = '👥 المتقدمون على: ' + jobTitle;
-      document.getElementById('applicantsListContainer').innerHTML = '<p style="color:#aaa;text-align:center;padding:30px 0;">جاري التحميل...</p>';
+      var container = document.getElementById('applicantsListContainer');
+      container.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px 0;">جاري التحميل...</p>';
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
-      console.log('[Applicants] Looking for jobId:', jobId, ' | jobTitle:', jobTitle);
+      console.log('[Dashboard] Loading applicants for jobId:', jobId);
 
-      var container = document.getElementById('applicantsListContainer');
-
-      function showEmpty() {
-        container.innerHTML = '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
-      }
-
-      function showError(msg) {
-        container.innerHTML = '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' + msg + '</p>';
-      }
-
-      // Step 1: query by Firestore doc jobId
       firebase.firestore().collection('applications')
         .where('jobId', '==', jobId)
         .get()
         .then(function (snap) {
-          console.log('[Applicants] Step-1 (jobId) results:', snap.size);
-          if (!snap.empty) { renderApplicantCards(snap); return; }
+          console.log('[Dashboard] Applicants found:', snap.size);
 
-          // Step 2: query by jobTitle (catches records saved before fix)
-          return firebase.firestore().collection('applications')
-            .where('jobTitle', '==', jobTitle)
-            .get()
-            .then(function (titleSnap) {
-              console.log('[Applicants] Step-2 (jobTitle) results:', titleSnap.size);
-              if (!titleSnap.empty) { renderApplicantCards(titleSnap); return; }
+          if (snap.empty) {
+            container.innerHTML =
+              '<p style="color:#aaa;text-align:center;padding:40px 0;font-size:1rem;">لا يوجد متقدمون لهذه الوظيفة حالياً.</p>';
+            return;
+          }
 
-              // Step 3: show all applications with a diagnostic banner
-              return firebase.firestore().collection('applications').get()
-                .then(function (allSnap) {
-                  console.log('[Applicants] Step-3 (all) results:', allSnap.size);
-                  if (allSnap.size === 0) { showEmpty(); return; }
-
-                  var ids = [];
-                  allSnap.forEach(function (d) {
-                    var sid = d.data().jobId;
-                    if (ids.indexOf(sid) === -1) ids.push(sid);
-                  });
-
-                  container.innerHTML =
-                    '<div style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.88rem;color:#6d4c00;">' +
-                      '<strong>⚠️ تنبيه:</strong> تم إيجاد ' + allSnap.size + ' طلب في قاعدة البيانات لكن لا يطابق هذه الوظيفة تحديداً.<br>' +
-                      'معرّف الوظيفة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + jobId + '</code> | ' +
-                      'اسم الوظيفة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + escHtml(jobTitle) + '</code><br>' +
-                      'معرّفات الطلبات الموجودة: <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;font-family:monospace;">' + ids.map(escHtml).join(', ') + '</code>' +
-                    '</div>';
-                  renderApplicantCards(allSnap, true);
-                });
-            });
+          renderApplicantCards(snap);
         })
         .catch(function (err) {
-          console.error('[Applicants] Error:', err);
-          showError('حدث خطأ أثناء تحميل البيانات.<br><small style="color:#aaa;">' + (err.message || '') + '</small>');
+          console.error('[Dashboard] Applicants query error:', err.code, err.message);
+          var msg = err.code === 'permission-denied'
+            ? 'خطأ في الصلاحيات: تأكد من إعداد Firestore Security Rules بشكل صحيح.'
+            : 'حدث خطأ أثناء التحميل: ' + (err.message || '');
+          container.innerHTML =
+            '<p style="color:#e74c3c;text-align:center;padding:30px 0;">' + msg + '</p>';
         });
     }
 
-    function renderApplicantCards(snap, showAll) {
+    function renderApplicantCards(snap) {
       var docs = [];
       snap.forEach(function (d) { docs.push(d.data()); });
       docs.sort(function (a, b) {
@@ -531,15 +501,13 @@
               (a.experience ? '<span>⏳ خبرة: ' + a.experience + '</span>' : '') +
               (a.qualification ? '<span>🎓 ' + a.qualification + '</span>' : '') +
               (a.cvFileName ? '<span style="grid-column:1/-1;">📄 السيرة الذاتية: ' + a.cvFileName + '</span>' : '') +
-              (a.jobTitle ? '<span style="grid-column:1/-1;color:#777;">🔗 الوظيفة: ' + a.jobTitle + '</span>' : '') +
             '</div>' +
             (a.message ? '<div style="margin-top:10px;padding:10px;background:#f8faff;border-radius:8px;font-size:.88rem;color:#555;border-right:3px solid #0077B6;">' + a.message + '</div>' : '') +
           '</div>'
         );
       });
 
-      var existing = document.getElementById('applicantsListContainer').innerHTML;
-      document.getElementById('applicantsListContainer').innerHTML = existing + cards.join('');
+      document.getElementById('applicantsListContainer').innerHTML = cards.join('');
     }
 
     function closeApplicantsModal() {
