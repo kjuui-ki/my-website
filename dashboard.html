@@ -102,6 +102,43 @@
         </div>
       </div>
 
+      <!-- ⚡ Firestore Rules Diagnostic Banner (hidden until error detected) -->
+      <div id="rulesBanner" style="display:none;background:#fdecea;border:2px solid #e53935;border-radius:14px;padding:20px 24px;margin-bottom:28px;">
+        <h3 style="color:#b71c1c;margin:0 0 10px;font-size:1.05rem;">⛔ مشكلة في صلاحيات قاعدة البيانات</h3>
+        <p style="color:#c62828;margin:0 0 14px;font-size:.92rem;line-height:1.7;">
+          قاعدة البيانات لا تسمح بقراءة أو كتابة طلبات التوظيف حالياً.<br>
+          هذا هو السبب الرئيسي لعدم ظهور المتقدمين وعدم حفظ الطلبات.
+        </p>
+        <p style="color:#333;font-weight:700;margin:0 0 8px;">🔧 الحل — اتبع هذه الخطوات:</p>
+        <ol style="color:#333;font-size:.9rem;line-height:2;margin:0 0 16px;padding-right:20px;">
+          <li>افتح <strong>Firebase Console</strong> → مشروع <code style="background:#f5f5f5;padding:2px 5px;border-radius:4px;">rawad-health2</code></li>
+          <li>اذهب إلى <strong>Firestore Database</strong> → تبويب <strong>Rules</strong></li>
+          <li>احذف كل النص الموجود وضع مكانه النص التالي تماماً، ثم اضغط <strong>Publish</strong></li>
+        </ol>
+        <div style="position:relative;">
+          <pre id="rulesText" style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:10px;font-size:.8rem;line-height:1.7;overflow-x:auto;direction:ltr;text-align:left;">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read:  if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /jobs/{jobId} {
+      allow read:                   if true;
+      allow create, update, delete: if request.auth != null;
+    }
+    match /jobs/{jobId}/applications/{appId} {
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+      allow read:   if request.auth != null;
+    }
+  }
+}</pre>
+          <button onclick="copyRules()" style="position:absolute;top:10px;left:10px;background:#0077B6;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:.8rem;cursor:pointer;font-family:inherit;">📋 نسخ</button>
+        </div>
+        <p style="color:#555;font-size:.82rem;margin:12px 0 0;">بعد الضغط على Publish انتظر ثوانٍ ثم أعد تحميل هذه الصفحة.</p>
+      </div>
+
       <!-- Posted Jobs Table -->
       <div class="dashboard-actions">
         <h2>الوظائف المنشورة</h2>
@@ -236,8 +273,47 @@
         if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
 
         loadDashboard(user.uid);
+        checkFirestorePermissions();
       }).catch(function () { window.location.href = 'login.html'; });
     });
+
+    function copyRules() {
+      var text = document.getElementById('rulesText').innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        var btn = event.target;
+        btn.textContent = '✅ تم النسخ';
+        setTimeout(function () { btn.textContent = '📋 نسخ'; }, 2000);
+      }).catch(function () {
+        alert('انسخ النص يدوياً من المربع أعلاه.');
+      });
+    }
+
+    // Test if Firestore jobs subcollection is accessible.
+    // Shows the rules banner if permission-denied.
+    function checkFirestorePermissions() {
+      firebase.firestore().collection('jobs').limit(1).get()
+        .then(function (snap) {
+          if (snap.empty) {
+            document.getElementById('rulesBanner').style.display = 'none';
+            return;
+          }
+          // Try reading the applications subcollection of the first job
+          var firstJobId = snap.docs[0].id;
+          firebase.firestore().collection('jobs').doc(firstJobId).collection('applications').limit(1).get()
+            .then(function () {
+              document.getElementById('rulesBanner').style.display = 'none';
+            })
+            .catch(function (err) {
+              if (err.code === 'permission-denied') {
+                document.getElementById('rulesBanner').style.display = 'block';
+                document.getElementById('rulesBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            });
+        })
+        .catch(function () {
+          document.getElementById('rulesBanner').style.display = 'none';
+        });
+    }
 
     function loadDashboard(adminUid) {
       firebase.firestore().collection('jobs')
@@ -258,27 +334,15 @@
             return;
           }
 
-          // Fetch applications for all admin's jobs at once
-          var jobIds = myJobs.map(function (j) { return j.id; });
-          // Firestore 'in' query supports up to 30 items
-          var batches = [];
-          for (var i = 0; i < jobIds.length; i += 30) {
-            batches.push(jobIds.slice(i, i + 30));
-          }
-
+          // Fetch applicant counts from each job's subcollection: jobs/{jobId}/applications
           var applicantCounts = {};
-          var pending = batches.length;
-          if (pending === 0) { renderJobsTable(myJobs, applicantCounts); return; }
+          var pending = myJobs.length;
 
-          batches.forEach(function (batch) {
-            firebase.firestore().collection('applications')
-              .where('jobId', 'in', batch)
+          myJobs.forEach(function (j) {
+            firebase.firestore().collection('jobs').doc(j.id).collection('applications')
               .get()
               .then(function (appSnap) {
-                appSnap.forEach(function (ad) {
-                  var jid = ad.data().jobId;
-                  applicantCounts[jid] = (applicantCounts[jid] || 0) + 1;
-                });
+                applicantCounts[j.id] = appSnap.size;
                 pending--;
                 if (pending === 0) {
                   var total = Object.values(applicantCounts).reduce(function(a, b){ return a + b; }, 0);
@@ -442,10 +506,9 @@
       document.getElementById('applicantsModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
 
-      console.log('[Dashboard] Loading applicants for jobId:', jobId);
+      console.log('[Dashboard] Loading applicants from jobs/' + jobId + '/applications');
 
-      firebase.firestore().collection('applications')
-        .where('jobId', '==', jobId)
+      firebase.firestore().collection('jobs').doc(jobId).collection('applications')
         .get()
         .then(function (snap) {
           console.log('[Dashboard] Applicants found:', snap.size);

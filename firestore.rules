@@ -32,15 +32,12 @@ service cloud.firestore {
       allow create, update, delete:  if request.auth != null;
     }
 
-    // ── applications ─────────────────────────────────────────────
+    // ── applications (subcollection under each job) ───────────────
+    // Path: jobs/{jobId}/applications/{appId}
     // Any authenticated user can create an application (job seeker).
     // Any authenticated user can read applications (admin dashboard).
-    match /applications/{appId} {
+    match /jobs/{jobId}/applications/{appId} {
       allow create: if request.auth != null
-                    && request.resource.data.keys().hasAll([
-                         'jobId', 'jobTitle', 'applicantName',
-                         'email', 'phone', 'userId', 'createdAt'
-                       ])
                     && request.resource.data.userId == request.auth.uid;
 
       allow read:   if request.auth != null;
