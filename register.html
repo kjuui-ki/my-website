@@ -217,12 +217,22 @@
 
       // data.session is null when email confirmation is required
       const needsConfirm = !data.session;
-      if (needsConfirm) {
-        successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد</strong> قبل تسجيل الدخول.';
+      if (selectedType === 'admin') {
+        // Admin accounts always require superadmin approval before login
+        if (needsConfirm) {
+          successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى تأكيد بريدك الإلكتروني أولاً</strong>، ثم انتظر موافقة المدير العام قبل تسجيل الدخول.';
+        } else {
+          successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>حسابك قيد مراجعة المدير العام.</strong> سيتم تفعيل صلاحياتك بعد الموافقة على طلبك.';
+          await window._supabase.auth.signOut();
+        }
       } else {
-        successBox.textContent = '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
-        await window._supabase.auth.signOut();
-        setTimeout(function () { window.location.href = 'login.html'; }, 2000);
+        if (needsConfirm) {
+          successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد</strong> قبل تسجيل الدخول.';
+        } else {
+          successBox.textContent = '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
+          await window._supabase.auth.signOut();
+          setTimeout(function () { window.location.href = 'login.html'; }, 2000);
+        }
       }
       successBox.style.display = 'block';
       btn.textContent = 'إنشاء الحساب';

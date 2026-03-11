@@ -328,8 +328,38 @@
 
   <script>
     // Guard: approved admins only
-    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+    window._supabase.auth.getSession().then(async function ({ data: { session } }) {
       if (!session) { window.location.href = 'login.html'; return; }
+
+      // Superadmin always has access
+      if (session.user.email === 'kramabid1@gmail.com') {
+        initPostJobForm(session.user.id);
+        return;
+      }
+
+      const { data: userRow } = await window._supabase
+        .from('users')
+        .select('role, status')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      const card = document.querySelector('.post-job-card');
+
+      if (!userRow || (userRow.role !== 'admin' && userRow.role !== 'superadmin')) {
+        if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.2rem;color:#666;">ليس لديك صلاحية لنشر الوظائف.</p><a href="index.html" class="btn btn-outline" style="margin-top:20px;display:inline-block;">العودة للرئيسية</a></div>';
+        return;
+      }
+
+      if (userRow.status === 'pending') {
+        if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.4rem;color:#856404;font-weight:800;">⏳ حسابك قيد المراجعة</p><p style="color:#666;margin-top:8px;">يرجى انتظار موافقة المدير العام لتتمكن من نشر الوظائف.</p><a href="dashboard.html" class="btn btn-outline" style="margin-top:24px;display:inline-block;">العودة للوحة التحكم</a></div>';
+        return;
+      }
+
+      if (userRow.status === 'rejected') {
+        if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.4rem;color:#721c24;font-weight:800;">❌ تم رفض طلبك</p><p style="color:#666;margin-top:8px;">يرجى التواصل مع الإدارة لمزيد من المعلومات.</p><a href="index.html" class="btn btn-outline" style="margin-top:24px;display:inline-block;">العودة للرئيسية</a></div>';
+        return;
+      }
+
       initPostJobForm(session.user.id);
     });
 

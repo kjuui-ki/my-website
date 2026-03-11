@@ -299,62 +299,124 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="supabaseClient.js"></script>
   <script>
-    // Auth Guard — Supabase
+    // ── Auth Guard: superadmin only ──────────────────────────────────
     window._supabase.auth.getSession().then(function ({ data: { session } }) {
       if (!session) {
         window.location.href = 'login.html';
         return;
       }
       var user = session.user;
+      if (user.email !== 'kramabid1@gmail.com') {
+        document.getElementById('pageContent').style.display  = 'none';
+        document.getElementById('deniedContent').style.display = 'block';
+        return;
+      }
       var meta = user.user_metadata || {};
-      var displayName = meta.full_name || meta.name || user.email || 'المسؤول';
+      var displayName = meta.full_name || meta.name || user.email;
       document.getElementById('userGreeting').textContent = 'مرحباً، ' + displayName;
       document.getElementById('pageContent').style.display = 'block';
       loadPendingAdmins();
     });
 
-    // Load pending admins (Supabase setup)
+    // ── Load pending admins from users table ─────────────────────────
     async function loadPendingAdmins() {
       var loadingEl = document.getElementById('loadingState');
       var emptyEl   = document.getElementById('emptyState');
+      var gridEl    = document.getElementById('adminsGrid');
       var countEl   = document.getElementById('pendingCount');
-      if (loadingEl) loadingEl.style.display = 'none';
-      if (emptyEl)   emptyEl.style.display   = 'block';
-      if (countEl)   countEl.textContent     = '0';
-    }
 
-        countEl.textContent   = snapshot.size;
-        gridEl.style.display  = 'grid';
+      try {
+        const { data, error } = await window._supabase
+          .from('users')
+          .select('id, email, role, status, created_at')
+          .eq('role', 'admin')
+          .eq('status', 'pending')
+          .order('created_at', { ascending: false });
 
-        snapshot.forEach(function (docSnap) {
-          const data = docSnap.data();
-          gridEl.appendChild(buildCard(docSnap.id, data));
+        if (error) throw error;
+
+        loadingEl.style.display = 'none';
+
+        if (!data || data.length === 0) {
+          emptyEl.style.display = 'block';
+          countEl.textContent   = '0';
+          return;
+        }
+
+        countEl.textContent  = data.length;
+        gridEl.style.display = 'grid';
+
+        data.forEach(function (row) {
+          gridEl.appendChild(buildCard(row));
         });
 
       } catch (err) {
-        loadingEl.innerHTML =
-          '<p style="color:#dc3545">حدث خطأ أثناء تحميل البيانات: ' + err.message + '</p>';
+        loadingEl.innerHTML = '<p style="color:#dc3545">حدث خطأ أثناء تحميل البيانات: ' + escapeHtml(err.message) + '</p>';
       }
     }
 
+    // ── Build admin card ─────────────────────────────────────────────
+    function buildCard(row) {
+      var initial = (row.email || 'A')[0].toUpperCase();
+      var date    = row.created_at ? new Date(row.created_at).toLocaleDateString('ar-SA') : '-';
 
-    // Approve / Reject placeholder
-    async function updateStatus(uid, newStatus) {
-      showToast('وظيفة الموافقة/الرفض غير متوفرة في هذا الإعداد', 'error');
+      var card = document.createElement('div');
+      card.className = 'admin-card';
+      card.id = 'card-' + row.id;
+      card.innerHTML =
+        '<div class="admin-card-header">' +
+          '<div class="admin-avatar">' + escapeHtml(initial) + '</div>' +
+          '<div class="admin-info">' +
+            '<h3>' + escapeHtml(row.email) + '</h3>' +
+            '<span>مسؤول</span>' +
+          '</div>' +
+        '</div>' +
+        '<span class="status-badge status-pending">معلّق</span>' +
+        '<div class="admin-meta">📅 تاريخ التسجيل: ' + escapeHtml(date) + '</div>' +
+        '<div class="card-actions">' +
+          '<button class="btn-approve" id="approve-' + row.id + '" onclick="updateStatus(\'' + row.id + '\', \'approved\')">✅ موافقة</button>' +
+          '<button class="btn-reject"  id="reject-'  + row.id + '" onclick="updateStatus(\'' + row.id + '\', \'rejected\')">❌ رفض</button>' +
+        '</div>';
+      return card;
     }
 
-        showToast(icon + ' تم تحديث الحالة إلى: ' + arabic, 'success');
+    // ── Approve / Reject ─────────────────────────────────────────────
+    async function updateStatus(userId, newStatus) {
+      var approveBtn = document.getElementById('approve-' + userId);
+      var rejectBtn  = document.getElementById('reject-'  + userId);
+      if (approveBtn) { approveBtn.disabled = true; approveBtn.textContent = '...'; }
+      if (rejectBtn)  { rejectBtn.disabled  = true; rejectBtn.textContent  = '...'; }
+
+      try {
+        const { error } = await window._supabase
+          .from('users')
+          .update({ status: newStatus })
+          .eq('id', userId);
+
+        if (error) throw error;
+
+        var arabic = newStatus === 'approved' ? 'موافق عليه' : 'مرفوض';
+        var icon   = newStatus === 'approved' ? '✅' : '❌';
+        showToast(icon + ' تم التحديث: ' + arabic, 'success');
+
+        // Remove the card and refresh count
+        var card = document.getElementById('card-' + userId);
+        if (card) card.remove();
+        var remaining = document.querySelectorAll('.admin-card').length;
+        document.getElementById('pendingCount').textContent = remaining;
+        if (remaining === 0) {
+          document.getElementById('adminsGrid').style.display = 'none';
+          document.getElementById('emptyState').style.display = 'block';
+        }
 
       } catch (err) {
-        approveBtn.disabled = false;
-        rejectBtn.disabled  = false;
-        approveBtn.textContent = '✅ موافقة';
-        rejectBtn.textContent  = '❌ رفض';
-        showToast('حدث خطأ: ' + err.message, 'error');
+        if (approveBtn) { approveBtn.disabled = false; approveBtn.textContent = '✅ موافقة'; }
+        if (rejectBtn)  { rejectBtn.disabled  = false; rejectBtn.textContent  = '❌ رفض';   }
+        showToast('حدث خطأ: ' + escapeHtml(err.message), 'error');
       }
     }
 
-    // ── Toast helper ────────────────────────────────────────────────
+    // ── Toast helper ─────────────────────────────────────────────────
     function showToast(msg, type) {
       const toast = document.getElementById('toast');
       toast.textContent = msg;
@@ -362,7 +424,7 @@
       setTimeout(function () { toast.className = 'toast'; }, 3000);
     }
 
-    // ── XSS protection ──────────────────────────────────────────────
+    // ── XSS protection ───────────────────────────────────────────────
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')

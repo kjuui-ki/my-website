@@ -191,6 +191,32 @@
           return;
         }
 
+        // Check admin approval status (superadmin bypasses this check)
+        if (data.session.user.email !== 'kramabid1@gmail.com') {
+          const { data: userRow } = await window._supabase
+            .from('users')
+            .select('role, status')
+            .eq('id', data.session.user.id)
+            .maybeSingle();
+
+          if (userRow && userRow.role === 'admin' && userRow.status === 'pending') {
+            await window._supabase.auth.signOut();
+            btn.textContent = 'دخول';
+            btn.disabled = false;
+            errorBox.textContent   = '⏳ حسابك قيد مراجعة المدير العام — يرجى الانتظار حتى يتم قبول طلبك';
+            errorBox.style.display = 'block';
+            return;
+          }
+          if (userRow && userRow.role === 'admin' && userRow.status === 'rejected') {
+            await window._supabase.auth.signOut();
+            btn.textContent = 'دخول';
+            btn.disabled = false;
+            errorBox.textContent   = '❌ تم رفض طلب تسجيلك — يرجى التواصل مع الإدارة';
+            errorBox.style.display = 'block';
+            return;
+          }
+        }
+
         errorBox.style.display = 'none';
         var nextUrl = new URLSearchParams(window.location.search).get('next');
         window.location.href = nextUrl || 'dashboard.html';

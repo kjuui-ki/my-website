@@ -216,7 +216,7 @@
   <script>
     // ===== Dashboard — Supabase =====
 
-    window._supabase.auth.getSession().then(function ({ data: { session } }) {
+    window._supabase.auth.getSession().then(async function ({ data: { session } }) {
       if (!session) { window.location.href = 'login.html'; return; }
       var user = session.user;
       var meta = user.user_metadata || {};
@@ -227,8 +227,29 @@
       var subtitle = document.getElementById('dashboardSubtitle');
       if (greeting) greeting.textContent = 'مرحباً، ' + displayName;
       if (title)    title.textContent    = 'لوحة التحكم';
-      if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
 
+      // Check approval status for admins (superadmin bypasses)
+      if (user.email !== 'kramabid1@gmail.com') {
+        const { data: userRow } = await window._supabase
+          .from('users')
+          .select('role, status')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (userRow && userRow.role === 'admin' && userRow.status === 'pending') {
+          if (subtitle) subtitle.textContent = '⏳ حسابك قيد مراجعة المدير العام — سيتم إشعارك عند الموافقة';
+          // Hide actions that require approval
+          document.querySelectorAll('.dashboard-actions').forEach(function (el) { el.style.display = 'none'; });
+          return;
+        }
+        if (userRow && userRow.role === 'admin' && userRow.status === 'rejected') {
+          if (subtitle) subtitle.textContent = '❌ تم رفض طلق تسجيلك — يرجى التواصل مع الإدارة';
+          document.querySelectorAll('.dashboard-actions').forEach(function (el) { el.style.display = 'none'; });
+          return;
+        }
+      }
+
+      if (subtitle) subtitle.textContent = 'مرحباً بك، يمكنك إدارة الوظائف ومتابعة الطلبات من هنا';
       loadDashboard(user.id);
     });
 
