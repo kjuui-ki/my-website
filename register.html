@@ -137,9 +137,16 @@
   <script src="supabaseClient.js"></script>
   <script src="script.js"></script>
   <script>
-    // Redirect if already logged in
+    // Redirect if already logged in — go to the right page per role
     window._supabase.auth.getSession().then(function ({ data: { session } }) {
-      if (session) window.location.href = 'jobs.html';
+      if (session) {
+        console.log('[Register] Already logged in as:', session.user.email, '— redirecting away from register page.');
+        if (session.user.email === 'kramabid1@gmail.com') {
+          window.location.href = 'admin-panel.html';
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      }
     });
 
     let selectedType = 'jobseeker';
@@ -184,6 +191,21 @@
       btn.textContent = 'جاري الإنشاء...';
       btn.disabled = true;
 
+      // --- FIX: Clear any existing session before creating a new account.
+      // ROOT CAUSE of the session-switching bug: if a previous user (e.g. admin) is
+      // logged in and signUp() requires email confirmation, Supabase returns
+      // data.session = null and the OLD session stays active in localStorage.
+      // Next time login.html loads, getSession() finds the old session and redirects
+      // as the old user without ever showing the login form.
+      // Solution: always sign out before signUp so the old session is gone.
+      const { data: { session: _priorSession } } = await window._supabase.auth.getSession();
+      console.log('[Register] Session BEFORE signUp:', _priorSession ? _priorSession.user.email : 'none');
+      if (_priorSession) {
+        console.log('[Register] Signing out existing session before creating new account...');
+        await window._supabase.auth.signOut();
+        console.log('[Register] Existing session cleared.');
+      }
+
       const { data, error } = await window._supabase.auth.signUp({
         email,
         password,
@@ -196,7 +218,7 @@
         }
       });
 
-      console.log('[Register] signUp result — data:', data, 'error:', error);
+      console.log('[Register] signUp result — user:', data?.user?.email, '| session:', data?.session ? 'active (confirmation not required)' : 'null (email confirmation sent)', '| error:', error?.message || null);
 
       if (error) {
         btn.textContent = 'إنشاء الحساب';
@@ -215,6 +237,12 @@
         return;
       }
 
+      // Always sign out after registration — whether Supabase created a session or not.
+      // This ensures no auto-created session (when confirmation is disabled) and no
+      // leftover previous session can bypass the login form on login.html.
+      await window._supabase.auth.signOut();
+      console.log('[Register] Signed out after registration. All sessions cleared.');
+
       // data.session is null when email confirmation is required
       const needsConfirm = !data.session;
       if (selectedType === 'admin') {
@@ -223,14 +251,12 @@
           successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى تأكيد بريدك الإلكتروني أولاً</strong>، ثم انتظر موافقة المدير العام قبل تسجيل الدخول.';
         } else {
           successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>حسابك قيد مراجعة المدير العام.</strong> سيتم تفعيل صلاحياتك بعد الموافقة على طلبك.';
-          await window._supabase.auth.signOut();
         }
       } else {
         if (needsConfirm) {
           successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد</strong> قبل تسجيل الدخول.';
         } else {
           successBox.textContent = '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
-          await window._supabase.auth.signOut();
           setTimeout(function () { window.location.href = 'login.html'; }, 2000);
         }
       }

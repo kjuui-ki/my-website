@@ -108,12 +108,15 @@
     // Redirect if already logged in
     window._supabase.auth.getSession().then(function ({ data: { session } }) {
       if (session) {
+        console.log('[Login] Already logged in as:', session.user.email, '— redirecting away from login page.');
         if (session.user.email === 'kramabid1@gmail.com') {
           window.location.href = 'admin-panel.html';
         } else {
           var nextUrl = new URLSearchParams(window.location.search).get('next');
           window.location.href = nextUrl || 'dashboard.html';
         }
+      } else {
+        console.log('[Login] No active session — login form is ready.');
       }
     });
 
@@ -152,7 +155,12 @@
       btn.disabled = true;
 
       try {
+        // Log session state before attempting login
+        const { data: { session: _sessionBefore } } = await window._supabase.auth.getSession();
+        console.log('[Login] Session BEFORE signInWithPassword:', _sessionBefore ? 'EXISTS: ' + _sessionBefore.user.email : 'none');
+
         const { data, error } = await window._supabase.auth.signInWithPassword({ email, password });
+        console.log('[Login] signInWithPassword result — user:', data?.session?.user?.email, '| uid:', data?.session?.user?.id, '| error:', error?.message || null);
 
         if (error) {
           console.error('[Login] Supabase auth error:', error);
@@ -186,7 +194,7 @@
           return;
         }
 
-        console.log('[Login] Success, session:', data.session ? 'active' : 'null');
+        console.log('[Login] Session AFTER login — user:', data.session?.user?.email, '| uid:', data.session?.user?.id);
         if (!data.session) {
           btn.textContent = 'دخول';
           btn.disabled = false;

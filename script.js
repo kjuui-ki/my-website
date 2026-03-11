@@ -433,9 +433,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== Auth Nav =====
 function initAuthNav() {
   window._supabase.auth.getSession().then(function ({ data: { session } }) {
+    console.log('[AuthNav] Initial session:', session ? session.user.email : 'none');
     _applyNavAuth(session ? session.user : null);
   });
   window._supabase.auth.onAuthStateChange(function (_event, session) {
+    console.log('[AuthNav] State change —', _event, '| user:', session ? session.user.email : 'none');
     _applyNavAuth(session ? session.user : null);
   });
 }
