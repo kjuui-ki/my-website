@@ -228,7 +228,7 @@
         <div class="nav-cta">
           <div class="user-menu" id="userMenu" style="display:flex; align-items:center; gap:10px;">
             <span class="user-greeting" id="userGreeting">مرحباً</span>
-            <button class="btn btn-outline" onclick="window._supabase.auth.signOut().then(function(){window.location.href='login.html'})" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
+            <button class="btn btn-outline" onclick="adminLogout()" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الخروج</button>
           </div>
           <div class="auth-btns" id="authButtons" style="display:none;">
             <a href="login.html" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.9rem;">تسجيل الدخول</a>
@@ -299,6 +299,23 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="supabaseClient.js"></script>
   <script>
+    // ── Logout ──────────────────────────────────────────────────────
+    async function adminLogout() {
+      console.log('[AdminLogout] Signing out...');
+      try {
+        const { error } = await window._supabase.auth.signOut();
+        if (error) {
+          console.error('[AdminLogout] signOut error (continuing anyway):', error.message, error);
+        } else {
+          console.log('[AdminLogout] Signed out successfully');
+        }
+      } catch (err) {
+        console.error('[AdminLogout] Unexpected exception (continuing anyway):', err);
+      }
+      localStorage.removeItem('rawad_current_user');
+      window.location.href = 'index.html';
+    }
+
     // ── Auth Guard: superadmin only ──────────────────────────────────
     window._supabase.auth.getSession().then(function ({ data: { session } }) {
       if (!session) {
