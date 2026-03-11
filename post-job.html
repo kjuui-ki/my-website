@@ -413,23 +413,28 @@
         btn.disabled = true;
         btn.textContent = '⏳ جاري النشر...';
 
+        // Build payload with only the columns that exist in the jobs table.
+        // specialty, salary, tasks, requirements, posted_by are only added when
+        // the full supabase-migration.sql has been run (they might not exist yet).
         const payload = {
           title:         title,
           company:       company,
           company_logo:  companyLogo,
-          specialty:     specialty,
           city:          city,
           facility_type: facilityType,
           job_type:      jobType,
-          salary:        salary,
           description:   description,
-          tasks:         tasks,
-          requirements:  requirements,
-          benefits:      benefits,
-          posted_by:     adminId
+          benefits:      benefits
         };
 
-        console.log('[PostJob] Inserting payload:', payload);
+        // Conditionally add columns that may not exist in older table versions
+        if (specialty)     payload.specialty = specialty;
+        if (salary)        payload.salary    = salary;
+        if (tasks.length)  payload.tasks     = tasks;
+        if (requirements.length) payload.requirements = requirements;
+        if (adminId)       payload.posted_by = adminId;
+
+        console.log('[Post Job] payload:', JSON.stringify(payload, null, 2));
 
         const { data: insertData, error: insertError } = await window._supabase
           .from('jobs')
@@ -445,8 +450,10 @@
           var arabicMsg;
           if (errCode === '42501' || errMsg.toLowerCase().includes('row-level security') || errMsg.toLowerCase().includes('violates')) {
             arabicMsg = 'خطأ في الصلاحيات (RLS): حسابك غير مصرح له بالنشر. يرجى التواصل مع المدير العام. [' + errCode + ']';
+          } else if (errMsg.toLowerCase().includes('schema cache') || errMsg.toLowerCase().includes('could not find')) {
+            arabicMsg = 'خطأ في ذاكرة التخزين المؤقت لقاعدة البيانات — يرجى: فتح لوحة تحكم Supabase ← Settings ← API ← "Reload schema" ثم المحاولة مجدداً. [' + errMsg + ']';
           } else if (errCode === '42703' || errMsg.toLowerCase().includes('column')) {
-            arabicMsg = 'خطأ في بنية الجدول: ' + errMsg + ' — يرجى تشغيل ملف supabase-migration.sql من جديد.';
+            arabicMsg = 'خطأ في بنية الجدول: العمود غير موجود — يرجى تشغيل ملف supabase-migration-safe.sql في لوحة Supabase. [' + errMsg + ']';
           } else if (errCode === '23505') {
             arabicMsg = 'الوظيفة مكررة — يرجى تغيير المسمى الوظيفي.';
           } else {
