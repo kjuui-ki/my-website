@@ -413,26 +413,25 @@
         btn.disabled = true;
         btn.textContent = '⏳ جاري النشر...';
 
-        // Build payload with only the columns that exist in the jobs table.
-        // specialty, salary, tasks, requirements, posted_by are only added when
-        // the full supabase-migration.sql has been run (they might not exist yet).
+        // Base payload — only the 6 columns that exist in every jobs table version.
         const payload = {
           title:         title,
           company:       company,
-          company_logo:  companyLogo,
           city:          city,
           facility_type: facilityType,
           job_type:      jobType,
-          description:   description,
-          benefits:      benefits
+          description:   description
         };
 
-        // Conditionally add columns that may not exist in older table versions
-        if (specialty)     payload.specialty = specialty;
-        if (salary)        payload.salary    = salary;
-        if (tasks.length)  payload.tasks     = tasks;
-        if (requirements.length) payload.requirements = requirements;
-        if (adminId)       payload.posted_by = adminId;
+        // Extended columns — added only when they have a value.
+        // These require supabase-migration-safe.sql to have been run first.
+        if (companyLogo)         payload.company_logo  = companyLogo;
+        if (specialty)           payload.specialty     = specialty;
+        if (salary)              payload.salary        = salary;
+        if (tasks.length)        payload.tasks         = tasks;
+        if (requirements.length) payload.requirements  = requirements;
+        if (benefits.length)     payload.benefits      = benefits;
+        if (adminId)             payload.posted_by     = adminId;
 
         console.log('[Post Job] payload:', JSON.stringify(payload, null, 2));
 
