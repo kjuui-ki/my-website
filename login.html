@@ -203,13 +203,16 @@
           return;
         }
 
-        // Check admin approval status (superadmin bypasses this check)
+        // Check admin approval status + route to correct page
+        // userRow declared here so it's accessible in the redirect logic below
+        let userRow = null;
         if (data.session.user.email !== 'kramabid1@gmail.com') {
-          const { data: userRow } = await window._supabase
+          const { data: _row } = await window._supabase
             .from('users')
             .select('role, status')
             .eq('id', data.session.user.id)
             .maybeSingle();
+          userRow = _row;
 
           if (userRow && userRow.role === 'admin' && userRow.status === 'pending') {
             await window._supabase.auth.signOut();
@@ -230,9 +233,18 @@
         }
 
         errorBox.style.display = 'none';
+        const _loginMeta = data.session.user.user_metadata || {};
+        console.log('[Login] Redirect — metadata.role:', _loginMeta.role, '| users_table.role:', userRow ? userRow.role : 'no row');
+
         if (data.session.user.email === 'kramabid1@gmail.com') {
+          // Superadmin
           window.location.href = 'admin-panel.html';
+        } else if (_loginMeta.role === 'jobseeker' || (userRow && userRow.role === 'user') || (!userRow && _loginMeta.role !== 'admin')) {
+          // Jobseeker (or unknown role with no admin row) → job listing page
+          var nextUrl = new URLSearchParams(window.location.search).get('next');
+          window.location.href = nextUrl || 'jobs.html';
         } else {
+          // Approved admin → management dashboard
           var nextUrl = new URLSearchParams(window.location.search).get('next');
           window.location.href = nextUrl || 'dashboard.html';
         }
