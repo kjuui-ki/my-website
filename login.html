@@ -78,7 +78,7 @@
       <h1 class="auth-title" data-i18n="loginTitle">تسجيل الدخول</h1>
       <p class="auth-subtitle" data-i18n="loginSubtitle">أهلاً بك في منصة Rawad Health</p>
 
-      <div class="alert alert-error" id="loginError"></div>
+      <div class="alert alert-error" id="loginError" style="display:none;"></div>
 
       <form id="loginForm" novalidate>
         <div class="form-group">
@@ -147,23 +147,61 @@
       btn.textContent = 'جاري الدخول...';
       btn.disabled = true;
 
-      const { data, error } = await window._supabase.auth.signInWithPassword({ email, password });
+      try {
+        const { data, error } = await window._supabase.auth.signInWithPassword({ email, password });
 
-      if (error) {
+        if (error) {
+          console.error('[Login] Supabase auth error:', error);
+          btn.textContent = 'دخول';
+          btn.disabled = false;
+          let msg;
+          const msg_lower = (error.message || '').toLowerCase();
+          if (msg_lower.includes('invalid login') || msg_lower.includes('invalid_credentials') || msg_lower.includes('invalid credentials')) {
+            msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+          } else if (msg_lower.includes('email not confirmed') || msg_lower.includes('not confirmed')) {
+            msg = 'يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد وانقر على رابط التأكيد.<br><a href="#" id="resendLink" style="color:inherit;font-weight:700;text-decoration:underline;">إعادة إرسال رسالة التأكيد</a>';
+            errorBox.innerHTML = msg;
+            errorBox.style.display = 'block';
+            var resendLink = document.getElementById('resendLink');
+            if (resendLink) {
+              resendLink.addEventListener('click', async function(ev) {
+                ev.preventDefault();
+                resendLink.textContent = 'جاري الإرسال...';
+                const r = await window._supabase.auth.resend({ type: 'signup', email: email });
+                resendLink.textContent = r.error ? ('خطأ: ' + r.error.message) : '✅ تم إرسال رسالة تأكيد جديدة — تحقق من بريدك';
+              });
+            }
+            return;
+          } else if (msg_lower.includes('too many') || msg_lower.includes('rate limit')) {
+            msg = 'محاولات كثيرة جداً، يرجى الانتظار قليلاً ثم المحاولة مجدداً';
+          } else {
+            msg = 'خطأ: ' + error.message;
+          }
+          errorBox.textContent   = msg;
+          errorBox.style.display = 'block';
+          return;
+        }
+
+        console.log('[Login] Success, session:', data.session ? 'active' : 'null');
+        if (!data.session) {
+          btn.textContent = 'دخول';
+          btn.disabled = false;
+          errorBox.textContent   = 'يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد';
+          errorBox.style.display = 'block';
+          return;
+        }
+
+        errorBox.style.display = 'none';
+        var nextUrl = new URLSearchParams(window.location.search).get('next');
+        window.location.href = nextUrl || 'dashboard.html';
+
+      } catch (ex) {
+        console.error('[Login] Unexpected exception:', ex);
         btn.textContent = 'دخول';
         btn.disabled = false;
-        let msg = 'حدث خطأ، يرجى المحاولة مجدداً';
-        if (error.message && (error.message.includes('Invalid login') || error.message.includes('invalid_credentials'))) {
-          msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-        }
-        errorBox.textContent   = msg;
+        errorBox.textContent   = 'حدث خطأ غير متوقع: ' + (ex.message || ex);
         errorBox.style.display = 'block';
-        return;
       }
-
-      errorBox.style.display = 'none';
-      var nextUrl = new URLSearchParams(window.location.search).get('next');
-      window.location.href = nextUrl || 'dashboard.html';
     });
   </script>
 </body>

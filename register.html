@@ -196,23 +196,37 @@
         }
       });
 
+      console.log('[Register] signUp result — data:', data, 'error:', error);
+
       if (error) {
         btn.textContent = 'إنشاء الحساب';
         btn.disabled = false;
-        let msg = 'حدث خطأ: ' + error.message;
-        if (error.message && error.message.includes('already registered')) msg = 'البريد الإلكتروني مسجل بالفعل';
+        let msg = 'خطأ: ' + error.message;
+        const el = (error.message || '').toLowerCase();
+        if (el.includes('already registered') || el.includes('already been registered')) {
+          msg = 'البريد الإلكتروني مسجل بالفعل — يرجى تسجيل الدخول';
+        } else if (el.includes('password') && el.includes('weak')) {
+          msg = 'كلمة المرور ضعيفة جداً، يرجى اختيار كلمة مرور أقوى';
+        } else if (el.includes('rate limit') || el.includes('too many')) {
+          msg = 'محاولات كثيرة جداً، يرجى الانتظار قليلاً';
+        }
         errorBox.textContent   = msg;
         errorBox.style.display = 'block';
         return;
       }
 
-      successBox.textContent   = '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
+      // data.session is null when email confirmation is required
+      const needsConfirm = !data.session;
+      if (needsConfirm) {
+        successBox.innerHTML = '✅ تم إنشاء الحساب! <strong>يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد</strong> قبل تسجيل الدخول.';
+      } else {
+        successBox.textContent = '✅ تم إنشاء الحساب بنجاح! جاري التحويل إلى صفحة الدخول...';
+        await window._supabase.auth.signOut();
+        setTimeout(function () { window.location.href = 'login.html'; }, 2000);
+      }
       successBox.style.display = 'block';
-      // Sign out so the user logs in fresh
-      await window._supabase.auth.signOut();
-      setTimeout(function () {
-        window.location.href = 'login.html';
-      }, 2000);
+      btn.textContent = 'إنشاء الحساب';
+      btn.disabled = false;
     });
   </script>
 </body>
