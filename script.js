@@ -1,17 +1,418 @@
-/* ========================================
+﻿/* ========================================
    Rawad Health - JavaScript
    ======================================== */
 
-// Mark HTML as JS-capable (ensures fade-in sections are always visible if JS fails)
-document.documentElement.classList.add('has-js');
+console.log('[Script] loaded');
 
+// ===== Jobs Data =====
+const jobsData = [
+  {
+    id: 1,
+    title: "طبيب أسنان عام",
+    company: "مستشفى الملك فهد التخصصي",
+    companyLogo: "🏥",
+    specialty: "طب-اسنان",
+    city: "الرياض",
+    facilityType: "مستشفى",
+    jobType: "دوام-كامل",
+    salary: "25,000 - 35,000 ر.س",
+    date: "منذ 3 أيام",
+    description: "نبحث عن طبيب أسنان عام ذو خبرة للانضمام إلى فريقنا الطبي المتميز في مستشفى الملك فهد التخصصي بالرياض.",
+    tasks: [
+      "إجراء الفحوصات السريرية للمرضى وتشخيص الحالات",
+      "تنفيذ إجراءات علاج الأسنان المختلفة",
+      "وضع خطط علاجية شاملة للمرضى",
+      "متابعة حالات المرضى بعد العلاج",
+      "المشاركة في برامج التثقيف الصحي"
+    ],
+    requirements: [
+      "بكالوريوس طب وجراحة الفم والأسنان",
+      "تصنيف مهني ساري من الهيئة السعودية للتخصصات الصحية",
+      "خبرة لا تقل عن 3 سنوات",
+      "إجادة اللغة العربية والإنجليزية",
+      "مهارات تواصل ممتازة"
+    ],
+    benefits: [
+      "راتب تنافسي مع بدلات",
+      "تأمين طبي شامل",
+      "إجازة سنوية مدفوعة",
+      "فرص تدريب وتطوير مهني",
+      "بيئة عمل احترافية"
+    ]
+  },
+  {
+    id: 2,
+    title: "ممرض/ة عناية مركزة",
+    company: "مجموعة سليمان الحبيب الطبية",
+    companyLogo: "🏥",
+    specialty: "تمريض",
+    city: "جدة",
+    facilityType: "مستشفى",
+    jobType: "دوام-كامل",
+    salary: "15,000 - 22,000 ر.س",
+    date: "منذ يومين",
+    description: "مطلوب ممرض/ة متخصص/ة في العناية المركزة للعمل في مجموعة سليمان الحبيب الطبية بجدة.",
+    tasks: [
+      "تقديم الرعاية التمريضية المتقدمة لمرضى العناية المركزة",
+      "مراقبة العلامات الحيوية للمرضى بشكل مستمر",
+      "إدارة الأجهزة الطبية المتخصصة",
+      "التنسيق مع الفريق الطبي لتنفيذ خطط العلاج",
+      "توثيق الحالات الطبية بدقة"
+    ],
+    requirements: [
+      "بكالوريوس تمريض من جامعة معتمدة",
+      "تصنيف مهني ساري المفعول",
+      "خبرة 2 سنة في العناية المركزة",
+      "شهادة BLS و ACLS سارية",
+      "القدرة على العمل بنظام الورديات"
+    ],
+    benefits: [
+      "راتب مجزي مع بدل سكن",
+      "تأمين صحي للموظف والعائلة",
+      "بدل نقل",
+      "مكافآت أداء سنوية",
+      "تدريب مستمر"
+    ]
+  },
+  {
+    id: 3,
+    title: "صيدلي إكلينيكي",
+    company: "مستشفى المملكة",
+    companyLogo: "💊",
+    specialty: "صيدلة",
+    city: "الرياض",
+    facilityType: "مستشفى",
+    jobType: "دوام-كامل",
+    salary: "18,000 - 28,000 ر.س",
+    date: "منذ 5 أيام",
+    description: "فرصة مميزة لصيدلي إكلينيكي للعمل في أحد أكبر المستشفيات بالرياض.",
+    tasks: [
+      "مراجعة الوصفات الطبية والتحقق من سلامتها",
+      "تقديم الاستشارات الدوائية للفريق الطبي والمرضى",
+      "المشاركة في الجولات الطبية",
+      "متابعة التفاعلات الدوائية والأعراض الجانبية",
+      "المساهمة في وضع بروتوكولات العلاج الدوائي"
+    ],
+    requirements: [
+      "بكالوريوس صيدلة أو دكتور صيدلة (PharmD)",
+      "تصنيف مهني من هيئة التخصصات الصحية",
+      "خبرة 3 سنوات في الصيدلة الإكلينيكية",
+      "معرفة بأنظمة إدارة الصيدليات",
+      "مهارات تحليلية قوية"
+    ],
+    benefits: [
+      "حزمة رواتب تنافسية",
+      "تأمين طبي شامل",
+      "بدل سكن ونقل",
+      "إجازات سخية",
+      "فرص للتطوير المهني والأبحاث"
+    ]
+  },
+  {
+    id: 4,
+    title: "أخصائي علاج طبيعي",
+    company: "مركز التأهيل المتقدم",
+    companyLogo: "🦴",
+    specialty: "علاج-طبيعي",
+    city: "الدمام",
+    facilityType: "مركز-تأهيل",
+    jobType: "دوام-كامل",
+    salary: "14,000 - 20,000 ر.س",
+    date: "منذ أسبوع",
+    description: "نبحث عن أخصائي علاج طبيعي متميز للانضمام لمركز التأهيل المتقدم بالدمام.",
+    tasks: [
+      "تقييم حالات المرضى ووضع خطط علاجية فردية",
+      "تنفيذ برامج العلاج الطبيعي المتنوعة",
+      "استخدام الأجهزة والتقنيات العلاجية الحديثة",
+      "تثقيف المرضى والعائلات حول التمارين المنزلية",
+      "توثيق تقدم المرضى وتعديل الخطط العلاجية"
+    ],
+    requirements: [
+      "بكالوريوس علاج طبيعي",
+      "تصنيف مهني ساري",
+      "خبرة سنتين على الأقل",
+      "إلمام بتقنيات العلاج الطبيعي الحديثة",
+      "القدرة على العمل ضمن فريق متعدد التخصصات"
+    ],
+    benefits: [
+      "راتب تنافسي",
+      "تأمين صحي",
+      "بيئة عمل محفزة",
+      "دورات تدريبية متخصصة",
+      "إجازة سنوية 30 يوم"
+    ]
+  },
+  {
+    id: 5,
+    title: "أخصائي أشعة",
+    company: "مستشفى الحمادي",
+    companyLogo: "🔬",
+    specialty: "اشعة",
+    city: "جدة",
+    facilityType: "مستشفى",
+    jobType: "دوام-جزئي",
+    salary: "12,000 - 18,000 ر.س",
+    date: "منذ 4 أيام",
+    description: "مطلوب أخصائي أشعة للعمل بدوام جزئي في مستشفى الحمادي بجدة.",
+    tasks: [
+      "إجراء الفحوصات الإشعاعية المختلفة",
+      "تشغيل وصيانة أجهزة الأشعة",
+      "التأكد من جودة الصور الإشعاعية",
+      "الالتزام بمعايير السلامة الإشعاعية",
+      "التعاون مع أطباء الأشعة في إعداد التقارير"
+    ],
+    requirements: [
+      "بكالوريوس في تقنية الأشعة",
+      "تصنيف مهني ساري",
+      "خبرة لا تقل عن سنة",
+      "معرفة بأجهزة الأشعة الحديثة",
+      "الالتزام بمعايير الجودة والسلامة"
+    ],
+    benefits: [
+      "راتب مناسب للدوام الجزئي",
+      "تأمين طبي",
+      "مرونة في الجدول",
+      "بيئة عمل متطورة",
+      "فرص تدريب"
+    ]
+  },
+  {
+    id: 6,
+    title: "طبيب طوارئ",
+    company: "مستشفى الأمير سلطان",
+    companyLogo: "🚑",
+    specialty: "طب-عام",
+    city: "المدينة",
+    facilityType: "مستشفى",
+    jobType: "دوام-كامل",
+    salary: "30,000 - 45,000 ر.س",
+    date: "منذ يوم",
+    description: "فرصة عمل مميزة لطبيب طوارئ ذو خبرة في مستشفى الأمير سلطان بالمدينة المنورة.",
+    tasks: [
+      "استقبال وتقييم حالات الطوارئ",
+      "اتخاذ القرارات الطبية السريعة والحاسمة",
+      "إجراء عمليات الإنعاش والتدخلات الطارئة",
+      "الإشراف على فريق الطوارئ",
+      "التنسيق مع الأقسام الأخرى لتحويل المرضى"
+    ],
+    requirements: [
+      "بكالوريوس الطب والجراحة",
+      "شهادة البورد أو الزمالة في طب الطوارئ",
+      "تصنيف مهني ساري",
+      "خبرة 5 سنوات في طب الطوارئ",
+      "شهادات ATLS و ACLS سارية"
+    ],
+    benefits: [
+      "راتب تنافسي جداً",
+      "بدل خطورة",
+      "تأمين طبي VIP",
+      "سكن مؤثث",
+      "تذاكر سفر سنوية"
+    ]
+  }
+];
 
-// ===== Jobs Cache (loaded from Firestore) =====
-let jobsCache = [];
+// ===== English Job Translations =====
+const jobsDataEn = {
+  1: {
+    title: "General Dentist",
+    company: "King Fahd Specialist Hospital",
+    salary: "25,000 - 35,000 SAR",
+    city: "Riyadh",
+    facilityType: "Hospital",
+    jobType: "Full-time",
+    specialty: "Dentistry",
+    date: "3 days ago",
+    description: "We are looking for an experienced general dentist to join our outstanding medical team at King Fahd Specialist Hospital in Riyadh.",
+    tasks: [
+      "Conduct clinical examinations and diagnose patients",
+      "Perform various dental treatment procedures",
+      "Develop comprehensive treatment plans for patients",
+      "Follow up on patient cases after treatment",
+      "Participate in health education programs"
+    ],
+    requirements: [
+      "Bachelor's in Dental Medicine and Surgery",
+      "Valid professional classification from SCFHS",
+      "Minimum 3 years of experience",
+      "Fluent in Arabic and English",
+      "Excellent communication skills"
+    ],
+    benefits: [
+      "Competitive salary with allowances",
+      "Comprehensive medical insurance",
+      "Paid annual leave",
+      "Training and professional development",
+      "Professional work environment"
+    ]
+  },
+  2: {
+    title: "ICU Nurse",
+    company: "Dr. Sulaiman Al Habib Medical Group",
+    salary: "15,000 - 22,000 SAR",
+    city: "Jeddah",
+    facilityType: "Hospital",
+    jobType: "Full-time",
+    specialty: "Nursing",
+    date: "2 days ago",
+    description: "We are seeking a specialized ICU nurse to work at Dr. Sulaiman Al Habib Medical Group in Jeddah.",
+    tasks: [
+      "Provide advanced nursing care for ICU patients",
+      "Continuously monitor patients' vital signs",
+      "Manage specialized medical equipment",
+      "Coordinate with the medical team to implement treatment plans",
+      "Accurately document medical cases"
+    ],
+    requirements: [
+      "Bachelor's in Nursing from an accredited university",
+      "Valid professional classification",
+      "2 years ICU experience",
+      "Valid BLS and ACLS certifications",
+      "Ability to work shift schedules"
+    ],
+    benefits: [
+      "Rewarding salary with housing allowance",
+      "Health insurance for employee and family",
+      "Transportation allowance",
+      "Annual performance bonuses",
+      "Continuous training"
+    ]
+  },
+  3: {
+    title: "Clinical Pharmacist",
+    company: "Kingdom Hospital",
+    salary: "18,000 - 28,000 SAR",
+    city: "Riyadh",
+    facilityType: "Hospital",
+    jobType: "Full-time",
+    specialty: "Pharmacy",
+    date: "5 days ago",
+    description: "An excellent opportunity for a clinical pharmacist to work at one of the largest hospitals in Riyadh.",
+    tasks: [
+      "Review prescriptions and verify their safety",
+      "Provide pharmaceutical consultations to the medical team and patients",
+      "Participate in medical rounds",
+      "Monitor drug interactions and side effects",
+      "Contribute to developing pharmacotherapy protocols"
+    ],
+    requirements: [
+      "Bachelor's in Pharmacy or PharmD",
+      "Professional classification from SCFHS",
+      "3 years clinical pharmacy experience",
+      "Knowledge of pharmacy management systems",
+      "Strong analytical skills"
+    ],
+    benefits: [
+      "Competitive salary package",
+      "Comprehensive medical insurance",
+      "Housing and transportation allowances",
+      "Generous leave",
+      "Professional development and research opportunities"
+    ]
+  },
+  4: {
+    title: "Physiotherapist",
+    company: "Advanced Rehabilitation Center",
+    salary: "14,000 - 20,000 SAR",
+    city: "Dammam",
+    facilityType: "Rehab Center",
+    jobType: "Full-time",
+    specialty: "Physiotherapy",
+    date: "1 week ago",
+    description: "We are looking for a distinguished physiotherapist to join the Advanced Rehabilitation Center in Dammam.",
+    tasks: [
+      "Assess patient conditions and develop individual treatment plans",
+      "Implement various physical therapy programs",
+      "Use modern therapeutic equipment and techniques",
+      "Educate patients and families about home exercises",
+      "Document patient progress and modify treatment plans"
+    ],
+    requirements: [
+      "Bachelor's in Physical Therapy",
+      "Valid professional classification",
+      "At least 2 years of experience",
+      "Familiarity with modern physiotherapy techniques",
+      "Ability to work in a multidisciplinary team"
+    ],
+    benefits: [
+      "Competitive salary",
+      "Health insurance",
+      "Motivating work environment",
+      "Specialized training courses",
+      "30 days annual leave"
+    ]
+  },
+  5: {
+    title: "Radiology Specialist",
+    company: "Al Hammadi Hospital",
+    salary: "12,000 - 18,000 SAR",
+    city: "Jeddah",
+    facilityType: "Hospital",
+    jobType: "Part-time",
+    specialty: "Radiology",
+    date: "4 days ago",
+    description: "We are seeking a radiology specialist for a part-time position at Al Hammadi Hospital in Jeddah.",
+    tasks: [
+      "Perform various radiological examinations",
+      "Operate and maintain radiology equipment",
+      "Ensure quality of radiological images",
+      "Comply with radiation safety standards",
+      "Collaborate with radiologists on report preparation"
+    ],
+    requirements: [
+      "Bachelor's in Radiology Technology",
+      "Valid professional classification",
+      "Minimum 1 year experience",
+      "Knowledge of modern radiology equipment",
+      "Commitment to quality and safety standards"
+    ],
+    benefits: [
+      "Suitable part-time salary",
+      "Medical insurance",
+      "Flexible schedule",
+      "Advanced work environment",
+      "Training opportunities"
+    ]
+  },
+  6: {
+    title: "Emergency Physician",
+    company: "Prince Sultan Hospital",
+    salary: "30,000 - 45,000 SAR",
+    city: "Madinah",
+    facilityType: "Hospital",
+    jobType: "Full-time",
+    specialty: "General Medicine",
+    date: "1 day ago",
+    description: "An outstanding career opportunity for an experienced emergency physician at Prince Sultan Hospital in Madinah.",
+    tasks: [
+      "Receive and assess emergency cases",
+      "Make quick and decisive medical decisions",
+      "Perform resuscitation and emergency interventions",
+      "Supervise the emergency team",
+      "Coordinate with other departments for patient transfers"
+    ],
+    requirements: [
+      "Bachelor's in Medicine and Surgery",
+      "Board or fellowship in Emergency Medicine",
+      "Valid professional classification",
+      "5 years emergency medicine experience",
+      "Valid ATLS and ACLS certifications"
+    ],
+    benefits: [
+      "Highly competitive salary",
+      "Hazard allowance",
+      "VIP medical insurance",
+      "Furnished housing",
+      "Annual travel tickets"
+    ]
+  }
+};
 
-// REMOVED: static jobsData = [
-// Helper: get job field (Firestore jobs — returns field directly)
+// Helper: get localized job field
 function getJobField(job, field) {
+  if (currentLang === 'en' && jobsDataEn[job.id] && jobsDataEn[job.id][field] !== undefined) {
+    return jobsDataEn[job.id][field];
+  }
   return job[field];
 }
 
@@ -31,123 +432,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== Auth Nav =====
 function initAuthNav() {
-  firebase.auth().onAuthStateChanged(function (user) {
-    const authButtons    = document.getElementById('authButtons');
-    const userMenu       = document.getElementById('userMenu');
-    const userGreeting   = document.getElementById('userGreeting');
-    // Mobile drawer auth elements
-    const mobileAuthBtns = document.getElementById('mobileAuthButtons');
-    const mobileUserMenu = document.getElementById('mobileUserMenu');
-    const mobileGreeting = document.getElementById('mobileUserGreeting');
-    // Mobile header auth elements (always-visible next to hamburger)
-    const mobileHdrAuthBtns = document.getElementById('mobileHdrAuthBtns');
-    const mobileHdrUser     = document.getElementById('mobileHdrUser');
-    const mobileHdrGreeting = document.getElementById('mobileHdrGreeting');
-
-    if (user) {
-      firebase.firestore().collection('users').doc(user.uid).get().then(function (doc) {
-        const userData    = doc.exists ? doc.data() : {};
-        const displayName = userData.orgName || userData.name || user.displayName || 'المستخدم';
-        localStorage.setItem('rawad_current_user', JSON.stringify(Object.assign({}, userData, { uid: user.uid })));
-        // Desktop
-        if (authButtons)    authButtons.style.display    = 'none';
-        if (userMenu)       userMenu.style.display        = 'flex';
-        if (userGreeting)   userGreeting.textContent      = 'مرحباً، ' + displayName;
-        // Mobile drawer
-        if (mobileAuthBtns) mobileAuthBtns.style.display  = 'none';
-        if (mobileUserMenu) mobileUserMenu.style.display   = 'flex';
-        if (mobileGreeting) mobileGreeting.textContent     = 'مرحباً، ' + displayName;
-        // Mobile header
-        if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'none';
-        if (mobileHdrUser)     mobileHdrUser.style.display     = 'flex';
-        if (mobileHdrGreeting) mobileHdrGreeting.textContent   = displayName;
-      });
-    } else {
-      localStorage.removeItem('rawad_current_user');
-      // Desktop
-      if (authButtons)    authButtons.style.display    = 'flex';
-      if (userMenu)       userMenu.style.display        = 'none';
-      // Mobile drawer
-      if (mobileAuthBtns) mobileAuthBtns.style.display  = 'flex';
-      if (mobileUserMenu) mobileUserMenu.style.display   = 'none';
-      // Mobile header
-      if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'flex';
-      if (mobileHdrUser)     mobileHdrUser.style.display     = 'none';
-    }
+  window._supabase.auth.getSession().then(function ({ data: { session } }) {
+    _applyNavAuth(session ? session.user : null);
   });
+  window._supabase.auth.onAuthStateChange(function (_event, session) {
+    _applyNavAuth(session ? session.user : null);
+  });
+}
+
+function _applyNavAuth(user) {
+  const authButtons    = document.getElementById('authButtons');
+  const userMenu       = document.getElementById('userMenu');
+  const userGreeting   = document.getElementById('userGreeting');
+  const mobileAuthBtns = document.getElementById('mobileAuthButtons');
+  const mobileUserMenu = document.getElementById('mobileUserMenu');
+  const mobileGreeting = document.getElementById('mobileUserGreeting');
+  const mobileHdrAuthBtns = document.getElementById('mobileHdrAuthBtns');
+  const mobileHdrUser     = document.getElementById('mobileHdrUser');
+  const mobileHdrGreeting = document.getElementById('mobileHdrGreeting');
+
+  if (user) {
+    const meta        = user.user_metadata || {};
+    const displayName = meta.full_name || meta.name || user.email || 'المستخدم';
+    localStorage.setItem('rawad_current_user', JSON.stringify({ uid: user.id, email: user.email, name: displayName }));
+    if (authButtons)    authButtons.style.display    = 'none';
+    if (userMenu)       userMenu.style.display        = 'flex';
+    if (userGreeting)   userGreeting.textContent      = 'مرحباً، ' + displayName;
+    if (mobileAuthBtns) mobileAuthBtns.style.display  = 'none';
+    if (mobileUserMenu) mobileUserMenu.style.display   = 'flex';
+    if (mobileGreeting) mobileGreeting.textContent     = 'مرحباً، ' + displayName;
+    if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'none';
+    if (mobileHdrUser)     mobileHdrUser.style.display     = 'flex';
+    if (mobileHdrGreeting) mobileHdrGreeting.textContent   = displayName;
+  } else {
+    localStorage.removeItem('rawad_current_user');
+    if (authButtons)    authButtons.style.display    = 'flex';
+    if (userMenu)       userMenu.style.display        = 'none';
+    if (mobileAuthBtns) mobileAuthBtns.style.display  = 'flex';
+    if (mobileUserMenu) mobileUserMenu.style.display   = 'none';
+    if (mobileHdrAuthBtns) mobileHdrAuthBtns.style.display = 'flex';
+    if (mobileHdrUser)     mobileHdrUser.style.display     = 'none';
+  }
 }
 
 function authLogout() {
-  firebase.auth().signOut().then(function () {
-    localStorage.removeItem('rawad_current_user');
-    window.location.href = 'index.html';
-  });
+  console.log('[Logout] clicked');
+  console.log('[Logout] Starting logout...');
+
+  // 1. Clear rawad session key
+  try { localStorage.removeItem('rawad_current_user'); } catch (e) {}
+
+  // 2. Clear every Supabase auth key from localStorage (handles any v2 key format)
+  try {
+    Object.keys(localStorage).forEach(function (k) {
+      if (k.startsWith('sb-') || k === 'supabase.auth.token') {
+        localStorage.removeItem(k);
+        console.log('[Logout] Removed localStorage key:', k);
+      }
+    });
+  } catch (e) { console.error('[Logout] localStorage clear error:', e); }
+
+  // 3. Tell Supabase to invalidate the server-side session (fire & forget)
+  if (window._supabase) {
+    window._supabase.auth.signOut()
+      .then(function () { console.log('[Logout] Supabase signOut complete'); })
+      .catch(function (e) { console.error('[Logout] Supabase signOut error (ignored):', e); });
+  }
+
+  // 4. Redirect immediately — do NOT wait for signOut
+  console.log('[Logout] Redirecting to index.html...');
+  window.location.replace('index.html');
 }
+
+// Expose globally so onclick="authLogout()" works from any page
+window.authLogout = authLogout;
 
 // ===== Navbar =====
 function initNavbar() {
-  var hamburger = document.querySelector('.hamburger');
-  var navLinks  = document.querySelector('.nav-links');
-  var overlay   = document.getElementById('navOverlay');
-  var header    = document.querySelector('.header');
+  const header    = document.querySelector('.header');
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks  = document.querySelector('.nav-links');
+  const overlay   = document.getElementById('navOverlay');
 
-  function openMenu() {
-    hamburger.classList.add('active');
-    navLinks.classList.add('active');
-    if (overlay) overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
-    if (overlay) overlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
+  // Hamburger toggle
   if (hamburger && navLinks) {
-    hamburger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (navLinks.classList.contains('active')) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+      if (overlay) overlay.classList.toggle('active');
+      document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Close when user taps a link or button inside the drawer
-    navLinks.addEventListener('click', function(e) {
-      if (e.target.closest('a') || e.target.closest('button')) {
-        closeMenu();
-      }
+    // Close on nav link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      });
     });
 
-    // Close when tapping the dark overlay
+    // Close on overlay click
     if (overlay) {
-      overlay.addEventListener('click', function() {
-        closeMenu();
+      overlay.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
       });
     }
-
-    // Close on Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-        closeMenu();
-      }
-    });
   }
 
-  // Sticky header shadow on scroll
+  // Scroll effect
   if (header) {
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 50);
     });
   }
 
-  // Highlight current page link
-  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a').forEach(function(link) {
-    var href = link.getAttribute('href');
+  // Set active link on both desktop and mobile nav
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-desktop a').forEach(link => {
+    const href = link.getAttribute('href');
     if (href === currentPage || (currentPage === '' && href === 'index.html')) {
       link.classList.add('active');
     }
@@ -212,51 +619,8 @@ function renderFeaturedJobs() {
   const grid = document.getElementById('featured-jobs-grid');
   if (!grid) return;
 
-  grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;">جاري التحميل...</div>';
-
-  firebase.firestore().collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .limit(3)
-    .get()
-    .then(function (snapshot) {
-      const jobs = [];
-      snapshot.forEach(function (doc) {
-        jobs.push(Object.assign({ firestoreId: doc.id }, doc.data()));
-      });
-
-      if (jobs.length === 0) {
-        grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;font-size:1rem;">لا يوجد وظائف متاحة حالياً</div>';
-        return;
-      }
-
-      const viewDetailsText = currentLang === 'en' ? 'View Details →' : 'عرض التفاصيل ←';
-      grid.innerHTML = jobs.map(function (job) {
-        return `
-          <div class="job-card fade-in">
-            <div class="job-card-header">
-              <div class="job-company-logo">${job.companyLogo || '🏥'}</div>
-              <div>
-                <h3>${job.title || ''}</h3>
-                <span>${job.company || ''}</span>
-              </div>
-            </div>
-            <div class="job-tags">
-              <span class="job-tag tag-specialty">${job.specialty || ''}</span>
-              <span class="job-tag tag-city">${job.city || ''}</span>
-              <span class="job-tag tag-type">${job.jobType || ''}</span>
-            </div>
-            <div class="job-salary">${job.salary || ''}</div>
-            <div class="job-card-footer">
-              <span class="job-date">${job.date || ''}</span>
-              <a href="job-details.html?id=${job.firestoreId}" class="job-apply-link">${viewDetailsText}</a>
-            </div>
-          </div>`;
-      }).join('');
-      initScrollAnimations();
-    })
-    .catch(function () {
-      grid.innerHTML = '<div class="text-center" style="padding:40px;color:#888;">تعذّر تحميل الوظائف</div>';
-    });
+  const featured = jobsData.slice(0, 3);
+  const viewDetailsText = currentLang === 'en' ? 'View Details →' : 'عرض التفاصيل ←';
 }
 
 function animateCounters() {
@@ -278,58 +642,67 @@ function animateCounters() {
   });
 }
 
+// Module-level list used by filters after Firestore jobs are merged in
+let _allJobsForFilter = [];
+
 // ===== Jobs Page =====
-function loadJobsFromFirestore() {
-  const list = document.getElementById('jobs-list');
-  const countEl = document.getElementById('jobs-count');
-  if (!list) return;
+function initJobsPage() {
+  // Attach filter handlers immediately (they'll use _allJobsForFilter once loaded)
+  const filterBtn = document.getElementById('filter-btn');
+  if (filterBtn) filterBtn.addEventListener('click', applyFilters);
+  document.querySelectorAll('.filters-grid select').forEach(select => {
+    select.addEventListener('change', applyFilters);
+  });
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) searchInput.addEventListener('input', debounce(applyFilters, 300));
 
-  list.innerHTML = '<div class="text-center" style="padding:60px 20px;"><div style="font-size:2rem;margin-bottom:12px;">⏳</div><p style="color:#888;">جاري تحميل الوظائف...</p></div>';
-
-  firebase.firestore().collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .get()
-    .then(function (snapshot) {
-      jobsCache = [];
-      snapshot.forEach(function (doc) {
-        jobsCache.push(Object.assign({ firestoreId: doc.id }, doc.data()));
+  // Load jobs from Supabase
+  window._supabase
+    .from('jobs')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .then(function ({ data, error }) {
+      if (error) { console.error('[Jobs] Supabase error:', error.message); }
+      const rows = data || [];
+      const supabaseJobs = rows.map(function (d) {
+        return {
+          id:           String(d.id),
+          title:        d.title        || '',
+          company:      d.company      || '',
+          companyLogo:  d.company_logo || '🏥',
+          specialty:    d.specialty    || '',
+          city:         d.city         || '',
+          facilityType: d.facility_type || '',
+          jobType:      d.job_type      || '',
+          salary:       d.salary        || '',
+          date:         d.created_at ? new Date(d.created_at).toLocaleDateString('ar-SA') : 'منذ لحظات',
+          description:  d.description   || '',
+          tasks:        Array.isArray(d.tasks)        ? d.tasks        : [],
+          requirements: Array.isArray(d.requirements) ? d.requirements : [],
+          benefits:     Array.isArray(d.benefits)     ? d.benefits     : []
+        };
       });
-      renderJobsList(jobsCache);
-    })
-    .catch(function () {
-      list.innerHTML = '<div class="text-center" style="padding:60px 20px;"><p style="color:#888;">تعذّر تحميل الوظائف، حاول مجدداً.</p></div>';
+      _allJobsForFilter = supabaseJobs.length > 0 ? supabaseJobs : jobsData;
+      renderJobsList(_allJobsForFilter);
     });
 }
 
-function initJobsPage() {
-  loadJobsFromFirestore();
-
-  const filterBtn = document.getElementById('filter-btn');
-  if (filterBtn) filterBtn.addEventListener('click', applyFilters);
-
-  document.querySelectorAll('.filters-grid select').forEach(function (select) {
-    select.addEventListener('change', applyFilters);
-  });
-
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) searchInput.addEventListener('input', debounce(applyFilters, 300));
-}
-
 function applyFilters() {
-  const specialty   = document.getElementById('filter-specialty')?.value || '';
-  const city        = document.getElementById('filter-city')?.value || '';
+  const specialty = document.getElementById('filter-specialty')?.value || '';
+  const city = document.getElementById('filter-city')?.value || '';
   const facilityType = document.getElementById('filter-facility')?.value || '';
-  const jobType     = document.getElementById('filter-type')?.value || '';
-  const searchTerm  = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const jobType = document.getElementById('filter-type')?.value || '';
+  const searchTerm = document.getElementById('search-input')?.value?.toLowerCase() || '';
 
-  const filtered = jobsCache.filter(function (job) {
-    if (specialty    && job.specialty    !== specialty)    return false;
-    if (city         && job.city         !== city)         return false;
+  const source = _allJobsForFilter.length ? _allJobsForFilter : jobsData;
+  let filtered = source.filter(job => {
+    if (specialty && job.specialty !== specialty) return false;
+    if (city && job.city !== city) return false;
     if (facilityType && job.facilityType !== facilityType) return false;
-    if (jobType      && job.jobType      !== jobType)      return false;
+    if (jobType && job.jobType !== jobType) return false;
     if (searchTerm) {
-      const s = ((job.title || '') + ' ' + (job.company || '') + ' ' + (job.description || '')).toLowerCase();
-      if (!s.includes(searchTerm)) return false;
+      const searchable = `${job.title} ${job.company} ${job.description}`.toLowerCase();
+      if (!searchable.includes(searchTerm)) return false;
     }
     return true;
   });
@@ -338,101 +711,113 @@ function applyFilters() {
 }
 
 function renderJobsList(jobs) {
-  const list    = document.getElementById('jobs-list');
+  const list = document.getElementById('jobs-list');
   const countEl = document.getElementById('jobs-count');
   if (!list) return;
 
   if (countEl) countEl.textContent = jobs.length;
 
-  const hasFilter = (document.getElementById('filter-specialty')?.value  || '') ||
-                    (document.getElementById('filter-city')?.value        || '') ||
-                    (document.getElementById('filter-facility')?.value    || '') ||
-                    (document.getElementById('filter-type')?.value        || '') ||
-                    (document.getElementById('search-input')?.value       || '');
+  const noResultsTitle = currentLang === 'en' ? 'No results found' : 'لم يتم العثور على نتائج';
+  const noResultsDesc = currentLang === 'en' ? 'Try changing your search criteria or filters' : 'جرّب تغيير معايير البحث أو الفلاتر';
+  const viewDetailsText = currentLang === 'en' ? 'View Details' : 'عرض التفاصيل';
 
   if (jobs.length === 0) {
-    const title = hasFilter
-      ? (currentLang === 'en' ? 'No results found' : 'لم يتم العثور على نتائج')
-      : (currentLang === 'en' ? 'No jobs available at the moment' : 'لا يوجد وظائف متاحة حالياً');
-    const desc  = hasFilter
-      ? (currentLang === 'en' ? 'Try changing your search criteria or filters' : 'جرّب تغيير معايير البحث أو الفلاتر')
-      : '';
     list.innerHTML = `
-      <div class="no-jobs-msg">
-        <div class="no-jobs-icon">💼</div>
-        <h3>${title}</h3>
-        ${desc ? `<p>${desc}</p>` : ''}
-      </div>`;
+      <div class="text-center" style="padding: 60px 20px;">
+        <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+        <h3 style="color: #023E8A; margin-bottom: 10px;">${noResultsTitle}</h3>
+        <p style="color: #666;">${noResultsDesc}</p>
+      </div>
+    `;
     return;
   }
 
-  const viewDetailsText = currentLang === 'en' ? 'View Details' : 'عرض التفاصيل';
-  list.innerHTML = jobs.map(function (job) {
-    return `
-      <div class="job-list-card fade-in">
-        <div style="display:flex;align-items:center;gap:20px;flex:1;">
-          <div class="job-company-logo">${job.companyLogo || '🏥'}</div>
-          <div class="job-list-info">
-            <h3>${job.title || ''}</h3>
-            <div class="company-name">${job.company || ''}</div>
-            <div class="job-list-meta">
-              <span>📍 ${job.city || '-'}</span>
-              <span>🏥 ${job.facilityType || '-'}</span>
-              <span>⏰ ${job.jobType || '-'}</span>
-              <span>📅 ${job.date || ''}</span>
-            </div>
+  list.innerHTML = jobs.map(job => `
+    <div class="job-list-card fade-in">
+      <div style="display:flex;align-items:center;gap:18px;flex:1;min-width:0;">
+        <div class="job-company-logo">${job.companyLogo}</div>
+        <div class="job-list-info">
+          <h3>${getJobField(job, 'title')}</h3>
+          <div class="company-name">${getJobField(job, 'company')}</div>
+          <div class="job-list-meta">
+            <span>📍 ${getJobField(job, 'city')}</span>
+            <span>🏥 ${getJobField(job, 'facilityType')}</span>
+            <span>⏰ ${getJobField(job, 'jobType')}</span>
+            <span>📅 ${getJobField(job, 'date')}</span>
           </div>
         </div>
-        <div class="job-list-actions">
-          <div class="job-list-salary">${job.salary || ''}</div>
-          <a href="job-details.html?id=${job.firestoreId}" class="btn btn-primary" style="padding:8px 24px;font-size:0.9rem;">${viewDetailsText}</a>
-        </div>
-      </div>`;
-  }).join('');
+      </div>
+      <div class="job-list-actions">
+        <div class="job-list-salary">${getJobField(job, 'salary')}</div>
+        <a href="job-details.html?id=${job.id}" class="btn btn-primary" style="padding:10px 22px;font-size:0.88rem;">${viewDetailsText}</a>
+      </div>
+    </div>
+  `).join('');
+
   initScrollAnimations();
 }
 
 // ===== Job Details Page =====
 function initJobDetailsPage() {
   const params = new URLSearchParams(window.location.search);
-  const jobId  = params.get('id');
+  const rawId = params.get('id') || '';
 
-  if (!jobId) {
-    setTextContent('job-title', 'الوظيفة غير موجودة');
-    return;
-  }
+  if (!rawId) { _fillJobDetails(jobsData[0]); return; }
 
-  firebase.firestore().collection('jobs').doc(jobId).get()
-    .then(function (doc) {
-      if (!doc.exists) {
-        setTextContent('job-title', 'الوظيفة غير موجودة');
+  // Try Supabase first (numeric IDs stored as integers in Supabase)
+  window._supabase
+    .from('jobs')
+    .select('*')
+    .eq('id', rawId)
+    .single()
+    .then(function ({ data, error }) {
+      if (!error && data) {
+        const d = data;
+        _fillJobDetails({
+          id:           String(d.id),
+          title:        d.title          || '',
+          company:      d.company        || '',
+          description:  d.description    || '',
+          salary:       d.salary         || '',
+          city:         d.city           || '',
+          jobType:      d.job_type       || '',
+          specialty:    d.specialty      || '',
+          facilityType: d.facility_type  || '',
+          date:         d.created_at ? new Date(d.created_at).toLocaleDateString('ar-SA') : '',
+          tasks:        Array.isArray(d.tasks)        ? d.tasks        : [],
+          requirements: Array.isArray(d.requirements) ? d.requirements : [],
+          benefits:     Array.isArray(d.benefits)     ? d.benefits     : []
+        });
         return;
       }
-      const job = doc.data();
-
-      setTextContent('job-title',          job.title        || '');
-      setTextContent('job-company',        job.company      || '');
-      setTextContent('job-description',    job.description  || '');
-      setTextContent('job-salary-value',   job.salary       || '-');
-      setTextContent('job-city-value',     job.city         || '-');
-      setTextContent('job-type-value',     job.jobType      || '-');
-      setTextContent('job-specialty-value',job.specialty    || '-');
-      setTextContent('job-facility-value', job.facilityType || '-');
-      setTextContent('job-date-value',     job.date         || '-');
-
-      renderList('job-tasks-list',        job.tasks);
-      renderList('job-requirements-list', job.requirements);
-      renderList('job-benefits-list',     job.benefits);
-
-      const link = `apply.html?job=${encodeURIComponent(job.title || '')}&id=${doc.id}`;
-      const applyBtn = document.getElementById('apply-btn');
-      if (applyBtn) applyBtn.href = link;
-      const applySidebarBtn = document.getElementById('apply-sidebar-btn');
-      if (applySidebarBtn) applySidebarBtn.href = link;
-    })
-    .catch(function () {
-      setTextContent('job-title', 'تعذّر تحميل الوظيفة');
+      // Fall back to static demo data for legacy numeric IDs
+      const numericId = parseInt(rawId);
+      const staticJob = jobsData.find(j => j.id === numericId);
+      if (staticJob) _fillJobDetails(staticJob);
+      else _fillJobDetails(jobsData[0]);
     });
+}
+
+function _fillJobDetails(job) {
+  setTextContent('job-title', getJobField(job, 'title'));
+  setTextContent('job-company', getJobField(job, 'company'));
+  setTextContent('job-description', getJobField(job, 'description'));
+  setTextContent('job-salary-value', getJobField(job, 'salary'));
+  setTextContent('job-city-value', getJobField(job, 'city'));
+  setTextContent('job-type-value', getJobField(job, 'jobType'));
+  setTextContent('job-specialty-value', getJobField(job, 'specialty'));
+  setTextContent('job-facility-value', getJobField(job, 'facilityType'));
+  setTextContent('job-date-value', getJobField(job, 'date'));
+
+  renderList('job-tasks-list', getJobField(job, 'tasks'));
+  renderList('job-requirements-list', getJobField(job, 'requirements'));
+  renderList('job-benefits-list', getJobField(job, 'benefits'));
+
+  const applyBtn = document.getElementById('apply-btn');
+  if (applyBtn) applyBtn.href = `apply.html?job=${encodeURIComponent(job.title)}&id=${job.id}`;
+
+  const applySidebarBtn = document.getElementById('apply-sidebar-btn');
+  if (applySidebarBtn) applySidebarBtn.href = `apply.html?job=${encodeURIComponent(job.title)}&id=${job.id}`;
 }
 
 function setTextContent(id, text) {
@@ -450,7 +835,7 @@ function renderList(id, items) {
 function initApplyPage() {
   const params = new URLSearchParams(window.location.search);
   const jobTitle = params.get('job');
-  const jobId = params.get('id');
+  const jobId = params.get('id') || '';
 
   if (jobTitle) {
     const titleEl = document.getElementById('apply-job-title');
@@ -485,16 +870,54 @@ function initApplyPage() {
     fileInput.addEventListener('change', () => updateFileName(fileInput, fileName));
   }
 
-  // Form submission
+  // Form submission — save to Supabase
   const form = document.getElementById('apply-form');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      if (validateApplyForm(form)) {
+      if (!validateApplyForm(form)) return;
+
+      const submitBtn = form.querySelector('[type="submit"]');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '⏳ جاري الإرسال...'; }
+
+      if (!jobId) {
+        showAlert('error-alert', 'لم يتم تحديد الوظيفة. يرجى العودة لصفحة الوظائف والتقديم من هناك.');
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '📨 إرسال الطلب'; }
+        return;
+      }
+
+      const fd = new FormData(form);
+      const decodedTitle = jobTitle ? decodeURIComponent(jobTitle) : '';
+
+      const applicationData = {
+        job_id:  parseInt(jobId) || jobId,
+        name:    fd.get('fullname')       || '',
+        email:   fd.get('email')          || '',
+        phone:   fd.get('phone')          || ''
+      };
+
+      console.log('[Apply] Submitting to Supabase — jobId:', jobId, '| name:', applicationData.name);
+
+      const { error } = await window._supabase.from('applications').insert([applicationData]);
+
+      if (error) {
+        console.error('[Apply] ❌ Supabase error:', error.message);
+        var errEl = document.getElementById('error-alert');
+        if (errEl) {
+          errEl.textContent = 'فشل حفظ الطلب: ' + (error.message || 'خطأ غير معروف');
+          errEl.style.display = 'block';
+          errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } else {
+        console.log('[Apply] ✅ Application saved to Supabase');
+        var errElOk = document.getElementById('error-alert');
+        if (errElOk) errElOk.style.display = 'none';
         showModal('success-modal');
         form.reset();
         if (fileName) fileName.textContent = '';
       }
+
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '📨 إرسال الطلب'; }
     });
   }
 }
@@ -850,7 +1273,8 @@ const translations = {
     heroFloatHired: 'موظف تم توظيفه',
     heroFloatSpec: 'تخصصاً صحياً',
 
-    // Why Us section
+    // Featured / Why Us / New Sections
+    featuredBadge: 'فرص مميزة',
     whyUsBadge: 'من نحن',
     whyUsTitle: 'شريكك الموثوق في التوظيف الصحي',
     whyUsDesc: 'Rawad Health هي منصة سعودية متخصصة في التوظيف الصحي، تهدف إلى سد الفجوة بين الكوادر الصحية المؤهلة والمنشآت الطبية المتميزة في المملكة.',
@@ -863,9 +1287,8 @@ const translations = {
     whyUs4Title: 'شراكات استراتيجية',
     whyUs4Desc: 'شراكات مع أكثر من 150 منشأة صحية في المملكة.',
     statSpecialties: 'تخصص صحي',
-    featuredBadge: 'فرص مميزة',
 
-    // Service card badges
+    // Service badges
     svc1Badge: '⚕ توظيف',
     svc2Badge: '🚀 تطوير',
 
@@ -1161,10 +1584,11 @@ const translations = {
     heroFloatHired: 'Professionals Hired',
     heroFloatSpec: 'Health Specialties',
 
-    // Why Us section
+    // Featured / Why Us / New Sections
+    featuredBadge: 'Featured Opportunities',
     whyUsBadge: 'About Us',
     whyUsTitle: 'Your Trusted Healthcare Recruitment Partner',
-    whyUsDesc: 'Rawad Health is a Saudi platform specializing in healthcare recruitment, bridging the gap between qualified medical professionals and distinguished medical facilities in the Kingdom.',
+    whyUsDesc: 'Rawad Health is a Saudi platform specializing in healthcare recruitment, aimed at bridging the gap between qualified medical professionals and distinguished medical facilities in the Kingdom.',
     whyUs1Title: 'Real & Verified Opportunities',
     whyUs1Desc: 'All posted jobs are from licensed and accredited healthcare facilities.',
     whyUs2Title: 'Comprehensive Career Support',
@@ -1174,9 +1598,8 @@ const translations = {
     whyUs4Title: 'Strategic Partnerships',
     whyUs4Desc: 'Partnerships with over 150 healthcare facilities in the Kingdom.',
     statSpecialties: 'Health Specialties',
-    featuredBadge: 'Featured Opportunities',
 
-    // Service card badges
+    // Service badges
     svc1Badge: '⚕ Recruitment',
     svc2Badge: '🚀 Development',
 
@@ -1288,14 +1711,15 @@ function setLanguage(lang) {
   } else if (page === 'job-details.html') {
     initJobDetailsPage();
   } else if (page === 'apply.html') {
-    // Update apply page title from URL param (job title is passed as ?job=...)
+    // Re-set apply page title with localized job name
     const params = new URLSearchParams(window.location.search);
-    const jobTitle = params.get('job');
-    if (jobTitle) {
-      const titleEl = document.getElementById('apply-job-title');
-      if (titleEl) {
+    const jobId = parseInt(params.get('id'));
+    if (jobId) {
+      const job = jobsData.find(j => j.id === jobId);
+      if (job) {
+        const titleEl = document.getElementById('apply-job-title');
         const prefix = lang === 'en' ? 'Applying for: ' : 'التقديم على: ';
-        titleEl.textContent = prefix + decodeURIComponent(jobTitle);
+        if (titleEl) titleEl.textContent = prefix + getJobField(job, 'title');
       }
     }
   }
@@ -1303,12 +1727,49 @@ function setLanguage(lang) {
 
 function toggleLanguage() {
   setLanguage(currentLang === 'ar' ? 'en' : 'ar');
+  updateLangButtons();
+}
+
+// Update all lang button labels to reflect current language
+function updateLangButtons() {
+  const label = currentLang === 'ar' ? 'EN' : 'عربي';
+  document.querySelectorAll('.lang-label, .mobile-lang-label').forEach(el => {
+    el.textContent = label;
+  });
 }
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
+  // Bind the header lang button
+  const langBtn = document.getElementById('langToggle');
+  if (langBtn) {
+    langBtn.addEventListener('click', toggleLanguage);
+  }
+
+  // Inject lang toggle button into mobile drawer (nav-links)
+  const mobileAuth = document.querySelector('.nav-links .mobile-auth');
+  if (mobileAuth && !mobileAuth.querySelector('.mobile-lang-toggle')) {
+    const mobileLangBtn = document.createElement('button');
+    mobileLangBtn.className = 'mobile-lang-toggle';
+    mobileLangBtn.innerHTML = '🌐 <span class="mobile-lang-label">' + (currentLang === 'ar' ? 'EN' : 'عربي') + '</span>';
+    mobileLangBtn.addEventListener('click', function() {
+      toggleLanguage();
+      updateLangButtons();
+      // Close the drawer after switching
+      const hamburger = document.querySelector('.hamburger');
+      const navLinks  = document.querySelector('.nav-links');
+      const overlay   = document.getElementById('navOverlay');
+      if (hamburger) hamburger.classList.remove('active');
+      if (navLinks)  navLinks.classList.remove('active');
+      if (overlay)   overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+    mobileAuth.appendChild(mobileLangBtn);
+  }
+
   // Apply saved language (if not default Arabic)
   if (currentLang !== 'ar') {
     setLanguage(currentLang);
   }
+  updateLangButtons();
 });
