@@ -331,24 +331,36 @@
     window._supabase.auth.getSession().then(async function ({ data: { session } }) {
       if (!session) { window.location.href = 'login.html'; return; }
 
+      console.log('[PostJob] Logged-in user:', session.user.id, session.user.email);
+
       // Superadmin always has access
       if (session.user.email === 'kramabid1@gmail.com') {
+        console.log('[PostJob] Superadmin access granted');
         initPostJobForm(session.user.id);
         return;
       }
 
-      const { data: userRow } = await window._supabase
+      const { data: userRow, error: userErr } = await window._supabase
         .from('users')
         .select('role, status')
         .eq('id', session.user.id)
         .maybeSingle();
 
+      console.log('[PostJob] users table row:', userRow, '| error:', userErr);
+
       const card = document.querySelector('.post-job-card');
+
+      if (userErr) {
+        if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.1rem;color:#c62828;">خطأ في قراءة بيانات المستخدم: ' + userErr.message + '</p></div>';
+        return;
+      }
 
       if (!userRow || (userRow.role !== 'admin' && userRow.role !== 'superadmin')) {
         if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.2rem;color:#666;">ليس لديك صلاحية لنشر الوظائف.</p><a href="index.html" class="btn btn-outline" style="margin-top:20px;display:inline-block;">العودة للرئيسية</a></div>';
         return;
       }
+
+      console.log('[PostJob] role:', userRow.role, '| status:', userRow.status);
 
       if (userRow.status === 'pending') {
         if (card) card.innerHTML = '<div style="text-align:center;padding:60px 20px;"><p style="font-size:1.4rem;color:#856404;font-weight:800;">⏳ حسابك قيد المراجعة</p><p style="color:#666;margin-top:8px;">يرجى انتظار موافقة المدير العام لتتمكن من نشر الوظائف.</p><a href="dashboard.html" class="btn btn-outline" style="margin-top:24px;display:inline-block;">العودة للوحة التحكم</a></div>';
@@ -368,7 +380,7 @@
       const btn   = document.getElementById('submit-btn');
       const msgEl = document.getElementById('form-msg');
 
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
         msgEl.className = '';
         msgEl.style.display = 'none';
@@ -394,13 +406,14 @@
         if (!title || !company || !specialty || !city || !facilityType || !jobType || !description) {
           msgEl.textContent = 'يرجى تعبئة جميع الحقول المطلوبة.';
           msgEl.className = 'error';
+          msgEl.style.display = 'block';
           return;
         }
 
         btn.disabled = true;
         btn.textContent = '⏳ جاري النشر...';
 
-        window._supabase.from('jobs').insert([{
+        const payload = {
           title:         title,
           company:       company,
           company_logo:  companyLogo,
@@ -409,23 +422,51 @@
           facility_type: facilityType,
           job_type:      jobType,
           salary:        salary,
-          description:   description
-        }]).then(function ({ error }) {
-          if (error) {
-            console.error(error);
-            msgEl.textContent = 'حدث خطأ أثناء النشر. يرجى المحاولة مجدداً.';
-            msgEl.className = 'error';
-            btn.disabled = false;
-            btn.textContent = '🚀 نشر الوظيفة';
-            return;
+          description:   description,
+          tasks:         tasks,
+          requirements:  requirements,
+          benefits:      benefits,
+          posted_by:     adminId
+        };
+
+        console.log('[PostJob] Inserting payload:', payload);
+
+        const { data: insertData, error: insertError } = await window._supabase
+          .from('jobs')
+          .insert([payload])
+          .select();
+
+        console.log('[PostJob] Insert result — data:', insertData, '| error:', insertError);
+
+        if (insertError) {
+          console.error('[PostJob] Supabase insert error:', insertError);
+          var errCode = insertError.code || '';
+          var errMsg  = insertError.message || 'خطأ غير معروف';
+          var arabicMsg;
+          if (errCode === '42501' || errMsg.toLowerCase().includes('row-level security') || errMsg.toLowerCase().includes('violates')) {
+            arabicMsg = 'خطأ في الصلاحيات (RLS): حسابك غير مصرح له بالنشر. يرجى التواصل مع المدير العام. [' + errCode + ']';
+          } else if (errCode === '42703' || errMsg.toLowerCase().includes('column')) {
+            arabicMsg = 'خطأ في بنية الجدول: ' + errMsg + ' — يرجى تشغيل ملف supabase-migration.sql من جديد.';
+          } else if (errCode === '23505') {
+            arabicMsg = 'الوظيفة مكررة — يرجى تغيير المسمى الوظيفي.';
+          } else {
+            arabicMsg = 'حدث خطأ أثناء النشر: ' + errMsg + ' [' + errCode + ']';
           }
-          msgEl.textContent = '✅ تم نشر الوظيفة بنجاح! ستظهر على صفحة الوظائف فوراً.';
-          msgEl.className = 'success';
-          form.reset();
+          msgEl.textContent   = arabicMsg;
+          msgEl.className     = 'error';
+          msgEl.style.display = 'block';
           btn.disabled = false;
-          btn.textContent = '🚀 نشر وظيفة أخرى';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+          btn.textContent = '🚀 نشر الوظيفة';
+          return;
+        }
+
+        msgEl.textContent   = '✅ تم نشر الوظيفة بنجاح! ستظهر على صفحة الوظائف فوراً.';
+        msgEl.className     = 'success';
+        msgEl.style.display = 'block';
+        form.reset();
+        btn.disabled    = false;
+        btn.textContent = '🚀 نشر وظيفة أخرى';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
   </script>
