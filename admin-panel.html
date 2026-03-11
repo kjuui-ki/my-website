@@ -300,20 +300,22 @@
   <script src="supabaseClient.js"></script>
   <script>
     // ── Logout ──────────────────────────────────────────────────────
-    async function adminLogout() {
-      console.log('[AdminLogout] Signing out...');
+    function adminLogout() {
+      console.log('[AdminLogout] Starting logout...');
+      try { localStorage.removeItem('rawad_current_user'); } catch (e) {}
       try {
-        const { error } = await window._supabase.auth.signOut();
-        if (error) {
-          console.error('[AdminLogout] signOut error (continuing anyway):', error.message, error);
-        } else {
-          console.log('[AdminLogout] Signed out successfully');
-        }
-      } catch (err) {
-        console.error('[AdminLogout] Unexpected exception (continuing anyway):', err);
+        Object.keys(localStorage).forEach(function (k) {
+          if (k.startsWith('sb-') || k === 'supabase.auth.token') {
+            localStorage.removeItem(k);
+          }
+        });
+      } catch (e) {}
+      if (window._supabase) {
+        window._supabase.auth.signOut()
+          .then(function () { console.log('[AdminLogout] signOut complete'); })
+          .catch(function (e) { console.error('[AdminLogout] signOut error (ignored):', e); });
       }
-      localStorage.removeItem('rawad_current_user');
-      window.location.href = 'index.html';
+      window.location.replace('index.html');
     }
 
     // ── Auth Guard: superadmin only ──────────────────────────────────
