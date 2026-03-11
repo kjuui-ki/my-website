@@ -219,6 +219,8 @@
     window._supabase.auth.getSession().then(async function ({ data: { session } }) {
       if (!session) { window.location.href = 'login.html'; return; }
       var user = session.user;
+      // Superadmin belongs on admin-panel, not dashboard
+      if (user.email === 'kramabid1@gmail.com') { window.location.href = 'admin-panel.html'; return; }
       var meta = user.user_metadata || {};
       var displayName = meta.full_name || meta.name || user.email || 'المسؤول';
 
@@ -243,7 +245,7 @@
           return;
         }
         if (userRow && userRow.role === 'admin' && userRow.status === 'rejected') {
-          if (subtitle) subtitle.textContent = '❌ تم رفض طلق تسجيلك — يرجى التواصل مع الإدارة';
+          if (subtitle) subtitle.textContent = '❌ تم رفض طلب تسجيلك — يرجى التواصل مع الإدارة';
           document.querySelectorAll('.dashboard-actions').forEach(function (el) { el.style.display = 'none'; });
           return;
         }

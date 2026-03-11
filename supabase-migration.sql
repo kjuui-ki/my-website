@@ -1,11 +1,15 @@
 -- ============================================================
 -- Rawad Health — Superadmin Approval System
--- Safe to run multiple times (idempotent)
+-- SAFE TO RE-RUN: drops and recreates table + policies + trigger
 -- Paste entire contents into Supabase SQL Editor → Run
 -- ============================================================
 
--- 1. Create the users table
-CREATE TABLE IF NOT EXISTS public.users (
+-- 1. Drop existing table (ensures correct schema on every run)
+--    CASCADE also drops any dependent policies automatically
+DROP TABLE IF EXISTS public.users CASCADE;
+
+-- 2. Create users table
+CREATE TABLE public.users (
   id         UUID        PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email      TEXT        NOT NULL,
   role       TEXT        NOT NULL DEFAULT 'user'     CHECK (role   IN ('superadmin', 'admin', 'user')),
@@ -13,27 +17,22 @@ CREATE TABLE IF NOT EXISTS public.users (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 2. Enable Row Level Security
+-- 3. Enable Row Level Security
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
--- 3. RLS Policies (drop first so re-runs don't fail)
-DROP POLICY IF EXISTS "users_select_own"      ON public.users;
-DROP POLICY IF EXISTS "superadmin_select_all" ON public.users;
-DROP POLICY IF EXISTS "users_insert_own"      ON public.users;
-DROP POLICY IF EXISTS "superadmin_update_all" ON public.users;
+-- 4. RLS Policies
 
 -- Authenticated user can read their own row
 CREATE POLICY "users_select_own" ON public.users
   FOR SELECT
   USING (auth.uid() = id);
 
--- Superadmin can read ALL rows (matched by JWT email — avoids recursive table lookups)
+-- Superadmin can read ALL rows (JWT email check — no recursive table lookup)
 CREATE POLICY "superadmin_select_all" ON public.users
   FOR SELECT
   USING ((auth.jwt() ->> 'email') = 'kramabid1@gmail.com');
 
 -- Any authenticated user can insert their own row
--- (the trigger below handles this automatically; this is a safety fallback)
 CREATE POLICY "users_insert_own" ON public.users
   FOR INSERT
   WITH CHECK (auth.uid() = id);
@@ -44,11 +43,11 @@ CREATE POLICY "superadmin_update_all" ON public.users
   USING     ((auth.jwt() ->> 'email') = 'kramabid1@gmail.com')
   WITH CHECK ((auth.jwt() ->> 'email') = 'kramabid1@gmail.com');
 
--- 4. Trigger function — runs on every new auth.users insert
+-- 5. Trigger function — auto-inserts row on every auth.users signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SECURITY DEFINER          -- runs as postgres, bypasses RLS
+SECURITY DEFINER          -- runs as postgres owner, bypasses RLS
 SET search_path = public
 AS $$
 BEGIN
@@ -56,13 +55,17 @@ BEGIN
   VALUES (
     NEW.id,
     NEW.email,
+    -- Determine role from signup metadata; superadmin email is hardcoded
     CASE
+      WHEN NEW.email = 'kramabid1@gmail.com'                                THEN 'superadmin'
       WHEN COALESCE(NEW.raw_user_meta_data->>'role', 'user') = 'admin'      THEN 'admin'
       WHEN COALESCE(NEW.raw_user_meta_data->>'role', 'user') = 'superadmin' THEN 'superadmin'
       ELSE 'user'
     END,
+    -- Admins start as pending; everyone else is immediately approved
     CASE
-      WHEN COALESCE(NEW.raw_user_meta_data->>'role', 'user') = 'admin' THEN 'pending'
+      WHEN NEW.email = 'kramabid1@gmail.com'                                THEN 'approved'
+      WHEN COALESCE(NEW.raw_user_meta_data->>'role', 'user') = 'admin'      THEN 'pending'
       ELSE 'approved'
     END
   )
@@ -71,7 +74,7 @@ BEGIN
 END;
 $$;
 
--- Recreate trigger (drop first for idempotency)
+-- Recreate trigger
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
 CREATE TRIGGER on_auth_user_created
@@ -79,11 +82,26 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW
   EXECUTE PROCEDURE public.handle_new_user();
 
--- 5. Backfill: ensure superadmin row exists if already registered
+-- 6. Backfill ALL existing auth.users (people who registered before this migration)
 INSERT INTO public.users (id, email, role, status)
-SELECT id, email, 'superadmin', 'approved'
-FROM auth.users
-WHERE email = 'kramabid1@gmail.com'
-ON CONFLICT (id) DO UPDATE
-  SET role   = 'superadmin',
-      status = 'approved';
+SELECT
+  au.id,
+  au.email,
+  CASE
+    WHEN au.email = 'kramabid1@gmail.com'                                          THEN 'superadmin'
+    WHEN COALESCE(au.raw_user_meta_data->>'role', 'user') = 'admin'               THEN 'admin'
+    WHEN COALESCE(au.raw_user_meta_data->>'role', 'user') = 'superadmin'          THEN 'superadmin'
+    ELSE 'user'
+  END,
+  CASE
+    WHEN au.email = 'kramabid1@gmail.com'                                          THEN 'approved'
+    WHEN COALESCE(au.raw_user_meta_data->>'role', 'user') = 'admin'               THEN 'pending'
+    ELSE 'approved'
+  END
+FROM auth.users au
+ON CONFLICT (id) DO NOTHING;
+
+-- 7. Force-correct superadmin row (safety net)
+UPDATE public.users
+   SET role = 'superadmin', status = 'approved'
+ WHERE email = 'kramabid1@gmail.com';

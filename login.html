@@ -108,8 +108,12 @@
     // Redirect if already logged in
     window._supabase.auth.getSession().then(function ({ data: { session } }) {
       if (session) {
-        var nextUrl = new URLSearchParams(window.location.search).get('next');
-        window.location.href = nextUrl || 'dashboard.html';
+        if (session.user.email === 'kramabid1@gmail.com') {
+          window.location.href = 'admin-panel.html';
+        } else {
+          var nextUrl = new URLSearchParams(window.location.search).get('next');
+          window.location.href = nextUrl || 'dashboard.html';
+        }
       }
     });
 
@@ -218,8 +222,12 @@
         }
 
         errorBox.style.display = 'none';
-        var nextUrl = new URLSearchParams(window.location.search).get('next');
-        window.location.href = nextUrl || 'dashboard.html';
+        if (data.session.user.email === 'kramabid1@gmail.com') {
+          window.location.href = 'admin-panel.html';
+        } else {
+          var nextUrl = new URLSearchParams(window.location.search).get('next');
+          window.location.href = nextUrl || 'dashboard.html';
+        }
 
       } catch (ex) {
         console.error('[Login] Unexpected exception:', ex);
