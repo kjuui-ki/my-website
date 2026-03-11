@@ -889,14 +889,38 @@ function initApplyPage() {
       }
 
       const fd = new FormData(form);
-      const decodedTitle = jobTitle ? decodeURIComponent(jobTitle) : '';
 
       const applicationData = {
-        job_id:  parseInt(jobId) || jobId,
-        name:    fd.get('fullname')       || '',
-        email:   fd.get('email')          || '',
-        phone:   fd.get('phone')          || ''
+        job_id:         parseInt(jobId) || jobId,
+        name:           fd.get('fullname')       || '',
+        email:          fd.get('email')          || '',
+        phone:          fd.get('phone')          || '',
+        city:           fd.get('city')           || null,
+        specialty:      fd.get('specialty')      || null,
+        classification: fd.get('classification') || null,
+        experience:     fd.get('experience')     || null,
+        qualification:  fd.get('qualification')  || null,
+        message:        fd.get('message')        || null
       };
+
+      // Upload CV file to Supabase Storage bucket "cvs" (must be a public bucket)
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const cvFile = fileInput.files[0];
+        const ext = cvFile.name.split('.').pop().toLowerCase();
+        const safePath = `cv_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const { error: upErr } = await window._supabase.storage
+          .from('cvs')
+          .upload(safePath, cvFile, { contentType: cvFile.type, upsert: false });
+        if (upErr) {
+          console.warn('[Apply] CV upload skipped:', upErr.message);
+        } else {
+          const { data: urlData } = window._supabase.storage.from('cvs').getPublicUrl(safePath);
+          if (urlData && urlData.publicUrl) {
+            applicationData.cv_url = urlData.publicUrl;
+            console.log('[Apply] CV uploaded:', applicationData.cv_url);
+          }
+        }
+      }
 
       console.log('[Apply] Submitting to Supabase — jobId:', jobId, '| name:', applicationData.name);
 
