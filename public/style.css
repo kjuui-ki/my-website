@@ -2246,4 +2246,66 @@ html[dir="ltr"] .nav-links a::after {
   margin-top: 6px;
 }
 
+/* ========================================
+   Story Launcher
+   ======================================== */
+.story-launcher-section {
+  padding: 40px 0 24px;
+  background: #fff;
+}
+
+.story-launcher-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.story-launcher-box {
+  width: 220px;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  border: 2px solid #0077B6;
+  background: linear-gradient(160deg, #F4FAFF 0%, #E8F6EE 100%);
+  color: #023E8A;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 800;
+  text-align: center;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(2, 62, 138, 0.14);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.story-launcher-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(2, 62, 138, 0.2);
+  background: linear-gradient(160deg, #EAF7FF 0%, #DFF3E8 100%);
+}
+
+.story-launcher-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0077B6, #2D9F4E);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.story-launcher-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 576px) {
+  .story-launcher-box {
+    width: 185px;
+  }
+}
+
 
